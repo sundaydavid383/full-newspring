@@ -1,0 +1,81 @@
+.contactForm img{
+   width: 50%;
+   border-radius: .8rem;
+}
+.contactForm{
+  gap: 1rem;
+}
+.contactForm-form{
+    border-radius: 1rem;
+    display: flex;
+    gap: .5rem;
+    width: 50%;
+    flex-direction: column;
+    border: 1px solid var(--brown);
+    padding: 1rem 1rem;
+}
+.contactForm-form h2{
+    color: var(--black);
+}
+.contactForm-form p{
+    color: var(--lightBlack);
+    line-height: 1.3rem;
+    font-weight: 400;
+    font-size: .9rem;
+}
+.contactForm_name{
+    display: flex;
+    padding-block: .44rem;
+    gap: .6rem
+}
+
+.contactForm-form .contactForm_name input,
+.contactForm-form textarea{
+    height: 12rem;
+    resize: none;
+    padding: .4rem;
+    font-size: 1rem;
+    background-color: transparent;
+    color:  var(--black);
+    font-weight: 300;
+    border-radius: .6rem;
+    border: 1px solid var(--brown);
+    outline: 0;
+    font-family: "Poppins", serif;
+}
+.contactForm-form .contactForm_name input{
+    width: 50%;
+    height: 3rem;
+
+}
+.contactForm-form .btn{
+   width: 12rem;
+}
+.contactForm-form .btn p{
+    color: var(--white);
+    font-size: .99rem;
+}
+.contactForm-form .btn:hover::after {
+    bottom: -1.5rem;
+    right: -.5rem;
+  }
+ .contactForm-form .btn:hover::before {
+    top: -1.5rem;
+    left: -.5rem;
+  }
+  @media (max-width: 700px) {
+    .contactForm{
+        flex-direction: column;
+      }
+    .contactForm img{
+        width: 90%;
+     }
+     .contactForm-form{
+        width: 90%;
+    }
+  }
+  @media (max-width: 500px) {
+    .Features .title {
+      width: 60%;
+    }
+  }

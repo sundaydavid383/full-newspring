@@ -1,0 +1,71 @@
+.Schedules {
+  background: url("../../assets/rccg17.jpg") rgb(19, 19, 19, 0.8) no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-blend-mode: multiply;
+  background-size: cover;
+  color: #fff;
+  padding: 6rem 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Schedules table{
+    border-collapse: collapse;
+    border: 1px solid var(--white);
+    width: 100px;
+    margin: auto;
+    position: relative;
+    left: 0rem;
+    margin-top: 3rem;
+}
+.Schedules table thead{
+    background: var(--gold);
+}
+.Schedules table thead tr{
+    text-wrap: nowrap;
+}
+.Schedules table thead tr td{
+    color: var(--black);
+}
+.Schedules table tbody tr{
+   border-bottom: 1px solid var(--white);
+   transition: .2s linear; 
+   cursor: pointer;
+}
+.Schedules table tbody tr:hover{
+    background: var(--brown);
+    color: var(--white)
+}
+
+.Schedules table td{
+    padding: 1.2rem;
+    border-left: 1px solid var(--white);
+}
+@media (max-width: 1110px) {
+    .Schedules table{
+        margin: auto;
+        margin-top: 3rem;
+        margin-left: -1.2rem;
+        position: relative;
+        left: -14%;
+    }
+    /* */
+  }
+  @media (max-width: 920px) {
+    .Schedules{
+        display: none;
+    }
+  }
+  @media (max-width:600px) {
+    .Minareas .title{
+        color: var(--black);
+        width: 80%;
+        border-bottom-color: var(--brown);
+    }
+    .minareas_card{
+        width: 97%;
+    }
+  }

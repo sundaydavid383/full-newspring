@@ -1,0 +1,140 @@
+.Minareas .title{
+    color: var(--black);
+    width: 29rem;
+    border-bottom-color: var(--brown);
+}
+ 
+.minareas_container{
+    gap:.2rem;
+    padding-inline: 0rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-block: 5.8rem;
+}
+.minareas_card{
+    display: flex;
+    margin-top: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    border-radius: .7rem;
+    width: 24%;
+    opacity: 0;
+    border-bottom: 2px solid var(--brown);
+}
+.minareas_card h3{
+    color: var(--black);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-block: .6rem;
+    margin-top: 3rem;
+
+}
+.minareas_card P{
+    color: var(--lightBlack);
+    margin-bottom: .78rem;
+    font-size: .95rem;
+}
+.minareas_image{
+    position: relative;
+}
+.minareas_card img{
+    width: 100%;
+    border-radius: 1rem;
+    
+}
+.minareas_card span{
+    background: var(--white);
+    border-radius: 50%;
+    height: 5.5rem;
+    width: 5.5rem;
+    text-align: center;
+    line-height: 5.5rem;
+    color: var(--brown);
+    font-size: 2.8rem;
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    bottom: .1rem;
+}
+.minareas_card .btn{
+    position: relative;
+    bottom: -.6rem;
+}
+.minareas_card .btn p{
+    color: var(--white);
+    margin: auto;
+    cursor: pointer;
+}
+.minareas_card .btn:hover p{
+    color: var(--black)
+}
+
+.min0.active{
+    animation: bottomfadeIn 2s forwards;
+}
+.min1.active{
+    animation: bottomfadeIn 2.3s forwards;
+}
+.min2.active{
+    animation: bottomfadeIn 1.2s forwards;
+}
+.min3.active{
+    animation: bottomfadeIn 1.5s forwards;
+}
+
+@media (max-width: 1180px) {
+    .minareas_card{
+        display: flex;
+        margin-top: auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        border-radius: .7rem;
+        width: 44%;
+        opacity: 0;
+        border-bottom: 2px solid var(--brown);
+    }
+    .minareas_container{
+        gap:2rem;
+        padding-inline: 1rem;
+    }
+    .minareas_card span{
+        height: 45%;
+        width: 30%;
+        line-height: 6.5rem;
+        font-size: 3rem;
+        bottom: -1.67rem;
+    }
+  }
+  @media (max-width: 780px) {
+    .minareas_card{
+        width: 80%;
+    }
+  
+    .minareas_card span{
+        line-height: 6.5rem;
+        font-size: 3rem;
+    }
+  }
+  @media (max-width:600px) {
+    .Minareas .title{
+        color: var(--black);
+        width: 80%;
+        border-bottom-color: var(--brown);
+    }
+    .minareas_card{
+        width: 97%;
+    }
+  }
+
+
+
+
+
+
+
