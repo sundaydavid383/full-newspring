@@ -98,7 +98,7 @@ const Journey = ({ journeyData }) => {
             ))}
             </div>
            
-            <span className="seniorpastor">Senior Pastor ●<small>{item.seniorPastor}</small></span>
+            <span className="seniorpastor">Senior Pastor <dd></dd><small>{item.seniorPastor}</small></span>
             {item.link && (
               <Link className="btn" to={item.link.href}>
                 <p>{item.link.text}</p>

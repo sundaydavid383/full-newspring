@@ -4,9 +4,15 @@ import { data } from "react-router";
 
 const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
   const [seeForm, setSeeForm] = useState(false);
+  const [seeData, setSeeData] = useState(false);
+  const [seeEmailStatus, setSeeEmailStatus] = useState(false)
+  const [emailStatus, setEmailStatus] = useState("")
+  const [newAdminPassword, setNewAdminPassword] = useState("")
+  const numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  const [password, setPassword] = useState("")
   const [updateData, setUpdateData] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
     phone: "",
     id: 0,
@@ -16,21 +22,28 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
     const name = e.target.name;
     setUpdateData((prev) => ({ ...prev, [name]: e.target.value }));
   };
+
+
+
   setActive("database");
-  async function deleteUser(Id) {
+
+
+  async function deleteUser(id) {
     try {
-      const response = await fetch("http://localhost:5000/api/people", {
+      const response = await fetch(`http://localhost:5000/api/people/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Id }),
       });
       const data = await response.json();
+      console.log(data.data)
       onLoad();
     } catch (error) {
       console.error("this occured:", error);
       alert("there was an error while deleting");
     }
   }
+
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -43,10 +56,9 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
     const phone = document.getElementById("phone");
     const phoneLable = document.getElementById("updphoneLable");
     const phoneRegx = /^\+?[0-9]\d{10,13}$/;
-    const emailRegx =
-      /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
+    const emailRegx = /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
 
-    if (updateData.firstName.trim() === "") {
+    if (updateData.firstname.trim() === "") {
       firstname.classList.add("alert");
       firstNameLable.textContent = "input your first name";
       setTimeout(() => {
@@ -54,7 +66,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
       }, 2000);
 
       return;
-    } else if (updateData.lastName.trim() === "") {
+    } else if (updateData.lastname.trim() === "") {
       lastname.classList.add("alert");
       lastNameLable.textContent = "input your last name";
       setTimeout(() => {
@@ -92,8 +104,8 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
     } else {
       e.target.reset();
       setUpdateData({
-        firstName: "",
-        lastName: "",
+        firstname: "",
+        lastname: "",
         email: "",
         phone: "",
         id: 0,
@@ -107,46 +119,125 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
       lastname.classList.remove("alert");
       firstname.classList.remove("alert");
       setSeeForm(false);
-      alert("You have been successfully added to the list!");
+      alert("You have been successfully updated the user");
       console.log(
         "this are the datas",
-        updateData.firstName,
+        updateData.firstname,
         updateData.email,
-        updateData.lastName,
+        updateData.lastname,
         updateData.phone
       );
       upDatePerson(
         updateData.id,
-        updateData.firstName,
-        updateData.lastName,
+        updateData.firstname,
+        updateData.lastname,
         updateData.email,
         updateData.phone
       );
     }
   };
 
-  const upDatePerson = async (id, firstName, lastName, email, phone) => {
+
+
+  const upDatePerson = async (id, firstname, lastname, email, number) => {
     try {
-      const response = await fetch("http://localhost:5000/api/people", {
+      const response = await fetch(`http://localhost:5000/api/people/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, firstName, lastName, email, phone }),
+        body:  JSON.stringify({
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          number: number
+       }),
       });
       const data = await response.json();
+      console.log(data.data)
       onLoad();
     } catch (error) {
       alert("this error occured", error);
     }
   };
 
+
+  const onSubmitPass = async(e)=>{
+    try {
+      e.preventDefault()
+      const response = await fetch("http://localhost:5000/password",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ userType: password})
+      })
+      if(!response.ok){
+        throw new Error(`couldnt get response${response.statusText}`)
+      }
+      else{
+        const data = await response.json()
+        if(response.status == 500){
+          //const adminPass = document.getElementById("adminPass")
+          //adminPass.textContent = data.message
+          
+          setSeeEmailStatus(true)
+          // setTimeout(() => {
+          //       adminPass.textContent = ""
+          //       setPassword("")
+          // }, 2000);
+        }
+        else{
+          setSeeData(true)
+          setSeeEmailStatus(false)
+        }
+      }
+    } catch (error) {
+         setEmailStatus(error.message)
+         setSeeEmailStatus(true)
+         setTimeout(() => {
+          setSeeEmailStatus(false)
+          setEmailStatus("")
+         }, 2000);
+         setPassword("")
+    }
+  
+
+ 
+  }
+
+
+  const onSubmitAdminPass = async(e)=>{
+    e.preventDefault()
+    const response = await fetch("http://localhost:5000/password",{
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({userType: newAdminPassword})
+    })
+    if(!response.ok){
+      throw new Error(`couldnt get response${response.statusText}`)
+    }
+    const data = await response.json()
+    if(data){
+      setEmailStatus(`you have change the password from ${data.oldPassword}, ${data.newPassword}`)
+      setSeeEmailStatus(true)
+      setTimeout(() => {
+       setSeeEmailStatus(false)
+       setEmailStatus("")
+      }, 2000);
+      setNewAdminPassword("")
+    }
+  }
+
+
   return (
     <div className="database">
-      {console.log("database:", dataBase)}
-
-      {seeForm ? (
+     { seeEmailStatus ?<div className="emial_status">
+        <p>{emailStatus}</p>
+        <div onClick={()=>{setSeeEmailStatus(false)}} className="btn">Got it</div>
+      </div>:null}
+      {seeData ?
+      <div className="data">
+        {seeForm ? (
         <form onSubmit={onSubmit}>
-          <p>{updateData.firstName}</p>
-          <p>{updateData.lastName}</p>
+          <p>{updateData.firstname}</p>
+          <p>{updateData.lastname}</p>
           <p>{updateData.email}</p>
           <h2>Register as a member</h2>{" "}
           <div className="inputs">
@@ -155,9 +246,9 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
                 <label htmlFor="">First Name:</label>
                 <input
                   onChange={handleNameChange}
-                  value={updateData.firstName}
+                  value={updateData.firstname}
                   type="text"
-                  name="firstName"
+                  name="firstname"
                   id="firstname"
                 />
                 <label className="realLabels" id="updfirstNameLable"></label>{" "}
@@ -166,9 +257,9 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
                 <label htmlFor="">Last Name:</label>{" "}
                 <input
                   onChange={handleNameChange}
-                  value={updateData.lastName}
+                  value={updateData.lastname}
                   type="text"
-                  name="lastName"
+                  name="lastname"
                   id="lastname"
                 />
                 <label className="realLabels" id="updlastNameLable"></label>{" "}
@@ -218,25 +309,25 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
         <tbody>
           {dataBase.map((user, index) => (
             <tr key={user.id}>
-              <td>{user.id}</td>
+              <td>{numbers[index]}</td>
               <td>{user.firstname}</td>
               <td>{user.lastname}</td>
               <td>{user.email}</td>
-              <td>{user.phone}</td>
+              <td>{user.number}</td>
               <td className="lastTD">
-                <div onClick={() => deleteUser(user.id)} className="btn">
+                <div onClick={() => deleteUser(user._id)} className="btn">
                   <p>Delete</p>
                 </div>
                 <div
                   onClick={() => {
-                    console.log("user id", user.id);
+                    console.log("user id", user._id);
                     setSeeForm(true);
                     setUpdateData({
-                      firstName: user.firstname,
-                      lastName: user.lastname,
+                      firstname: user.firstname,
+                      lastname: user.lastname,
                       email: user.email,
-                      phone: user.phone,
-                      id: user.id,
+                      phone: user.number,
+                      id: user._id,
                     });
                   }}
                   className="btn"
@@ -248,6 +339,44 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
           ))}
         </tbody>
       </table>
+      <div className="securingData">
+      <form onSubmit={onSubmitAdminPass} action="">
+          <input
+            value={newAdminPassword}
+            onChange={(e) => {
+                setNewAdminPassword(e.target.value);
+                console.log(newAdminPassword)
+            }}
+            type="password"
+            name="password"
+            maxLength={4}
+            placeholder="change admin password"
+          />
+          <button  className="btn" type="submit">
+            <p>Enter</p>
+          </button>
+        </form>
+        <label id="" htmlFor="">
+        </label></div></div>:   
+         <div className="securingData">
+          <form onSubmit={onSubmitPass} action="">
+          <input
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              console.log(password)
+            }}
+            type="password"
+            name="password"
+            placeholder="enter admin password"
+          />
+          <button className="btn" type="submit">
+            <p>Enter</p>
+          </button>
+        </form>
+     
+</div>}
+      
     </div>
   );
 };

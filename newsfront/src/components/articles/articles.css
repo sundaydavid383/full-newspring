@@ -25,11 +25,14 @@
     display: flex;
     gap: 1rem;
     margin-top: .7rem;
+    border-bottom: 1px solid var(--brown);
+    align-items: baseline;
 }
 .articles_data p{
     font-size: 1.1rem;
     color: var(--lightBlack);
     font-weight: 500;
+
 }
 .articles_data span{
     font-size: 1rem;

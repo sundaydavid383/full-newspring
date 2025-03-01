@@ -61,3 +61,51 @@
 {
     color: red;
 }
+.securingData{
+    display: flex;
+    flex-direction: column;
+    padding-block: 7rem;
+}
+.securingData form{
+    display: flex;
+    border: 1px solid var(--white);
+    padding: 0.8rem;
+     position: relative;
+     bottom: 3rem;
+    border-radius: 1rem;
+    width: 100%;
+    height: 6rem;
+    backdrop-filter: blur(2px);
+    background-color: var(--black);
+    margin-bottom: 2rem;
+    justify-content: space-between;
+}
+.securingData form .btn p{
+    font-size: 1rem;
+    font-weight: 300;
+}
+.securingData form input{
+      background: transparent;
+  width: 80%;
+  font-weight: 300;
+  font-size: 1.1rem;
+  color: var(--white);
+}
+#adminPass{
+    color: rgb(238, 36, 36);
+    margin: .8rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+ text-align: center;
+}
+@media (max-width:900px) {
+    .securingData form{
+        width: 70%;
+        z-index: 1;
+    }
+}
+@media (max-width:600px) {
+    .securingData form{
+        width: 50%;
+    }
+}

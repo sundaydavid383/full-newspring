@@ -14,6 +14,8 @@ const Hero = ({ sections, sectionType, buttonType, dataBase, setDataBase, onLoad
 
   const [title, setTitle] = useState("");
   const [opeTitle, setOpeTitle] = useState("N");
+  const [seeEmailStatus, setSeeEmailStatus] = useState(false)
+  const [emailStatus, setEmailStatus] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentidx = useRef(currentIndex);
   const [registerNames, setRegisterNames] = useState({
@@ -144,32 +146,76 @@ else if(!phoneRegx.test(registerNames.phone)){
  email.classList.remove("alert")
  lastname.classList.remove("alert")
  firstname.classList.remove("alert")
-  alert("You have been successfully added to the list!")
    console.log("this are the datas", registerNames.firstName, registerNames.email, registerNames.lastName, registerNames.phone);
    addPerson(registerNames.firstName, registerNames.lastName, registerNames.email, registerNames.phone)
+   sendMail(registerNames.firstName, registerNames.lastName, registerNames.email, registerNames.phone)
+   setRegisterNames({
+    firstName:"",
+    lastName:"",
+    email:"",
+    phone:"",
+   })
 
   }
 }
+
+ const sendMail = async (firstname, lastname, email, phone) => {
+    try {
+      const response = await fetch("http://localhost:5000/sendmessage/oncreated",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({firstname, lastname, email, phone})
+      })
+    if(!response.ok){
+      throw new Error(`an error of ${response.statusText} occured`)
+    }
+    const data = response.json()
+    console.log(data.message)
+    } catch (error) {
+       alert("an error occured")
+    }
+  }
 console.log("database in Hero.jsx",dataBase )
-async function addPerson(firstname, lastname, email, phone) {
+async function addPerson(firstname, lastname, email, number) {
   try {
-   const response = await fetch('http://localhost:5000/api/people',{
-     method: 'POST',
-     headers:{'Content-Type': 'application/json'},
-     body:JSON.stringify({firstname, lastname, email, phone})
-   });
-   const data = await response.json()
-   console.log(data.data)
-    setDataBase(data.data)
-    onLoad() 
-    console.log("new dataBase",dataBase)
+    console.log("Sending data to backend:", { firstname, lastname, email, number });
+
+    const response = await fetch("http://localhost:5000/api/people", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstname, lastname, email, number })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Received response:", data);
+    setEmailStatus("You have been successfully added to the list!")
+    setSeeEmailStatus(true)
+    setTimeout(() => {
+      setSeeEmailStatus(false)
+      setEmailStatus("")
+    }, 7000);
+    onLoad()
+    setDataBase(data.data);
   } catch (error) {
-    console.error(error);
-    alert("An Error Occurred")
+    console.error("Error in addPerson:", error);
+    setEmailStatus("An Error Occurred: " + error.message)
+    setSeeEmailStatus(true)
+    setTimeout(() => {
+      setSeeEmailStatus(false)
+      setEmailStatus("")
+    }, 7000);
   }
 }
   return (
     <div className="hero">
+        { seeEmailStatus ?<div className="emial_status">
+        <p>{emailStatus}</p>
+        <div onClick={()=>{setSeeEmailStatus(false)}} className="btn">Got it</div>
+      </div>:null}
       {currentIndex < 3?<i onClick={()=>{setCurrentIndex((prev)=>prev+1)}} className="fa-solid fa-arrow-right"></i>:null}
       {currentIndex > 0?<i onClick={()=>{setCurrentIndex((prev)=>prev-1)}}className="fa-solid fa-arrow-left"></i>:null}
       {sections.map((section, index) =>

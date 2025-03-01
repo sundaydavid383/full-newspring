@@ -84,6 +84,9 @@
 .seniorpastor {
   color: var(--lightBlack);
   margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
 }
 .seniorpastor small {
   font-size: 1.2rem;
@@ -91,6 +94,11 @@
   font-weight: 600;
   color: var(--black);
   margin-left: 0.5rem;
+}
+.seniorpastor dd{
+  background-color: var(--brown);
+  width: .7rem;
+  height: .7rem;
 }
 .about_tacker {
   display: flex;
