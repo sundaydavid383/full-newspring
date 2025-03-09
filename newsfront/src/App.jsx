@@ -13,9 +13,11 @@ import ReadBlog from "./pages/readBlog/ReadBlog";
 import BlogGrid from "./pages/bloggrid/BlogGrid";
 import NoRoute from "./pages/noRoute/NoRoute";
 import DataBase from "./pages/dataBase/DataBase";
+import Retreat from "./pages/retreat/Retreat";
 
 
 const App = () => {
+  
   const [active, setActive] = useState("home");
   const [dataBase, setDataBase] = useState([])
 
@@ -54,13 +56,11 @@ const App = () => {
         <Route path="/services" element={<Service setActive={setActive} />} />
         <Route path="/worshipnight" element={<WorshipNight />} />
         <Route path="/biblestudy" element={<BibleStudy />} />
-        <Route
-          path="/readblog/:id"
-          element={<ReadBlog setActive={setActive} />}
-        />
+        <Route path="/retreat" element={<Retreat />} />
+        <Route path="/readblog/:id"element={<ReadBlog setActive={setActive} />}/>
         <Route path="/bloggrid/:categoryIndex" element={<BlogGrid setActive={setActive}/> } />
-         <Route path="*" element={<NoRoute/>}/>   
-         <Route path="/dataBase" element={<DataBase setActive={setActive} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />}/>
+        <Route path="*" element={<NoRoute/>}/>   
+        <Route path="/dataBase" element={<DataBase setActive={setActive} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />}/>
       </Routes>
       <Footer />
       <div  className=" take_up ">

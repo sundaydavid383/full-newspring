@@ -59,7 +59,7 @@ const Journey = ({ journeyData }) => {
       journeyData.length == 3 && curtAbout == index ? (
         <div className="journey container_flex_around" key={index}>
           <div className="journey_text">
-            <h2>{item.title}</h2>
+            <h2 className="observe">{item.title}</h2>
             {item.paragraphs.map((paragraph, paraIndex) => (
               <p className="journey_para observe" key={paraIndex}>
                 {paragraph}
@@ -110,7 +110,7 @@ const Journey = ({ journeyData }) => {
          :(
           <div className="journey container_flex_around" key={index}>
           <div className="journey_text">
-            <h2>{item.title}</h2>
+            <h2 className="observe">{item.title}</h2>
             {item.paragraphs.map((paragraph, paraIndex) => (
               <p className="journey_para observe" key={paraIndex}>
                 {paragraph}

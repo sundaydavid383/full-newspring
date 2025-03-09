@@ -1,3 +1,5 @@
+require("dotenv").config();
+const dotenv = require('dotenv')
 const express = require("express");
 const mongoose = require("mongoose");
 const fs = require("fs");
@@ -6,6 +8,8 @@ const nodemailer = require("nodemailer");
 const User = require("./userModel");
 const app = express();
 const cors = require("cors");
+const helmet = require("helmet")
+const bcrypt = require("bcryptjs")
 const appPassword = "yvil cmib rtwc mfzl";
 
 //const peoplePath = path.join(__dirname, "./data.json");
@@ -21,7 +25,23 @@ const appPassword = "yvil cmib rtwc mfzl";
 // }
 // let people = getPeople();
 
-app.use(cors());
+    console.log(`${process.env.NAME} ${process.env.PASSWORD} ${process.env.ADMINPASSWORD}`)
+app.use(helmet({
+    contentSecurityPolicy:{
+        directives:{
+            defaultSrc:["'self'"],
+            connectSrc: ["'self'", "http://localhost:5000"],//allow api request
+            styleSrc: ["'self'", "'unsafe-inline'", "http://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"]   
+          
+        }
+    }
+}))
+app.use(cors({
+  origin: "*",  // Allow all origins (for development)
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
 app.get("/api/people", async (req, res) => {
@@ -94,46 +114,6 @@ app.delete("/api/people/:id", async (req, res) => {
   }
 });
 
-//  const transporter = nodemailer.createTransport({
-//    service: "gmail",
-//    auth: {
-//       user: "sundayudoh383@gmail.com",
-//       pass: appPassword, // Ensure this is correct
-//    },
-//    pool: true, // Helps with connection issues
-// });
-// app.post("/sendmessage", async (req, res) => {
-//    console.log("Request Body:", req.body);
-
-//    const { name, email, message } = req.body;
-//    if (!name || !email || !message) {
-//       return res.status(400).json({ message: "Invalid user credentials" });
-//    }
-
-//    // Determine Sunday or Weekday Message
-//    const day = new Date().getDay();
-//    const time = new Date().getHours();
-//    let sundayOrWeekday = (day === 0 || (day === 5 && time <= 13)) ? "today" : "on Sunday";
-
-//    // Email Options
-//    const mailOptions = {
-//       from: '"newSprings" <sundayudoh383@gmail.com>',
-//       to: email,
-//       subject: "We have received your message",
-//       text: `${name}, welcome to our website! Hope to see you in church ${sundayOrWeekday}.\n\nWe have received your message and will reach back to you later.\n\nMessage: ${message}`,
-//    };
-
-//    // Send Email
-//    try {
-//       await transporter.sendMail(mailOptions);
-//       console.log("Email successfully sent!");
-//       return res.status(200).json({ success: true, message: "Email successfully sent" });
-//    } catch (error) {
-//       console.error("Email error:", error.message);
-//       return res.status(500).json({ success: false, message: "Unable to send email", error: error.message });
-//    }
-// });
-
 //create transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -143,6 +123,8 @@ const transporter = nodemailer.createTransport({
   },
   pool: true,
 });
+
+
 
 app.post("/sendmessage/oncreated", async (req, res) => {
   console.log("request body:", req.body);
@@ -226,6 +208,42 @@ app.post("/sendmessage/oncontact", async (req, res) => {
 });
 
 //change admin password
+
+const hashFirstPassword = async () => {
+  try {
+    // Load current env variables
+    const envConfig = dotenv.parse(fs.readFileSync(".env"));
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(envConfig.ADMINPASSWORD, 10);
+    envConfig.HARSHEDADMINPASSWORD = hashedPassword; // Update ADMINPASSWORD
+
+    // Convert envConfig back to string format
+    const updatedEnvContent = Object.entries(envConfig)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("\n");
+
+    // Write back to .env file
+    fs.writeFileSync(".env", updatedEnvContent, "utf8");
+    console.log("Updated ADMINPASSWORD in .env file");
+
+    // Reload the .env file
+    dotenv.config(); // This updates process.env with the new values
+
+    // Compare the password with the newly hashed one
+    if(await bcrypt.compare(envConfig.ADMINPASSWORD, envConfig.HARSHEDADMINPASSWORD)){
+      console.log("Yes, correct password");
+    }
+    else {
+      console.log("No, wrong password");
+    }
+  }
+  catch (error) {
+    console.log("Unable to update password in .env file", error.message);
+  }
+};
+
+hashFirstPassword();
 app.post("/password", (req, res) => {
   const { userType } = req.body;
   console.log(req.body);
@@ -260,89 +278,24 @@ app.put("/password", (req, res) => {
     });
 });
 
-// app.get('/api/people', (req, res)=>{
-//    res.status(200).json({success:true, data:people})
-// })
-// app.post('/api/people', async(req,res)=>{
-//    console.log("received data:", req.body)
-//    const {firstname, lastname, email, phone} = req.body
-
-//    if(!firstname || !lastname || !phone || !email){
-//       return res.status(400).json({success:false, msg:"please provide name, email and phone"})
-//    }
-
-//    const newPerson = {id:people.length + 1,firstname, lastname, email, phone}
-//    people.push(newPerson)
-//    savePeople(people)
-//    // try {
-//    //    const mailOptions = {
-//    //        from: '"My App" <sundayudoh383@gmail.com>',
-//    //        to: email,  // Recipient's email
-//    //        subject: "Welcome to My App!",
-//    //        text: `Hello ${firstname} ${lastname},\n\nThank you for registering!\n\nBest regards,\nMy App Team`
-//    //    };
-
-//    //    const info = await transporter.sendMail(mailOptions);
-//    //    console.log("Email sent:", info.response);
-
-//       return res.status(201).json({ success: true, msg: "User registered and email sent", data: people });
-//   //} catch (error) {
-//    //   console.error("Error sending email:", error.message);
-
-//       // Check for specific errors
-//    //   if (error.message.includes("No recipients defined")) {
-//    //       return res.status(400).json({ success: false, msg: "Invalid email address" });
-//   //    }
-
-//     //  return res.status(500).json({ success: false, msg: "User registered, but email could not be sent" });
-//   //}
-// })
-// app.delete('/api/people',(req, res)=>{
-//    const {Id}=req.body
-//    console.log(req.body)
-//    console.log(Id)
-//    console.log("this is the id",Id)
-//    if(!Id){
-//       res.status(400).send({sucess:false, msg:"invalid user ID"})
-//    }
-//    people = people.filter(person=>person.id !== Id)
-//    savePeople(people)
-
-//    return res.status(200).json({sucess:true, data:people})
-
-// })
-// app.put('/api/people', (req, res)=>{
-//      const {id, firstName, lastName, email, phone} = req.body
-//      console.log("body",req.body)
-//      if(!id || !firstName || !lastName || !email || !phone){
-//       return res.status(404).send({success:false, msg:"you imported an invalid data"})
-//      }
-//      const person = people[id-1]
-//      console.log("person",person)
-//     const updatedPerson = people[id-1]
-//     updatedPerson.id = id
-//     updatedPerson.firstname = firstName
-//     updatedPerson.lastname =  lastName
-//     updatedPerson.email = email
-//     updatedPerson.phone = phone
-//      console.log("updated person", updatedPerson)
-//      savePeople(people)
-//      return res.status(200).json({success:true, data:people})
-
-// })
-
 const connectDB = async () => {
   try {
+    //sundayudoh383
+    //sesRDSW46uapVu8i
     mongoose.connect(
-      "mongodb+srv://sundayudoh383:sesRDSW46uapVu8i@newspringdb.qrbm5.mongodb.net/NewspringsDB?retryWrites=true&w=majority&appName=newspringDB"
+      `mongodb+srv://${process.env.NAME}:${process.env.PASSWORD}@newspringdb.qrbm5.mongodb.net/NewspringsDB?retryWrites=true&w=majority&appName=newspringDB`
+
     );
     console.log("connected successfuly to mongo");
+
     app.listen(5000, () => {
       console.log("listening on port 5000...");
     });
+  
   } catch (error) {
     console.log("unable to connect to server");
   }
 };
 
 connectDB();
+

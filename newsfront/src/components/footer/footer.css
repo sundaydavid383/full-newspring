@@ -224,6 +224,7 @@
 .futup.active {
   animation: bottomfadeIn 2.2s forwards;
 }
+
 @media (max-width: 980px) {
   .subscribe {
     flex-direction: column;

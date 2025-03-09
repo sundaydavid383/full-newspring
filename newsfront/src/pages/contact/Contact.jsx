@@ -3,6 +3,7 @@ import Hero from '../../components/hero/Hero'
 import Features from "../../components/features/Features";
 import GoogleMap from '../../components/goggleMap/GoogleMap';
 import ContactForm from '../../components/contactForm/ContactForm';
+import img1 from "../../assets/rccg66.jpg";
 
 
 const Contact = ({setActive}) => {
@@ -87,6 +88,11 @@ const Contact = ({setActive}) => {
           },
         ],
       };
+      const contactFormData = {
+        formSrc:img1,
+        formTitle : "Have Any Questions",
+        formText:" Please feel free to get in touch with us using the contact form below. We’d love to hear for you."
+      }
     
     const featuresTitle = "Contact Us Now";
     const featuresTitleSmall = "Have questions or need assistance? We're here to help. Reach out to us through any of the methods below, and let’s stay connected.";
@@ -97,7 +103,7 @@ const Contact = ({setActive}) => {
         <Hero sections={sections} sectionType={sectionType}/>
         <Features features={contactFeatures} featuresTitle={featuresTitle} featuresTitleSmall={featuresTitleSmall}/>
         <GoogleMap/>
-        <ContactForm/>
+        <ContactForm contactFormData={contactFormData}/>
         
         
     </>

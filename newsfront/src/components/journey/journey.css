@@ -17,6 +17,7 @@
   line-height: 3.7rem;
   color: var(--black);
 }
+
 .journey .journey_text p {
   color: var(--lightBlack);
   font-size: 0.94rem;
@@ -130,6 +131,9 @@
   background: var(--brown);
   color: var(--white);
   transition: 0.2s;
+}
+.journey_text h2.active{
+  animation: riseUp 2s forwards;
 }
 .journey_para.active {
   animation: leftfadeIn 1.5s forwards;

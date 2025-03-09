@@ -14,7 +14,6 @@
   background-position: center;
   background-blend-mode: multiply;
   background-attachment: fixed;
-
   z-index: -5;
 }
 .bar_active {
@@ -133,12 +132,11 @@
   font-size: 3.5rem;
   line-height: 3.7rem;
   color: var(--white);
-  border-right: 1px solid var(--fadedWhite);
-  width: 0rem;
   position: relative;
   overflow: hidden;
+  transform-origin: bottom;
   min-height: 4rem;
-  animation: wider 4s forwards;
+  animation: riseUp 4s forwards;
 }
 
 .hero p {
@@ -287,14 +285,7 @@ label {
 .hero .para {
   animation: leftfadeIn 2s forwards 2s;
 }
-@keyframes wider {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  }
-}
+
 @media (max-width: 1200px) {
   .hero_text_content {
     padding-top: 34.5rem;

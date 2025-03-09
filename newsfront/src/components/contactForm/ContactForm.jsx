@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import "./ContactForm.css";
-import img1 from "../../assets/rccg66.jpg";
 
 
-const ContactForm = () => {
+
+const ContactForm = ({contactFormData}) => {
   const [emailStatus, setEmailStatus] = useState("")
   const [loading, setLoading] = useState(false)
   const [seeEmailStatus, setseeEmailStatus] = useState(false)
   const [formData, setformData] = useState({
-    name: "",
+    firstname: "",
+    lastname: "",
+    address:"",
+    age:"",
+    phone:"", 
     email: "",
     message: "",
   });
@@ -26,7 +30,6 @@ const ContactForm = () => {
 
     try {
       const response = await fetch("http://localhost:5000/sendmessage/oncontact",{
-        method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({name:formData.name, email:formData.email, message:formData.message})
       })
@@ -59,58 +62,149 @@ const ContactForm = () => {
     }
   }
 
+  const onSubmitRetreat = (e)=>{
+     e.preventDefault()
+    const numberAge = parseInt(formData.age)
+     if(isNaN(numberAge)){
+       age.classList.add("error")
+       setTimeout(() => {
+        age.classList.remove("error")
+       }, 2000);
+       return;
+     }
+     alert(`succesfully submited for testing ${formData.age}`)
+  } 
+ 
  
 
   return (
     <div className="contactForm container_flex_around">
-      <img src={img1} alt="" />
+      <img src={contactFormData.formSrc} alt="" />
       {loading?<div className="loading">
         <div className="loader">
         </div>
        </div>:null}
-       
-      <form onSubmit={onSubmit} className="contactForm-form">
-        <h2>Have Any Questions</h2>
-        <p>
-          Please feel free to get in touch with us using the contact form below.
-          We’d love to hear for you.
-        </p>
-        <div className="contactForm_name">
-          <input
-            onChange={handleClick}
-            value={formData.name}
-            name="name"
-            type="text"
-            required
-            placeholder="First Name"
-            aria-label="Enter your name" 
-          />
-          <input
-            onChange={handleClick}
-            value={formData.email}
-            name="email"
-            type="email"
-            required
-            placeholder="Email"
-            aria-label="Enter your email" 
-          />
-        </div>
-        <textarea
+      {contactFormData.type === "forRereat"? 
+      <form onSubmit={onSubmitRetreat} className="contactForm-form">
+      <h2>{contactFormData.formTitle}</h2>
+      <p>{contactFormData.formText}</p>
+      <div className="contactForm_name">
+        <input
           onChange={handleClick}
-          value={formData.message}
-          name="message"
+          value={formData.firstname}
+          name="firstname"
+          type="text"
           required
-          id=""
-          placeholder="Your Message"
-          aria-label="Enter your message" 
-        ></textarea>
-        <button aria-label="Submit Form" type="submit" className="btn">
-          <p>Submit</p>
-        </button>
-      </form>
+          placeholder="First Name"
+          aria-label="Enter your Firstname" 
+        />
+         <input
+          onChange={handleClick}
+          value={formData.lastname}
+          name="lastname"
+          type="text"
+          required
+          placeholder="Last Name"
+          aria-label="Enter your Lastname" 
+        />
+       
+      </div>
+      <div className="contactForm_name">
+      <input
+          onChange= {handleClick}
+          value={formData.age}  
+          name="age"
+          type="age"
+          required
+          id="age"
+          placeholder="how old are you "
+          maxLength={2}
+          aria-label="Enter your age" 
+        />
+         <input
+          onChange={handleClick}
+          value={formData.phone}
+          name="phone"
+          type="tel"
+          required
+          placeholder="phone number"
+          aria-label="Enter your phone number" 
+        />
+        </div>
+        <input
+          onChange={handleClick}
+          value={formData.email}
+          name="email"
+          type="email"
+          required
+          placeholder="Email"
+          aria-label="Enter your email" 
+        />
+         <input
+          onChange={handleClick}
+          value={formData.address}
+          name="address"
+          type="Home address"
+          required
+          placeholder="House Address"
+          aria-label="Enter your house address" 
+        />
+      <textarea
+        onChange={handleClick}
+        value={formData.message}
+        name="message"
+        required
+        id=""
+        placeholder="Your Message"
+        aria-label="Enter your message" 
+      ></textarea>
+      <button aria-label="Submit Form" type="submit" className="btn">
+        <p>Register</p>
+      </button>
+    </form>
+    
+    :
+
+      <form onSubmit={onSubmit} className="contactForm-form">
+      <h2>{contactFormData.formTitle}</h2>
+      <p>{contactFormData.formText}</p>
+      <div className="contactForm_name">
+        <input
+          onChange={handleClick}
+          value={formData.firstname}
+          name="name"
+          type="text"
+          required
+          placeholder="First Name"
+          aria-label="Enter your name" 
+        />
+        <input
+          onChange={handleClick}
+          value={formData.email}
+          name="email"
+          type="email"
+          required
+          placeholder="Email"
+          aria-label="Enter your email" 
+        />
+      </div>
+      <textarea
+        onChange={handleClick}
+        value={formData.message}
+        name="message"
+        required
+        id=""
+        placeholder="Your Message"
+        aria-label="Enter your message" 
+      ></textarea>
+      <button aria-label="Submit Form" type="submit" className="btn">
+        <p>Submit</p>
+      </button>
+    </form>}
+      
      { seeEmailStatus ?<div className="emial_status">
         <p>{emailStatus}</p>
-        <div onClick={()=>{setSeeEmailStatus(false)}} className="btn">Got it</div>
+        <div onClick={()=>{setseeEmailStatus(false)}} className="btn">Got it</div>
       </div>:null}
     </div>
   );

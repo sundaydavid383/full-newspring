@@ -47,7 +47,8 @@
   animation: bottomfadeIn 1.1s forwards;
 }
 .feat3.active {
-  animation: rightfadeIn 2s forwards;
+  opacity: 1;
+  animation: riseUp 2s forwards;
 }
 
 .feat4.active {
@@ -57,7 +58,8 @@
   animation: bottomfadeIn 1.1s forwards;
 }
 .feat6.active {
-  animation: rightfadeIn 2s forwards;
+  opacity: 1;
+  animation: riseUp 2s forwards;
 }
 .feat4.active,
 .feat5.active,

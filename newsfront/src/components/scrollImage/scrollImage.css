@@ -1,0 +1,168 @@
+.ScrollImage {
+  display: flex;
+  padding-block: 7rem;
+  gap: 7rem;
+  width: 102rem;
+  position: relative;
+  padding-inline: 2rem;
+  animation: scrollImage 66s infinite;
+
+}
+.ScrollImage .image {
+  position: relative;
+  border-radius: 0.5rem;
+  height: 19.4rem;
+}
+.ScrollImage .image .imageBlocker {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  border-radius: 2rem;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  transition: 0.4s linear;
+}
+.ScrollImage .image img {
+  width: 29rem;
+  border-radius: 1rem;
+  z-index: -1;
+}
+.ScrollImage .image .facebook {
+  left: 40%;
+}
+.ScrollImage .image .instagram {
+  left: 60%;
+}
+.ScrollImage .image a {
+  display: none;
+  position: absolute;
+  bottom: 10%;
+  transform: translateX(-40%);
+  background: var(--brown);
+  width: 3.3rem;
+  border: 1px solid var(--gold);
+  height: 3.3rem;
+  text-align: center;
+  line-height: 4rem;
+  border-radius: 50%;
+  transition: 0.2s;
+  font-size: 1.7rem;
+  cursor: pointer;
+  color: var(--white);
+  box-shadow: 0px 0px 0px 0px var(--brown);
+}
+.ScrollImage .image a:hover {
+  background: var(--gold);
+  box-shadow: 0px 0px 15px 4px var(--brown);
+  border: 1px solid var(--brown);
+}
+.ScrollImage .image:hover .imageBlocker {
+  width: 0%;
+}
+.ScrollImage .image:hover a {
+  display: block;
+}
+@keyframes scrollImage {
+  0% {
+    transform: translateX(-0%);
+  }
+  
+  10% {
+    transform: translateX(-40%);
+  }
+  20% {
+    transform: translateX(-70%);
+  }
+  30% {
+    transform: translateX(-120%);
+  }
+  40% {
+    transform: translateX(-170%);
+  }
+  50% {
+    transform: translateX(-200%);
+  }
+  60% {
+    transform: translateX(-180%);
+  }
+  70% {
+    transform: translateX(-130%);
+  }
+  80% {
+    transform: translateX(-100%);
+  }
+  90% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+@media (max-width: 980px) {
+  .videodata {
+       flex-direction: column-reverse;
+    }
+}
+@media (max-width: 730px) {
+  @keyframes scrollImage {
+    5% {
+      transform: translateX(-0%);
+    }
+    10% {
+      transform: translateX(-30%);
+    }
+    15% {
+      transform: translateX(-60%);
+    }
+    20% {
+      transform: translateX(-90%);
+    }
+    25% {
+      transform: translateX(-120%);
+    }
+    30% {
+      transform: translateX(-150%);
+    }
+    35% {
+      transform: translateX(-180%);
+    }
+    40% {
+      transform: translateX(-210%);
+    }
+    50% {
+      transform: translateX(-180%);
+    }
+    55% {
+      transform: translateX(-150%);
+    }
+    60% {
+      transform: translateX(-120%);
+    }
+    75% {
+      transform: translateX(-90%);
+    }
+    80% {
+      transform: translateX(-60%);
+    }
+    90% {
+      transform: translateX(-30%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  
+  }
+  .ScrollImage .image img {
+    width: 24rem;
+  }
+  .ScrollImage .image {
+    height: 16rem;
+  }
+  .ScrollImage{
+    animation: scrollImage 76s infinite;
+  }
+}
+@media (max-width: 600px) {
+}

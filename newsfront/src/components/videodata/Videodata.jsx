@@ -46,7 +46,7 @@ const Videodata = ({ videoData }) => {
       ) : null}
 
       <div className="videodata_text ">
-        <h2>{videoData.header}</h2>
+        <h2 className="videoAnima">{videoData.header}</h2>
         {videoData.para.map((p,idx) => (
           <p key={idx} className="videoAnima">{p}</p>
         ))}

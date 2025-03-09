@@ -74,7 +74,7 @@ const Event = () => {
             strengthen faith and friendships in a serene and inspiring
             environment.
           </p>
-                    <div className="btn-slide"><p>More Details</p></div>
+                    <Link to="/retreat"className="btn-slide"><p>More Details</p></Link>
         </div>
       </div>
     </div>

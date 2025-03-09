@@ -78,7 +78,9 @@
 .videodata_image1 small{
   height: 98%
 }
-
+.videodata_text h2.active{
+  animation: riseUp 1s forwards;
+}
 .videodata_image.active{
   animation: bottomfadeIn 1.4s forwards;
 }

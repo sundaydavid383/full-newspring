@@ -14,6 +14,7 @@ const Hero = ({ sections, sectionType, buttonType, dataBase, setDataBase, onLoad
 
   const [title, setTitle] = useState("");
   const [opeTitle, setOpeTitle] = useState("N");
+  const [loading, setLoading] = useState(false)
   const [seeEmailStatus, setSeeEmailStatus] = useState(false)
   const [emailStatus, setEmailStatus] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -161,6 +162,7 @@ else if(!phoneRegx.test(registerNames.phone)){
 
  const sendMail = async (firstname, lastname, email, phone) => {
     try {
+      setLoading(true)
       const response = await fetch("http://localhost:5000/sendmessage/oncreated",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
@@ -169,9 +171,11 @@ else if(!phoneRegx.test(registerNames.phone)){
     if(!response.ok){
       throw new Error(`an error of ${response.statusText} occured`)
     }
+    setLoading(false)
     const data = response.json()
     console.log(data.message)
     } catch (error) {
+      setLoading(false)
        alert("an error occured")
     }
   }
@@ -212,6 +216,10 @@ async function addPerson(firstname, lastname, email, number) {
 }
   return (
     <div className="hero">
+     {loading?<div className="loading">
+        <div className="loader">
+        </div>
+       </div>:null}
         { seeEmailStatus ?<div className="emial_status">
         <p>{emailStatus}</p>
         <div onClick={()=>{setSeeEmailStatus(false)}} className="btn">Got it</div>
@@ -242,8 +250,6 @@ async function addPerson(firstname, lastname, email, number) {
             <div className="hero_button">
               <button onClick={handleLearnMore} className="btn">
                 <p>{buttonParagrah}</p>
-              
-              
               </button>
             </div>
           </div>
