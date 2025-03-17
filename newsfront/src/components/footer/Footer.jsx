@@ -87,7 +87,7 @@ const Footer = () => {
           <Link target="_blank" to="https://www.facebook.com/RCCGNewSprings">
             <i className="fa-brands fa-facebook-f"></i>
           </Link>
-          <Link target="_blank" to="https://www.instagram.com/rccgnewsprings/">
+          <Link target="_blank" to="https://www.instagram.com/rccgnewspringsyouth/">
             <i className="fa-brands fa-instagram"></i>
           </Link>
           <Link target="_blank" to="https://www.youtube.com/@RCCGNewSprings">
@@ -131,7 +131,6 @@ const Footer = () => {
           <li>
             <Link to="/contact">
               <span></span>
-              <i className="fa-solid fa-id-badge"></i>Contact Us
             </Link>
           </li>
         </ul>

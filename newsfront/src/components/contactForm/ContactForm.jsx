@@ -30,16 +30,18 @@ const ContactForm = ({contactFormData}) => {
 
     try {
       const response = await fetch("http://localhost:5000/sendmessage/oncontact",{
+        method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({name:formData.name, email:formData.email, message:formData.message})
+        body:JSON.stringify({name:formData.firstname, email:formData.email, message:formData.message})
       })
       if(!response.ok){
         throw new Error("an error occured:", response.statusText);
       }
-      setformData({name: "",email: "",message: "", });
+      setformData({firstname: "",email: "",message: "", });
       const data = await response.json()
       setLoading(false)
-      console.log("loading is now false")
+      console.log("loading is now false with  this data:",formData.firstname, formData.email, formData.message)
+      
       setEmailStatus(data.message)
       setseeEmailStatus(true)
       setTimeout(() => {
@@ -49,8 +51,9 @@ const ContactForm = ({contactFormData}) => {
     } catch (error) {
       setLoading(false)
       console.log("loading is now false")
-      setformData({name: "",email: "",message: "", });
-      setEmailStatus(data.message)
+      setformData({firstname: "",email: "",message: "", });
+      setEmailStatus(error.message)
+      alert(error.message)
       setseeEmailStatus(true)
       setTimeout(() => {
         setseeEmailStatus(false)
@@ -172,7 +175,7 @@ const ContactForm = ({contactFormData}) => {
         <input
           onChange={handleClick}
           value={formData.firstname}
-          name="name"
+          name="firstname"
           type="text"
           required
           placeholder="First Name"

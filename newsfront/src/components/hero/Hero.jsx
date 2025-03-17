@@ -1,31 +1,37 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./hero.css";
 
-const Hero = ({ sections, sectionType, buttonType, dataBase, setDataBase, onLoad }) => {
-  let buttonParagrah = "Read More"
-  if(buttonType === "raedArticle"){
-      buttonParagrah = "views articles"
-  }else if(buttonType == "article"){
-     buttonParagrah = "Read article"
-  }
-  else{
-    buttonParagrah = "Read More"
+const Hero = ({
+  sections,
+  sectionType,
+  buttonType,
+  dataBase,
+  setDataBase,
+  onLoad,
+}) => {
+  let buttonParagrah = "Read More";
+  if (buttonType === "raedArticle") {
+    buttonParagrah = "views articles";
+  } else if (buttonType == "article") {
+    buttonParagrah = "Read article";
+  } else {
+    buttonParagrah = "Read More";
   }
 
   const [title, setTitle] = useState("");
   const [opeTitle, setOpeTitle] = useState("N");
-  const [loading, setLoading] = useState(false)
-  const [seeEmailStatus, setSeeEmailStatus] = useState(false)
-  const [emailStatus, setEmailStatus] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [sentEmail, setSentEmail] = useState(false);
+  const [seeEmailStatus, setSeeEmailStatus] = useState(false);
+  const [emailStatus, setEmailStatus] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentidx = useRef(currentIndex);
   const [registerNames, setRegisterNames] = useState({
-    firstName:"",
-    lastName:"",
-    email:"",
-    phone:"",
-    
-  })
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
 
   useEffect(() => {
     currentidx.current = currentIndex;
@@ -66,166 +72,211 @@ const Hero = ({ sections, sectionType, buttonType, dataBase, setDataBase, onLoad
   const handleLearnMore = () => {
     window.scrollBy({ top: 600, behavior: "smooth" });
   };
- 
-  const handleNameChange = (e)=>{
-    const name = e.target.name;
-    setRegisterNames((prev)=>prev, registerNames[name] = e.target.value)
-    console.log(registerNames);
-  }
-  const onSubmit = (e)=>{
-    e.preventDefault()
 
-    const firstNameLable =  document.getElementById("firstNameLable");
+  const handleNameChange = (e) => {
+    const name = e.target.name;
+    setRegisterNames((prev) => prev, (registerNames[name] = e.target.value));
+    console.log(registerNames);
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const firstNameLable = document.getElementById("firstNameLable");
     const firstname = document.getElementById("firstname");
-    const lastNameLable = document.getElementById("lastNameLable")
+    const lastNameLable = document.getElementById("lastNameLable");
     const lastname = document.getElementById("lastname");
     const email = document.getElementById("email");
     const emailLabel = document.getElementById("emailLabel");
     const phone = document.getElementById("phone");
     const phoneLable = document.getElementById("phoneLable");
     const phoneRegx = /^\+?[0-9]\d{10,13}$/;
-    const emailRegx = /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
+    const emailRegx =
+      /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
 
+    if (registerNames.firstName.trim() === "") {
+      firstname.classList.add("alert");
+      firstNameLable.textContent = "input your first name";
+      setTimeout(() => {
+        firstname.classList.remove("alert");
+      }, 2000);
 
-    if(registerNames.firstName.trim() === ""){
-        firstname.classList.add("alert");
-        firstNameLable.textContent = "input your first name";
-        setTimeout(() => {
-          firstname.classList.remove("alert");
-        }, 2000);
-        
-        return
-    }
-    else if(registerNames.lastName.trim() === ""){
+      return;
+    } else if (registerNames.lastName.trim() === "") {
       lastname.classList.add("alert");
       lastNameLable.textContent = "input your last name";
       setTimeout(() => {
         lastname.classList.remove("alert");
       }, 2000);
-      return
-  }
-  else if(registerNames.email.trim() === ""){
-    email.classList.add("alert");
-    emailLabel.textContent = "input email address";
-    setTimeout(() => {
+      return;
+    } else if (registerNames.email.trim() === "") {
+      email.classList.add("alert");
+      emailLabel.textContent = "input email address";
+      setTimeout(() => {
+        email.classList.remove("alert");
+      }, 2000);
+      return;
+    } else if (!emailRegx.test(registerNames.email)) {
+      email.classList.add("alert");
+      emailLabel.textContent = "input a valid email address";
+      setTimeout(() => {
+        email.classList.remove("alert");
+      }, 2000);
+      return;
+    } else if (registerNames.phone.trim() === "") {
+      phone.classList.add("alert");
+      phoneLable.textContent = "input a phone number";
+      setTimeout(() => {
+        phone.classList.remove("alert");
+      }, 2000);
+      return;
+    } else if (!phoneRegx.test(registerNames.phone)) {
+      phone.classList.add("alert");
+      phoneLable.textContent = "input a valid phone number";
+      setTimeout(() => {
+        phone.classList.remove("alert");
+      }, 2000);
+      return;
+    } else {
+      e.target.reset();
+
+      lastNameLable.textContent = "";
+      firstNameLable.textContent = "";
+      emailLabel.textContent = "";
+      phoneLable.textContent = "";
+      phone.classList.remove("alert");
       email.classList.remove("alert");
-    }, 2000);
-    return
-}
- else if(!emailRegx.test(registerNames.email)){
-   email.classList.add("alert");
-   emailLabel.textContent = "input a valid email address";
-   setTimeout(() => {
-     email.classList.remove("alert");
-   }, 2000);
-   return;
- }
- else if(registerNames.phone.trim() === ""){
-  phone.classList.add("alert");
-  phoneLable.textContent = "input a phone number";
-  setTimeout(() => {
-    phone.classList.remove("alert");
-  }, 2000);
-  return;
-}
-else if(!phoneRegx.test(registerNames.phone)){
-   phone.classList.add("alert");
-   phoneLable.textContent = "input a valid phone number";
-   setTimeout(() => {
-     phone.classList.remove("alert");
-   }, 2000);
-   return;
- }
- else{
-  e.target.reset()
-  
- lastNameLable.textContent = ""
-  firstNameLable.textContent = ""
-  emailLabel.textContent = ""
-  phoneLable.textContent = ""
- phone.classList.remove("alert")
- email.classList.remove("alert")
- lastname.classList.remove("alert")
- firstname.classList.remove("alert")
-   console.log("this are the datas", registerNames.firstName, registerNames.email, registerNames.lastName, registerNames.phone);
-   addPerson(registerNames.firstName, registerNames.lastName, registerNames.email, registerNames.phone)
-   sendMail(registerNames.firstName, registerNames.lastName, registerNames.email, registerNames.phone)
-   setRegisterNames({
-    firstName:"",
-    lastName:"",
-    email:"",
-    phone:"",
-   })
+      lastname.classList.remove("alert");
+      firstname.classList.remove("alert");
+      console.log(
+        "this are the datas",
+        registerNames.firstName,
+        registerNames.email,
+        registerNames.lastName,
+        registerNames.phone
+      );
+      addPerson(
+        registerNames.firstName,
+        registerNames.lastName,
+        registerNames.email,
+        registerNames.phone
+      );
+      sendMail(
+        registerNames.firstName,
+        registerNames.lastName,
+        registerNames.email,
+        registerNames.phone
+      );
+      setRegisterNames({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      });
+    }
+  };
 
-  }
-}
-
- const sendMail = async (firstname, lastname, email, phone) => {
+  const sendMail = async (firstname, lastname, email, phone) => {
     try {
-      setLoading(true)
-      const response = await fetch("http://localhost:5000/sendmessage/oncreated",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({firstname, lastname, email, phone})
-      })
-    if(!response.ok){
-      throw new Error(`an error of ${response.statusText} occured`)
-    }
-    setLoading(false)
-    const data = response.json()
-    console.log(data.message)
+      setLoading(true);
+      const response = await fetch(
+        "http://localhost:5000/sendmessage/oncreated",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ firstname, lastname, email, phone }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`an error of ${response.statusText} occured`);
+      }
+      setLoading(false);
+      const data = response.json();
+      setSentEmail(true);
+      console.log(data.message);
     } catch (error) {
-      setLoading(false)
-       alert("an error occured")
+      setLoading(false);
+      alert("an error occured");
+    }
+  };
+  console.log("database in Hero.jsx", dataBase);
+  async function addPerson(firstname, lastname, email, number) {
+    try {
+      console.log("Sending data to backend:", {
+        firstname,
+        lastname,
+        email,
+        number,
+      });
+
+      const response = await fetch("http://localhost:5000/api/people", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstname, lastname, email, number }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Received response:", data);
+      if (!loading) {
+        setEmailStatus(
+          ` ${
+            sentEmail
+              ? "You have been successfully added to the list! we've sent email to you, check your spam list and add remove from spam list if not in inbox"
+              : "You have been successfully added to the list!"
+          }`
+        );
+        setSeeEmailStatus(true);
+      }
+      onLoad();
+      setDataBase(data.data);
+    } catch (error) {
+      console.error("Error in addPerson:", error);
+      setEmailStatus("An Error Occurred: " + error.message);
+      setSeeEmailStatus(true);
+        
+  
     }
   }
-console.log("database in Hero.jsx",dataBase )
-async function addPerson(firstname, lastname, email, number) {
-  try {
-    console.log("Sending data to backend:", { firstname, lastname, email, number });
-
-    const response = await fetch("http://localhost:5000/api/people", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstname, lastname, email, number })
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log("Received response:", data);
-    setEmailStatus("You have been successfully added to the list!")
-    setSeeEmailStatus(true)
-    setTimeout(() => {
-      setSeeEmailStatus(false)
-      setEmailStatus("")
-    }, 7000);
-    onLoad()
-    setDataBase(data.data);
-  } catch (error) {
-    console.error("Error in addPerson:", error);
-    setEmailStatus("An Error Occurred: " + error.message)
-    setSeeEmailStatus(true)
-    setTimeout(() => {
-      setSeeEmailStatus(false)
-      setEmailStatus("")
-    }, 7000);
-  }
-}
   return (
     <div className="hero">
-     {loading?<div className="loading">
-        <div className="loader">
+      {loading ? (
+        <div className="loading">
+          <div className="loader"></div>
         </div>
-       </div>:null}
-        { seeEmailStatus ?<div className="emial_status">
-        <p>{emailStatus}</p>
-        <div onClick={()=>{setSeeEmailStatus(false)}} className="btn">Got it</div>
-      </div>:null}
-      {currentIndex < 3?<i onClick={()=>{setCurrentIndex((prev)=>prev+1)}} className="fa-solid fa-arrow-right"></i>:null}
-      {currentIndex > 0?<i onClick={()=>{setCurrentIndex((prev)=>prev-1)}}className="fa-solid fa-arrow-left"></i>:null}
+      ) : null}
+      {seeEmailStatus ? (
+        <div className="emial_status">
+          <p>{emailStatus}</p>
+          <div
+            onClick={() => {
+              setSeeEmailStatus(false);
+              setEmailStatus("");
+            }}
+            className="btn"
+          >
+            Got it
+          </div>
+        </div>
+      ) : null}
+      {currentIndex < 3 ? (
+        <i
+          onClick={() => {
+            setCurrentIndex((prev) => prev + 1);
+          }}
+          className="fa-solid fa-arrow-right"
+        ></i>
+      ) : null}
+      {currentIndex > 0 ? (
+        <i
+          onClick={() => {
+            setCurrentIndex((prev) => prev - 1);
+          }}
+          className="fa-solid fa-arrow-left"
+        ></i>
+      ) : null}
       {sections.map((section, index) =>
         currentidx.current == index ? (
           <div
@@ -297,7 +348,6 @@ async function addPerson(firstname, lastname, email, number) {
                 <label className="realLabels" id="firstNameLable"></label>{" "}
               </div>
               <div className="input">
-                
                 <label htmlFor="">Last Name:</label>{" "}
                 <input
                   onChange={handleNameChange}
@@ -309,15 +359,23 @@ async function addPerson(firstname, lastname, email, number) {
               </div>
             </div>
             <div className="input">
-              
               <label htmlFor="">Email:</label>{" "}
-              <input onChange={handleNameChange} type="text" name="email" id="email" />{" "}
+              <input
+                onChange={handleNameChange}
+                type="text"
+                name="email"
+                id="email"
+              />{" "}
               <label className="realLabels" id="emailLabel"></label>{" "}
             </div>
             <div className="input">
-              
               <label htmlFor="">Phone:</label>{" "}
-              <input onChange={handleNameChange} type="text" name="phone" id="phone" />{" "}
+              <input
+                onChange={handleNameChange}
+                type="text"
+                name="phone"
+                id="phone"
+              />{" "}
               <label className="realLabels" id="phoneLable"></label>{" "}
             </div>{" "}
             <button className="btn-slide" type="submit">

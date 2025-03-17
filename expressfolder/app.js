@@ -25,14 +25,14 @@ const appPassword = "yvil cmib rtwc mfzl";
 // }
 // let people = getPeople();
 
-    console.log(`${process.env.NAME} ${process.env.PASSWORD} ${process.env.ADMINPASSWORD}`)
+   // console.log(`${process.env.NAME} ${process.env.PASSWORD} ${process.env.ADMINPASSWORD}`)
 app.use(helmet({
     contentSecurityPolicy:{
         directives:{
             defaultSrc:["'self'"],
             connectSrc: ["'self'", "http://localhost:5000"],//allow api request
             styleSrc: ["'self'", "'unsafe-inline'", "http://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com"]   
+            fontSrc: ["'self'", "https://fonts.gstatic.com"] ,  
           
         }
     }
@@ -64,7 +64,7 @@ app.post("/api/people/", async (req, res) => {
         .status(400)
         .json({ success: false, data: "Invalid user credentials" });
     }
-    const person = await User.create(req.body);
+    const person = await User.create({firstname:String(firstname), lastname:String(lastname), email:String(email), number:String(number)});
     return res.status(200).json({ success: true, data: person });
   } catch (error) {
     return res
@@ -170,6 +170,7 @@ app.post("/sendmessage/oncontact", async (req, res) => {
 
   //destructure req.body
   const { name, email, message } = req.body;
+  console.log(req.body)
   if (!name || !email || !message) {
     return res
       .status(400)
@@ -200,73 +201,92 @@ app.post("/sendmessage/oncontact", async (req, res) => {
       .status(200)
       .json({ success: true, message: "successfully send email" });
   } catch (error) {
-    console.log("unable to send email");
+    console.log("unable to send email because of :",error);
     return res
       .status(500)
       .json({ success: false, message: "unable to send email" });
   }
 });
 
-//change admin password
 
-const hashFirstPassword = async () => {
+
+
+const harsFirstPassword = async ()=>{
   try {
-    // Load current env variables
-    const envConfig = dotenv.parse(fs.readFileSync(".env"));
+  
+  const envConfig =  dotenv.parse(fs.readFileSync(".env", "utf8"))
+  console.log(envConfig)
+  const harshedpassword = await bcrypt.hash(envConfig.ADMINPASSWORD, 10 )
+  envConfig.HARSHEDADMINPASSWORD = harshedpassword
+  const newFile = Object.entries(envConfig).map(([key, value])=> `${key}=${value}`).join("\n")
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(envConfig.ADMINPASSWORD, 10);
-    envConfig.HARSHEDADMINPASSWORD = hashedPassword; // Update ADMINPASSWORD
+  fs.writeFileSync(".env", newFile, "utf8")
 
-    // Convert envConfig back to string format
-    const updatedEnvContent = Object.entries(envConfig)
-      .map(([key, value]) => `${key}=${value}`)
-      .join("\n");
+  dotenv.config()
+  console.log(envConfig.HARSHEDADMINPASSWORD)
+} catch (error) {
+    console.log("unable to relate with harshed user:", error.message)
+}
 
-    // Write back to .env file
-    fs.writeFileSync(".env", updatedEnvContent, "utf8");
-    console.log("Updated ADMINPASSWORD in .env file");
+}
+harsFirstPassword()
 
-    // Reload the .env file
-    dotenv.config(); // This updates process.env with the new values
 
-    // Compare the password with the newly hashed one
-    if(await bcrypt.compare(envConfig.ADMINPASSWORD, envConfig.HARSHEDADMINPASSWORD)){
-      console.log("Yes, correct password");
+
+
+
+app.post("/password", async(req, res) => {
+  try {
+    const { userType } = req.body;
+    console.log(req.body);
+    let envConfig;
+    if (fs.existsSync(".env")) {
+      envConfig = dotenv.parse(fs.readFileSync(".env", "utf8"));
     }
-    else {
-      console.log("No, wrong password");
+    console.log("usertype", userType);
+    console.log("password", envConfig.ADMINPASSWORD);
+  
+    if (await bcrypt.compare(userType, envConfig.HARSHEDADMINPASSWORD)) {
+      return res
+        .status(200)
+        .json({ success: true, message: "Successfully logged in" });
     }
+    return res.status(400).json({ success: false, message: "wrong and invlaid password" });
+  } catch (error) {
+      console.log("an unexpected error occured:", error.message)
   }
-  catch (error) {
-    console.log("Unable to update password in .env file", error.message);
-  }
-};
-
-hashFirstPassword();
-app.post("/password", (req, res) => {
-  const { userType } = req.body;
-  console.log(req.body);
-  let password;
-  if (fs.existsSync("./password.json")) {
-    password = JSON.parse(fs.readFileSync("./password.json", "utf8"));
-  }
-  console.log("usertype", userType);
-  console.log("password", password.userType);
-
-  if (userType === password.userType) {
-    return res
-      .status(200)
-      .json({ success: true, message: "Successfully logged in" });
-  }
-  return res.status(400).json({ success: false, message: "wrong password" });
 });
-app.put("/password", (req, res) => {
+
+
+// app.put("/password", (req, res) => {
+//   console.log("body", req.body);
+//   const oldpassword = JSON.parse(fs.readFileSync("./password.json", "utf8"));
+//   fs.writeFileSync(
+//     "./password.json",
+//     JSON.stringify(req.body, null, 2),
+//     "utf8"
+//   );
+//   console.log("new password", req.body);
+//   return res
+//     .status(200)
+//     .json({
+//       newPassword: req.body.userType,
+//       oldPassword: oldpassword.userType,
+//     });
+// });
+
+app.put("/password", async (req, res) => {
   console.log("body", req.body);
-  const oldpassword = JSON.parse(fs.readFileSync("./password.json", "utf8"));
+  const envConfig = dotenv.parse(fs.readFileSync(".env", "utf8"));
+
+  envConfig.ADMINPASSWORD = req.body.userType
+  const harshedpassword = await bcrypt.hash(envConfig.ADMINPASSWORD, 10)
+  envConfig.HARSHEDADMINPASSWORD = harshedpassword
+
+    const returnEnv = Object.entries(envConfig).map(([key, value])=> `${key}=${value}` ).join("\n")
   fs.writeFileSync(
-    "./password.json",
-    JSON.stringify(req.body, null, 2),
+    ".env",
+    returnEnv,
     "utf8"
   );
   console.log("new password", req.body);
@@ -274,10 +294,9 @@ app.put("/password", (req, res) => {
     .status(200)
     .json({
       newPassword: req.body.userType,
-      oldPassword: oldpassword.userType,
+      oldPassword: envConfig.ADMINPASSWORD,
     });
 });
-
 const connectDB = async () => {
   try {
     //sundayudoh383

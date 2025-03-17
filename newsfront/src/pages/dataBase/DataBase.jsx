@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./dataBase.css";
-import { data } from "react-router";
 
 const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
+ 
   const [seeForm, setSeeForm] = useState(false);
   const [seeData, setSeeData] = useState(false);
   const [seeEmailStatus, setSeeEmailStatus] = useState(false)
@@ -18,6 +18,11 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
     id: 0,
   });
 
+  useEffect(() => {
+    setActive("database");
+  }, [])
+  
+
   const handleNameChange = (e) => {
     const name = e.target.name;
     setUpdateData((prev) => ({ ...prev, [name]: e.target.value }));
@@ -25,7 +30,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
 
 
 
-  setActive("database");
+
 
 
   async function deleteUser(id) {
@@ -173,7 +178,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
       }
       else{
         const data = await response.json()
-        if(response.status == 500){
+        if(response.status == 400){
           //const adminPass = document.getElementById("adminPass")
           //adminPass.textContent = data.message
           

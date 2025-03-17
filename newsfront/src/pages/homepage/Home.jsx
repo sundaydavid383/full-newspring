@@ -325,9 +325,10 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
   const featuresTitleSmall ="NewSpring Tim412 empowers teens to grow in faith, build godly relationships, and live out their purpose in Christ with confidence and love.";
   const leadersTitle = "Our Ministry Leaders";
   const leadersTitleSmall = " Meet the dedicated individuals leading our youth ministry, committed to nurturing spiritual growth.";
-  setActive("home");
+
   const title = "Diverse Ministry Areas";
   useEffect(() => {
+    setActive("home");
     window.scrollTo({ top: 0 });
 
     return () => {

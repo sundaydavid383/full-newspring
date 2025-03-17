@@ -45,7 +45,7 @@
   border: 1px solid var(--gold);
   height: 3.3rem;
   text-align: center;
-  line-height: 4rem;
+  line-height: 3.3rem;
   border-radius: 50%;
   transition: 0.2s;
   font-size: 1.7rem;
@@ -68,33 +68,62 @@
   0% {
     transform: translateX(-0%);
   }
-  
+  5%{
+    transform: translateX(-20%);
+  }
   10% {
     transform: translateX(-40%);
+  }
+  15% {
+    transform: translateX(-60%);
   }
   20% {
     transform: translateX(-70%);
   }
+  25% {
+    transform: translateX(-90%);
+  }
   30% {
     transform: translateX(-120%);
+  }
+  35% {
+    transform: translateX(-140%);
   }
   40% {
     transform: translateX(-170%);
   }
+  45% {
+    transform: translateX(-180%);
+  }
+  50% {
+    transform: translateX(-200%);
+  } 
   50% {
     transform: translateX(-200%);
   }
   60% {
     transform: translateX(-180%);
   }
+  65% {
+    transform: translateX(-180%);
+  }
   70% {
     transform: translateX(-130%);
+  }
+  75% {
+    transform: translateX(-110%);
   }
   80% {
     transform: translateX(-100%);
   }
+  85% {
+    transform: translateX(-80%);
+  }
   90% {
     transform: translateX(-50%);
+  }
+  95% {
+    transform: translateX(-30%);
   }
   100% {
     transform: translateX(0%);

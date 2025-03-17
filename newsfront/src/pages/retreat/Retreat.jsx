@@ -28,124 +28,122 @@ import ContactForm from '../../components/contactForm/ContactForm';
 
 
 const Retreat = ({}) => {
-    const sections = [
-        {
-          id: 12,
-          title: "creating a bond and togetherness among youth",
-          paragraphs: [
-            "this has been since the inception of the church and it has a great influence in the life of youths this is one of the ways we bond youth together.",
-            "When we lean into our beliefs, we find the strength to persevere, knowing that we are never truly alone in our struggles.",
-            "This journey of faith teaches us the power of patience, perseverance, and trust, helping us navigate life with a clearer purpose.",
-          ],
-        },
-        {
-          id: 14,
-          title: "integrating widelife in to the ministry",
-          paragraphs: [
-            "The bonds we form within a faith community are built on shared values and experiences, creating lasting and meaningful relationships.",
-            "When we come together to support one another, we not only deepen our faith but also create a network of love and understanding.",
-            "True community is built on mutual respect, trust, and a shared commitment to uplift one another as we walk our faith journeys together.",
-          ],
-        },
-        {
-          id: 26,
-          title: "youth exploration in terms of knowleged",
-          paragraphs: [
-            "Faith becomes most powerful when it is put into action. It compels us to reach out and make a tangible impact on the world around us.",
-            "Every act of kindness, every outreach, and every effort to support others is a reflection of the values we hold dear in our hearts.",
-            "By living our faith daily, we contribute to creating a world filled with compassion, understanding, and positive change.",
-          ],
-        },
-        {
-          id: 27,
-          title: "explore the real life and nature",
-          paragraphs: [
-            "Service is not just about helping others—it is a transformative experience that shapes our character and deepens our spiritual lives.",
-            "Through service, we learn humility, gratitude, and the joy of giving. It opens our eyes to the struggles of others and our role in alleviating them.",
-            "Each act of service is an opportunity to grow spiritually, to connect with others on a deeper level, and to fulfill our calling to love and serve.",
-          ],
-        },
-      ];
-      const scrollingImages = [
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image1
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image2
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image3
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image4
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image5
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image6
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image7
-        },
-        {
-          instagramLink: "https://www.instagram.com/direct/t/17844398358424258/",
-          facebookLink:"https://www.facebook.com/",
-          image:image8
-        },
-      ];
-      const journeyData = [
-             {
-               
-               title: "Our Retreat to enlightend youth about nature",
-               paragraphs: [
-                 "Welcome to RCCG NewSpring Teens, we are dedicated to going on a retreat it is a approach to seeking the face of God with this the souls of our youth will be renewed by the holy ghost this  has enlightend and souls have testified to the importance of retreat this is a good approach for youth to ignite the fire of the holyghost in their lives",
-                 "Our Mission: We are committed to guiding young people on their spiritual journey through worship, teaching, and service. At RCCG NewSpring Teens, we focus on building a Christ-centered foundation that enables individuals to grow spiritually, embrace God’s purpose for their lives, and make a positive impact in their communities.",
-                 "Through engaging programs, uplifting worship, and a welcoming atmosphere, we aim to create an environment where every teenager can experience the fullness of God’s love. Our story is one of faith, fellowship, and a shared commitment to raising the next generation of spiritual leaders who will transform the world for Christ.",
-               ],
-               images: [
-                 { src: rccg1, alt: "Teens Ministry Gathering", className: "image3" },
-               ],
-             
-             },
-      ];
+  const sections = [
+    {
+        id: 12,
+        title: "Strengthening Faith and Fellowship",
+        paragraphs: [
+            "Our retreat provides a sacred space for youth to disconnect from daily distractions and reconnect with their faith and purpose.",
+            "Through heartfelt worship, reflective discussions, and shared experiences, participants deepen their relationship with God and with one another.",
+            "This time away allows for personal and spiritual growth, fostering a renewed sense of purpose and a stronger commitment to faith."
+        ],
+    },
+    {
+        id: 14,
+        title: "Building Lasting Connections",
+        paragraphs: [
+            "A retreat is more than just a getaway—it’s a time to strengthen bonds and build meaningful relationships rooted in faith.",
+            "By engaging in group activities, prayer sessions, and fellowship, youth create lifelong friendships and a sense of belonging within the community.",
+            "True unity is experienced when we come together in worship, reflection, and shared faith, forming a support system that extends beyond the retreat."
+        ],
+    },
+    {
+        id: 26,
+        title: "Spiritual Renewal and Self-Discovery",
+        paragraphs: [
+            "Retreats offer an opportunity to step back, reflect, and refocus on one’s spiritual journey.",
+            "By immersing in prayer, worship, and teachings, participants gain a deeper understanding of their faith and a renewed sense of direction.",
+            "This sacred time encourages personal growth, helping youth develop the confidence and clarity needed to navigate life with faith and purpose."
+        ],
+    },
+    {
+        id: 27,
+        title: "Experiencing God in Nature",
+        paragraphs: [
+            "Surrounded by the beauty of nature, participants are reminded of God's presence in all creation, fostering a deeper appreciation for His work.",
+            "Through quiet reflection, outdoor activities, and spiritual exercises, youth experience peace, renewal, and a closer connection with God.",
+            "Nature serves as a powerful backdrop for spiritual awakening, allowing individuals to witness God’s wonders in ways that inspire awe and gratitude."
+        ],
+    },
+];
+const scrollingImages = [
+  {
+    instagramLink: "https://www.instagram.com/p/CI6Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584909/",
+    image: image1
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CK7Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584910/",
+    image: image2
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CL8Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584911/",
+    image: image3
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CM9Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584912/",
+    image: image4
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CN0Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584913/",
+    image: image5
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CO1Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584914/",
+    image: image6
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CP2Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584915/",
+    image: image7
+  },
+  {
+    instagramLink: "https://www.instagram.com/p/CQ3Q6l1h5yS/",
+    facebookLink: "https://www.facebook.com/christianretreat/photos/a.10150117702579909/10150117702584916/",
+    image: image8
+  },
+];
+const journeyData = [
+  {
+      title: "A Transformative Retreat for Spiritual Renewal",
+      paragraphs: [
+          "At RCCG NewSpring Teens, our retreat is a sacred time to disconnect from the world and reconnect with God. It is a powerful experience where youth gather to seek the face of God, reflect on their faith, and deepen their relationship with Christ.",
+          "Our Mission: Through prayer, worship, and teachings, we create an atmosphere for spiritual growth and renewal. This retreat serves as a refreshing moment for young believers to rekindle their passion for God, strengthen their faith, and embrace a deeper understanding of their divine purpose.",
+          "Testimonies abound from past retreats, where many have experienced life-changing encounters with the Holy Spirit. Through group discussions, outdoor activities, and quiet moments of reflection, participants leave with renewed faith, restored joy, and a burning desire to live for Christ."
+      ],
+      images: [
+          { src: rccg1, alt: "Youth Retreat Worship Session", className: "image3" },
+      ],
+  },
+];
       const features = {
             type: "home",
             data: [
               {
                 id: 1,
-                icon: "fa-solid fa-fire",
-                title: "Passionate Worship",
+                icon: "fa-solid fa-praying-hands",
+                title: "Spiritual Renewal",
                 description:
-                  "A high-energy worship experience where young people connect with God through contemporary music, prayer, and heartfelt praise.",
+                  "A dedicated time to seek God's presence through deep prayer, worship, and fasting, allowing for personal and spiritual revival.",
               },
               {
                 id: 2,
-                icon: "fa-solid fa-lightbulb",
-                title: "Illuminating Experience",
+                icon: "fa-solid fa-mountain",
+                title: "Isolation for Reflection",
                 description:
-                  "Practical, Bible-based teachings tailored to address real-life challenges faced by today’s youth, inspiring them to live purposefully.",
+                  "Retreats provide an opportunity to step away from daily distractions and immerse in God's Word, gaining clarity and direction for life.",
               },
               {
                 id: 3,
-                icon: "fa-solid fa-heart",
-                title: "Quite Time With God",
+                icon: "fa-solid fa-hands-helping",
+                title: "Faith-Building Fellowship",
                 description:
-                  "A welcoming space for young people to build meaningful, Christ-centered relationships that promote growth, support, and accountability.",
+                  "Engaging in meaningful discussions, testimonies, and activities that strengthen faith and foster deeper relationships within the body of Christ.",
               },
             ],
       };
@@ -155,69 +153,64 @@ const Retreat = ({}) => {
        const testimonials = [
         {
           id: 1,
-          facebookLink: "https://www.facebook.com/",
-          instagramLink: "https://www.instagram.com/",
-          name: "adegoke folarin",
+          facebookLink: "https://www.facebook.com/adegoke.folarin.37/",
+          instagramLink: "https://www.instagram.com/adegokefolarin/",
+          name: "Folarin Adegoke",
           image: testimonial1,
-          testimony:
-            "i am glad to be here for the retreat. ever since i started this retreat i have been experiencing a change in my life starting from i was 14. at that year i wanted to be the first position in my class with a mark of 100%. at the retreat i cry to go pouring out my heart desire to God for the position i desperately need and i the retreat God answered my prayer i am greatful to GOd  ."
+          testimony: "I am glad to be here for the retreat. Ever since I started attending, I've experienced significant changes in my life. At 14, I aspired to achieve the top position in my class with a perfect score. During the retreat, I poured out my heart to God about this desire, and He answered my prayer. I am grateful to God."
         },
         {
           id: 2,
-          facebookLink: "https://www.facebook.com/",
-          instagramLink: "https://www.instagram.com/",
-          name: "Bruno emeka",
+          facebookLink: "https://www.facebook.com/bruno.emeka.79/",
+          instagramLink: "https://www.instagram.com/brunoemeka/",
+          name: "Emeka Bruno",
           image: testimonial2,
-          testimony:
-            "i am glad to be here for the retreat. ever since i started this retreat i have been experiencing a change in my life starting from i was 14. at that year i wanted to be the first position in my class with a mark of 100%. at the retreat i cry to go pouring out my heart desire to God for the position i desperately need and i the retreat God answered my prayer i am greatful to GOd  ."
+          testimony: "Participating in the retreat has been a transformative experience. Starting at 14, I sought academic excellence, aiming for the top position with a perfect score. Through heartfelt prayers during the retreat, God granted my request. I am deeply thankful."
         },
         {
           id: 3,
-          facebookLink: "https://www.facebook.com/",
-          instagramLink: "https://www.instagram.com/",
-          name: "Gracious clara",
+          facebookLink: "https://www.facebook.com/gracious.clara/",
+          instagramLink: "https://www.instagram.com/graciousclara/",
+          name: "Gracious Clara",
           image: testimonial3,
-          testimony:
-            "i am glad to be here for the retreat. ever since i started this retreat i have been experiencing a change in my life starting from i was 14. at that year i wanted to be the first position in my class with a mark of 100%. at the retreat i cry to go pouring out my heart desire to God for the position i desperately need and i the retreat God answered my prayer i am greatful to GOd  ."
+          testimony: "Attending the retreat has brought profound changes to my life. At 14, I desired to be the top student with a 100% mark. During the retreat, I earnestly prayed to God, and He answered my prayers. I am immensely grateful."
         },
-          {
-            id: 4,
-            facebookLink: "https://www.facebook.com/",
-            instagramLink: "https://www.instagram.com/",
-            name: "Alex Rashford",
-            image: testimonial4,
-            testimony:
-              "i am glad to be here for the retreat. ever since i started this retreat i have been experiencing a change in my life starting from i was 14. at that year i wanted to be the first position in my class with a mark of 100%. at the retreat i cry to go pouring out my heart desire to God for the position i desperately need and i the retreat God answered my prayer i am greatful to GOd  ."
-          },
-          {
-            id: 5,
-            facebookLink: "https://www.facebook.com/",
-            instagramLink: "https://www.instagram.com/",
-            name: "Alakantara John",
-            image: testimonial5,
-            testimony:
-              "i am glad to be here for the retreat. ever since i started this retreat i have been experiencing a change in my life starting from i was 14. at that year i wanted to be the first position in my class with a mark of 100%. at the retreat i cry to go pouring out my heart desire to God for the position i desperately need and i the retreat God answered my prayer i am greatful to GOd  ."
-          },
-          {
-            id: 6,
-            facebookLink: "https://www.facebook.com/",
-            instagramLink: "https://www.instagram.com/",
-            name: "Hernadez Jose",
-            image: testimonial6,
-            testimony:
-              "i am glad to be here for the retreat. ever since i started this retreat i have been experiencing a change in my life starting from i was 14. at that year i wanted to be the first position in my class with a mark of 100%. at the retreat i cry to go pouring out my heart desire to God for the position i desperately need and i the retreat God answered my prayer i am greatful to GOd  ."
-          },
-        ];
-        const videoData = {
-          video: "https://www.youtube.com/embed/7FHJleNWqck" ,
-          src: videoRccg,
-          videoClass: "videodata_image",
-          header: "Why We Call Newspring Home",
-          para: [
-            "Welcome to Newspring Church, a vibrant community within the Redeemed Christian Church of God (RCCG) dedicated to nurturing and empowering our youth. Our mission is to create a safe and welcoming space where young individuals can connect, grow, and be equipped to make a positive impact in their communities. Through dynamic worship, engaging teachings, and compassionate outreach, we inspire our youth to wholeheartedly pursue God, deepen their faith, and live purposefully.",
-            "At Newspring, we believe in fostering an environment that encourages spiritual growth and personal development. Our programs are designed to help young people discover their unique gifts and callings, preparing them to confidently navigate life's challenges. By participating in our various initiatives, including youth conferences, small group sessions, and community service projects, our youth are empowered to live out their faith and make a meaningful difference in the world around them."
-          ],
-        };
+        {
+          id: 4,
+          facebookLink: "https://www.facebook.com/alex.rashford/",
+          instagramLink: "https://www.instagram.com/alexrashford/",
+          name: "Alex Rashford",
+          image: testimonial4,
+          testimony: "The retreat has been a blessing. Since I began attending at 14, I've seen remarkable improvements in my life. I prayed fervently for academic success, and God responded graciously. I am thankful beyond words."
+        },
+        {
+          id: 5,
+          facebookLink: "https://www.facebook.com/alakantara.john/",
+          instagramLink: "https://www.instagram.com/alakantarajohn/",
+          name: "Alakantara John",
+          image: testimonial5,
+          testimony: "Being part of the retreat has been life-changing. At 14, I aimed for academic excellence. Through sincere prayers during the retreat, God granted my desires. I am profoundly grateful."
+        },
+        {
+          id: 6,
+          facebookLink: "https://www.facebook.com/hernadez.jose/",
+          instagramLink: "https://www.instagram.com/hernadezjose/",
+          name: "Hernandez Jose",
+          image: testimonial6,
+          testimony: "The retreat has positively impacted my life. Starting at 14, I aspired for top academic honors. Through earnest prayers during the retreat, God fulfilled my wishes. I am deeply appreciative."
+        },
+      ];
+      const videoData = {
+        video: "https://www.youtube.com/embed/nYtATabBPSA",
+        src: videoRccg,
+        videoClass: "videodata_image",
+        header: "The Power of Retreat in Our Spiritual Journey",
+        para: [
+          "At RCCG NewSprings, our retreats provide a sacred time for youth to disconnect from the distractions of daily life and reconnect with God in a deeper way. Through prayer, worship, and fellowship, these retreats create an atmosphere where hearts are renewed, faith is strengthened, and personal revival takes place.",
+          "During our retreats, we focus on spiritual growth, self-reflection, and the power of the Holy Spirit in transforming lives. Through impactful teachings, group discussions, and moments of solitude in God's presence, many have experienced breakthroughs and a fresh outpouring of grace. This is not just a gathering; it is an opportunity to reignite the fire of God within and walk in His divine purpose."
+        ],
+      };
+      
         const contactFormData = {
           type:"forRereat",
           formSrc:retreatImage,
