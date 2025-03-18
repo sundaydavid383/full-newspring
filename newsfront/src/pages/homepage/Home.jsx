@@ -55,7 +55,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
   const sections = [
     {
       id: 0,
-      title: "Nurturing Spirit, Building <br/> Community",
+      title: "NEWSPRING YOUTH CHURCH <br/> TIM 412",
       paragraphs: [
         "Empowering the next generation through faith, love, and community is essential for fostering spiritual growth.",
         "By creating a supportive environment rooted in Christian fellowship, we can nurture their faith and encourage them to become active participants in their spiritual journeys. Join us in our mission to make a positive impact in the lives of young believers.",

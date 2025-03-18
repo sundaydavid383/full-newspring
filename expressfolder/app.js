@@ -199,7 +199,7 @@ app.post("/sendmessage/oncontact", async (req, res) => {
     console.log("successfully send email");
     return res
       .status(200)
-      .json({ success: true, message: "successfully send email" });
+      .json({ success: true, message: "successfully send email check your spam list if notv foun in your inbox" });
   } catch (error) {
     console.log("unable to send email because of :",error);
     return res

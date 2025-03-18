@@ -224,7 +224,7 @@ const Hero = ({
         setEmailStatus(
           ` ${
             sentEmail
-              ? "You have been successfully added to the list! we've sent email to you, check your spam list and add remove from spam list if not in inbox"
+              ? "You have been successfully added to the list! we've sent email to you, check your spam list and remove it from spam list if not found in inbox"
               : "You have been successfully added to the list!"
           }`
         );
@@ -383,7 +383,7 @@ const Hero = ({
               <p>Register</p>{" "}
             </button>{" "}
           </div>{" "}
-          <p></p>{" "}
+          <p>RCCG NewSprings is located at 332 Ikorodu Road, near Idi Iroko Bus Stop in Maryland, Lagos, Nigeria.</p>{" "}
         </form>
       ) : null}
       <div className="hero_form"></div>
