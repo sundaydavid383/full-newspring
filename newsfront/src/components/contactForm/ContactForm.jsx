@@ -29,7 +29,7 @@ const ContactForm = ({contactFormData}) => {
     e.preventDefault()
 
     try {
-      const response = await fetch("http://localhost:5000/sendmessage/oncontact",{
+      const response = await fetch("http://localhost:5001/sendmessage/oncontact",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({name:formData.firstname, email:formData.email, message:formData.message})

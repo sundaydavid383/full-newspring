@@ -9,7 +9,8 @@ const User = require("./userModel");
 const app = express();
 const cors = require("cors");
 const helmet = require("helmet")
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const { spawn } = require("child_process");
 const appPassword = "yvil cmib rtwc mfzl";
 
 //const peoplePath = path.join(__dirname, "./data.json");
@@ -30,7 +31,7 @@ app.use(helmet({
     contentSecurityPolicy:{
         directives:{
             defaultSrc:["'self'"],
-            connectSrc: ["'self'", "http://localhost:5000"],//allow api request
+            connectSrc: ["'self'", "http://localhost:5001"],//allow api request
             styleSrc: ["'self'", "'unsafe-inline'", "http://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"] ,  
           
@@ -125,7 +126,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
+//send message
 app.post("/sendmessage/oncreated", async (req, res) => {
   console.log("request body:", req.body);
   const { firstname, lastname, email, phone } = req.body;
@@ -210,7 +211,7 @@ app.post("/sendmessage/oncontact", async (req, res) => {
 
 
 
-
+//harshed password
 const harsFirstPassword = async ()=>{
   try {
   
@@ -233,7 +234,39 @@ harsFirstPassword()
 
 
 
+//python speak
+app.post("/speak/after/registration", (req, res)=>{
+  const {firstname, phone, email } = req.body
 
+  let pythonProcess
+
+  setTimeout(() => {
+    pythonProcess = spawn("python", ["speak.py", firstname, phone, email])
+  }, 5001);
+
+  pythonProcess.stdout.on("data", (data)=>{
+    console.log(`Python data: ${data.toString()}`)
+    //send response only if not already sent
+    if(!res.headersSent){
+      res.status(200).json({message:data.toString().trim()})
+    }
+  })
+  pythonProcess.stderr.on("data", (data)=>{
+    console.log(`Python Error: ${data.toString()}`)
+    //send response onlu if not already sent
+    if(!res.headersSent){
+      res.status(500).json({error:data.toString()})
+    }
+
+  })
+  
+
+
+ 
+  
+
+
+})  
 
 app.post("/password", async(req, res) => {
   try {
@@ -256,25 +289,6 @@ app.post("/password", async(req, res) => {
       console.log("an unexpected error occured:", error.message)
   }
 });
-
-
-// app.put("/password", (req, res) => {
-//   console.log("body", req.body);
-//   const oldpassword = JSON.parse(fs.readFileSync("./password.json", "utf8"));
-//   fs.writeFileSync(
-//     "./password.json",
-//     JSON.stringify(req.body, null, 2),
-//     "utf8"
-//   );
-//   console.log("new password", req.body);
-//   return res
-//     .status(200)
-//     .json({
-//       newPassword: req.body.userType,
-//       oldPassword: oldpassword.userType,
-//     });
-// });
-
 app.put("/password", async (req, res) => {
   console.log("body", req.body);
   const envConfig = dotenv.parse(fs.readFileSync(".env", "utf8"));
@@ -307,8 +321,8 @@ const connectDB = async () => {
     );
     console.log("connected successfuly to mongo");
 
-    app.listen(5000, () => {
-      console.log("listening on port 5000...");
+    app.listen(5001, () => {
+      console.log("listening on port 5001...");
     });
   
   } catch (error) {

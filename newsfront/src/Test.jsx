@@ -5,7 +5,7 @@ const [debugQuery, setDebugQuery] = useState("")
 useEffect(() => {
  const interval = setTimeout(() => {
     setDebugQuery(query)
-  }, 5000);
+  }, 5001);
  
  return () => {
    clearInterval(interval)

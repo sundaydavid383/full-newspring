@@ -35,7 +35,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
 
   async function deleteUser(id) {
     try {
-      const response = await fetch(`http://localhost:5000/api/people/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/people/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
@@ -146,7 +146,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
 
   const upDatePerson = async (id, firstname, lastname, email, number) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/people/${id}`, {
+      const response = await fetch(`http://localhost:5001/api/people/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body:  JSON.stringify({
@@ -168,7 +168,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
   const onSubmitPass = async(e)=>{
     try {
       e.preventDefault()
-      const response = await fetch("http://localhost:5000/password",{
+      const response = await fetch("http://localhost:5001/password",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify({ userType: password})
@@ -210,7 +210,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
 
   const onSubmitAdminPass = async(e)=>{
     e.preventDefault()
-    const response = await fetch("http://localhost:5000/password",{
+    const response = await fetch("http://localhost:5001/password",{
       method:"PUT",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({userType: newAdminPassword})

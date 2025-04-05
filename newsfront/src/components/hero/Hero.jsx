@@ -166,6 +166,7 @@ const Hero = ({
         registerNames.email,
         registerNames.phone
       );
+      speakAfterRegistration()
       setRegisterNames({
         firstName: "",
         lastName: "",
@@ -175,11 +176,21 @@ const Hero = ({
     }
   };
 
+  const speakAfterRegistration = async ()=>{
+    const response = await fetch("http://localhost:5001/speak/after/registration", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({firstname:registerNames.firstName, phone:registerNames.phone, email:registerNames.email})
+    })
+    const data = await response.json()
+    console.log(data)
+  }
+
   const sendMail = async (firstname, lastname, email, phone) => {
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:5000/sendmessage/oncreated",
+        "http://localhost:5001/sendmessage/oncreated",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -208,7 +219,7 @@ const Hero = ({
         number,
       });
 
-      const response = await fetch("http://localhost:5000/api/people", {
+      const response = await fetch("http://localhost:5001/api/people", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstname, lastname, email, number }),
