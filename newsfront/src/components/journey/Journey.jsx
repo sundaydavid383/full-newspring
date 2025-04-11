@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, React } from "react";
 import "./journey.css";
 import { Link } from "react-router";
+import im2 from "../../assets/rccg28.jpg";
 
 const Journey = ({ journeyData }) => {
   const [curtAbout, setCurtAbout] = useState(0)
@@ -123,11 +124,12 @@ const Journey = ({ journeyData }) => {
             )}
           </div>
           <div className="journey_image observe">
-            {item.images.map((image, imgIndex) => (
-              <div className={image.className} key={imgIndex}>
-                <img src={image.src} alt={image.alt} />
-              </div>
-            ))}
+              {item.images.map((image, i) => (
+            <div className={image.className}>
+               <img key={i} src={image.src} alt={image.alt}  />
+            </div>
+  
+          ))}
           </div>
         </div>
          )

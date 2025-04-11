@@ -2,20 +2,55 @@
     padding-top: 8rem;
     background: var(--lightBlack);
     color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    
     padding-bottom: .8rem;
-    flex-direction: column;
+    padding-inline: 0rem;
 }
 .lastTD{
     display: flex;
     gap: 1rem
 }
-.database table{
-  min-width: 2rem;
-  border-collapse: collapse;
-  box-sizing: border-box;
+.database .user-list{
+ display: flex;
+ flex-wrap: wrap;
+ padding-inline: 1.3rem;
+ justify-content: space-between;
+ align-items: center;
+ width: 90%;
+ margin: auto;
+ row-gap: 3rem;
+}
+.database .user-card{
+    width: 30rem;
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    padding: .7rem;
+    justify-content: space-around;
+    background: var(--white);
+}
+.database .user-info{
+    display: flex;
+    flex-direction: column;
+}
+.database .user-actions,
+.database .user-info div{
+    display: flex;
+    border-top: 1px solid var(--black);
+    border-inline: 1px solid var(--black);
+    justify-content: space-between;
+    padding: .7rem;
+}
+.database .user-actions{
+    border: 0;
+    border-top: 1px solid var(--black);
+}
+.database .user-card strong{
+    color: var(--brown);
+    margin-left: 1rem;
+}
+.database .user-card p{
+    color: var(--text-color);
+    font-weight: 400;
 }
 .database table thead{
     background: var(--brown);
@@ -73,7 +108,7 @@
      position: relative;
      bottom: 3rem;
     border-radius: 1rem;
-    width: 100%;
+    width: 50%;
     height: 6rem;
     backdrop-filter: blur(2px);
     background-color: var(--black);
@@ -85,7 +120,7 @@
     font-weight: 300;
 }
 .securingData form input{
-      background: transparent;
+   background: transparent;
   width: 80%;
   font-weight: 300;
   font-size: 1.1rem;

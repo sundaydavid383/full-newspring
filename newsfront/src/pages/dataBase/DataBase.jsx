@@ -51,7 +51,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+  
     const firstNameLable = document.getElementById("updfirstNameLable");
     const firstname = document.getElementById("firstname");
     const lastNameLable = document.getElementById("updlastNameLable");
@@ -60,50 +60,61 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
     const emailLabel = document.getElementById("updemailLabel");
     const phone = document.getElementById("phone");
     const phoneLable = document.getElementById("updphoneLable");
+    const age = document.getElementById("age");
+    const ageLable = document.getElementById("updageLable");
+  
     const phoneRegx = /^\+?[0-9]\d{10,13}$/;
     const emailRegx = /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
-
+  
+    // Validate all fields
     if (updateData.firstname.trim() === "") {
       firstname.classList.add("alert");
-      firstNameLable.textContent = "input your first name";
+      firstNameLable.textContent = "Input your first name";
       setTimeout(() => {
         firstname.classList.remove("alert");
       }, 2000);
-
+  
       return;
     } else if (updateData.lastname.trim() === "") {
       lastname.classList.add("alert");
-      lastNameLable.textContent = "input your last name";
+      lastNameLable.textContent = "Input your last name";
       setTimeout(() => {
         lastname.classList.remove("alert");
       }, 2000);
       return;
     } else if (updateData.email.trim() === "") {
       email.classList.add("alert");
-      emailLabel.textContent = "input email address";
+      emailLabel.textContent = "Input email address";
       setTimeout(() => {
         email.classList.remove("alert");
       }, 2000);
       return;
     } else if (!emailRegx.test(updateData.email)) {
       email.classList.add("alert");
-      emailLabel.textContent = "input a valid email address";
+      emailLabel.textContent = "Input a valid email address";
       setTimeout(() => {
         email.classList.remove("alert");
       }, 2000);
       return;
     } else if (updateData.phone.trim() === "") {
       phone.classList.add("alert");
-      phoneLable.textContent = "input a phone number";
+      phoneLable.textContent = "Input a phone number";
       setTimeout(() => {
         phone.classList.remove("alert");
       }, 2000);
       return;
     } else if (!phoneRegx.test(updateData.phone)) {
       phone.classList.add("alert");
-      phoneLable.textContent = "input a valid phone number";
+      phoneLable.textContent = "Input a valid phone number";
       setTimeout(() => {
         phone.classList.remove("alert");
+      }, 2000);
+      return;
+    } else if (isNaN(updateData.age) || updateData.age <= 15) {
+      age.classList.add("alert");
+      ageLable.textContent = "Input a valid age";
+      setTimeout(() => {
+        age.classList.remove("alert");
       }, 2000);
       return;
     } else {
@@ -113,54 +124,80 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
         lastname: "",
         email: "",
         phone: "",
+        school: "",
+        occupation: "",
+        hobbies: "",
+        heardAboutUs: "",
+        interest: "",
+        age: "",
         id: 0,
       });
       lastNameLable.textContent = "";
       firstNameLable.textContent = "";
       emailLabel.textContent = "";
       phoneLable.textContent = "";
+      ageLable.textContent = "";
       phone.classList.remove("alert");
       email.classList.remove("alert");
       lastname.classList.remove("alert");
       firstname.classList.remove("alert");
+      age.classList.remove("alert");
       setSeeForm(false);
-      alert("You have been successfully updated the user");
-      console.log(
-        "this are the datas",
-        updateData.firstname,
-        updateData.email,
-        updateData.lastname,
-        updateData.phone
-      );
+      alert("User updated successfully");
+      console.log("Updated user data:", updateData);
+  
+      // Call backend to update user
       upDatePerson(
         updateData.id,
         updateData.firstname,
         updateData.lastname,
         updateData.email,
-        updateData.phone
+        updateData.phone,
+        updateData.school,
+        updateData.occupation,
+        updateData.hobbies,
+        updateData.heardAboutUs,
+        updateData.interest,
+        updateData.age
       );
     }
   };
 
 
 
-  const upDatePerson = async (id, firstname, lastname, email, number) => {
+  const upDatePerson = async (
+    id,
+    firstname,
+    lastname,
+    email,
+    number,
+    school,
+    occupation,
+    hobbies,
+    heardAboutUs,
+    interest
+  ) => {
     try {
       const response = await fetch(`http://localhost:5001/api/people/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body:  JSON.stringify({
-          firstname: firstname,
-          lastname: lastname,
-          email: email,
-          number: number
-       }),
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          number,
+          school,
+          occupation,
+          hobbies,
+          heardAboutUs,
+          interest,
+        }),
       });
       const data = await response.json();
-      console.log(data.data)
+      console.log(data.data);
       onLoad();
     } catch (error) {
-      alert("this error occured", error);
+      alert("Error occurred during the update", error);
     }
   };
 
@@ -240,110 +277,183 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
       {seeData ?
       <div className="data">
         {seeForm ? (
-        <form onSubmit={onSubmit}>
-          <p>{updateData.firstname}</p>
-          <p>{updateData.lastname}</p>
-          <p>{updateData.email}</p>
-          <h2>Register as a member</h2>{" "}
-          <div className="inputs">
-            <div className="names">
-              <div className="input">
-                <label htmlFor="">First Name:</label>
-                <input
-                  onChange={handleNameChange}
-                  value={updateData.firstname}
-                  type="text"
-                  name="firstname"
-                  id="firstname"
-                />
-                <label className="realLabels" id="updfirstNameLable"></label>{" "}
-              </div>
-              <div className="input">
-                <label htmlFor="">Last Name:</label>{" "}
-                <input
-                  onChange={handleNameChange}
-                  value={updateData.lastname}
-                  type="text"
-                  name="lastname"
-                  id="lastname"
-                />
-                <label className="realLabels" id="updlastNameLable"></label>{" "}
-              </div>
-            </div>
-            <div className="input">
-              <label htmlFor="">Email:</label>{" "}
-              <input
-                onChange={handleNameChange}
-                value={updateData.email}
-                type="text"
-                name="email"
-                id="email"
-              />{" "}
-              <label className="realLabels" id="updemailLabel"></label>{" "}
-            </div>
-            <div className="input">
-              <label htmlFor="">Phone:</label>{" "}
-              <input
-                onChange={handleNameChange}
-                value={updateData.phone}
-                type="text"
-                name="phone"
-                id="phone"
-              />{" "}
-              <label className="realLabels" id="updphoneLable"></label>{" "}
-            </div>{" "}
-            <button className="btn-slide" type="submit">
-              {" "}
-              <p>Register</p>{" "}
-            </button>{" "}
-          </div>{" "}
-          <p></p>{" "}
-        </form>
+          <form onSubmit={onSubmit}>
+  <p>{updateData.firstname}</p>
+  <p>{updateData.lastname}</p>
+  <p>{updateData.email}</p>
+  <h2>Register as a member</h2>
+  <div className="inputs">
+    <div className="names">
+      <div className="input">
+        <input
+          onChange={handleNameChange}
+          value={updateData.firstname}
+          type="text"
+          name="firstname"
+          id="firstname"
+          placeholder="First Name"
+        />
+        <label className="realLabels" id="updfirstNameLable"></label>
+      </div>
+      <div className="input">
+        <input
+          onChange={handleNameChange}
+          value={updateData.lastname}
+          type="text"
+          name="lastname"
+          id="lastname"
+          placeholder="Last Name"
+        />
+        <label className="realLabels" id="updlastNameLable"></label>
+      </div>
+    </div>
+    <div className="input">
+      <input
+        onChange={handleNameChange}
+        value={updateData.email}
+        type="text"
+        name="email"
+        id="email"
+        placeholder="Email"
+      />
+      <label className="realLabels" id="updemailLabel"></label>
+    </div>
+    <div className="names">
+      <div className="input">
+        <input
+          onChange={handleNameChange}
+          value={updateData.phone}
+          type="text"
+          name="phone"
+          id="phone"
+          placeholder="Phone"
+        />
+        <label className="realLabels" id="updphoneLable"></label>
+      </div>
+      <div className="input">
+        <input
+          onChange={handleNameChange}
+          value={updateData.age}
+          type="number"
+          name="age"
+          id="age"
+          min="0"
+          placeholder="Age"
+        />
+        <label className="realLabels" id="updageLable"></label>
+      </div>
+    </div>
+
+    {/* New Fields for Admin to Edit */}
+    <div className="input">
+      <input
+        onChange={handleNameChange}
+        value={updateData.school}
+        type="text"
+        name="school"
+        id="school"
+        placeholder="School"
+      />
+      <label className="realLabels" id="updschoolLable"></label>
+    </div>
+    <div className="input">
+      <input
+        onChange={handleNameChange}
+        value={updateData.occupation}
+        type="text"
+        name="occupation"
+        id="occupation"
+        placeholder="Occupation"
+      />
+      <label className="realLabels" id="updoccupationLable"></label>
+    </div>
+    <div className="input">
+      <input
+        onChange={handleNameChange}
+        value={updateData.hobbies}
+        type="text"
+        name="hobbies"
+        id="hobbies"
+        placeholder="Hobbies"
+      />
+      <label className="realLabels" id="updhobbiesLable"></label>
+    </div>
+    <div className="input">
+      <input
+        onChange={handleNameChange}
+        value={updateData.heardAboutUs}
+        type="text"
+        name="heardAboutUs"
+        id="heardAboutUs"
+        placeholder="How did you hear about us?"
+      />
+      <label className="realLabels" id="updheardAboutUsLable"></label>
+    </div>
+    <div className="input">
+      <input
+        onChange={handleNameChange}
+        value={updateData.interest}
+        type="text"
+        name="interest"
+        id="interest"
+        placeholder="Areas of Interest"
+      />
+      <label className="realLabels" id="updinterestLable"></label>
+    </div>
+
+    <button className="btn-slide" type="submit">
+      <p>Register</p>
+    </button>
+  </div>
+  <p></p>
+</form>
       ) : null}
-      <table>
-        <thead>
-          <tr>
-            <td> ID</td>
-            <td>FirstName</td>
-            <td>LastName</td>
-            <td>Email</td>
-            <td>Phone</td>
-            <td>opt</td>
-          </tr>
-        </thead>
-        <tbody>
-          {dataBase.map((user, index) => (
-            <tr key={user.id}>
-              <td>{numbers[index]}</td>
-              <td>{user.firstname}</td>
-              <td>{user.lastname}</td>
-              <td>{user.email}</td>
-              <td>{user.number}</td>
-              <td className="lastTD">
-                <div onClick={() => deleteUser(user._id)} className="btn">
-                  <p>Delete</p>
-                </div>
-                <div
-                  onClick={() => {
-                    console.log("user id", user._id);
-                    setSeeForm(true);
-                    setUpdateData({
-                      firstname: user.firstname,
-                      lastname: user.lastname,
-                      email: user.email,
-                      phone: user.number,
-                      id: user._id,
-                    });
-                  }}
-                  className="btn"
-                >
-                  <p>Update</p>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+  <div className="user-list">
+  {dataBase.map((user, index) => (
+    <div key={user._id} className="user-card">
+      <div className="user-info">
+        <div><strong>ID:</strong> <p>{numbers[index]}</p></div>
+        <div><strong>First Name:</strong> <p>{user.firstname}</p></div>
+        <div><strong>Last Name:</strong> <p>{user.lastname}</p></div>
+        <div><strong>Email:</strong> <p>{user.email}</p></div>
+        <div><strong>Phone:</strong> <p>{user.phone}</p></div>
+        <div><strong>Age:</strong> <p>{user.age}</p></div>
+        <div><strong>School:</strong> <p>{user.school || "Not provided"}</p></div>
+        <div><strong>Occupation:</strong> <p>{user.occupation || "Not provided"}</p></div>
+        <div><strong>Hobbies:</strong> <p>{user.hobbies || "Not provided"}</p></div>
+        <div><strong>Heard About Us:</strong> <p>{user.heardAboutUs || "Not provided"}</p></div>
+        <div><strong>Interest:</strong> <p>{user.interest || "Not provided"}</p></div>
+      </div>
+      <div className="user-actions">
+        <div onClick={() => deleteUser(user._id)} className="btn">
+          <p>Delete</p>
+        </div>
+        <div
+  onClick={() => {
+    console.log("user id", user._id);
+    setSeeForm(true);  // Show the update form
+    setUpdateData({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      phone: user.phone,
+      age: user.age,
+      school: user.school,
+      occupation: user.occupation,
+      hobbies: user.hobbies,
+      heardAboutUs: user.heardAboutUs,
+      interest: user.interest,
+      id: user._id,
+    });
+  }}
+  className="btn"
+>
+  <p>Update</p>
+</div>
+      </div>
+    </div>
+  ))}
+</div>
       <div className="securingData">
       <form onSubmit={onSubmitAdminPass} action="">
           <input

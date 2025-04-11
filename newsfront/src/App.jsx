@@ -14,6 +14,7 @@ import BlogGrid from "./pages/bloggrid/BlogGrid";
 import NoRoute from "./pages/noRoute/NoRoute";
 import DataBase from "./pages/dataBase/DataBase";
 import Retreat from "./pages/retreat/Retreat";
+import ContentEditing from "./pages/contentEditing/ContentEditing";
 
 
 const App = () => {
@@ -51,7 +52,6 @@ const App = () => {
       <Nav active={active} />
       <Routes>
         <Route path="/" element={<Home setActive={setActive} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />} />
-        <Route path="/about" element={<About setActive={setActive} />} />
         <Route path="/contact" element={<Contact setActive={setActive} />} />
         <Route path="/services" element={<Service setActive={setActive} />} />
         <Route path="/worshipnight" element={<WorshipNight />} />
@@ -61,6 +61,7 @@ const App = () => {
         <Route path="/bloggrid/:categoryIndex" element={<BlogGrid setActive={setActive}/> } />
         <Route path="*" element={<NoRoute/>}/>   
         <Route path="/dataBase" element={<DataBase setActive={setActive} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />}/>
+        <Route path="/content/editing" element={<ContentEditing />} />
       </Routes>
       <Footer />
       <div  className=" take_up ">

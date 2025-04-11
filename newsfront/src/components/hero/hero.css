@@ -132,6 +132,7 @@
   font-size: 3.5rem;
   line-height: 3.7rem;
   color: var(--white);
+  margin-bottom: 1rem;
   position: relative;
   overflow: hidden;
   transform-origin: bottom;
@@ -150,7 +151,7 @@
 }
 .hero_button .btn {
   width: 12rem;
-  margin-top: 0.4rem;
+  margin-top: -1rem;
 }
 .hero_button .btn:hover::after {
   bottom: -1.5rem;
@@ -167,10 +168,10 @@ label {
   box-shadow: inset 0px 0px 10px 2px var(--white);
   border-radius: 0.7rem;
   padding: 0.3rem 0.9rem;
-  padding-bottom: 1rem;
+  padding-bottom: .7rem;
   width: 34%;
   position: absolute;
-  top: 10rem;
+  top: 5rem;
   height: fit-content;
   right: 2rem;
   backdrop-filter: blur(30px);
@@ -185,22 +186,29 @@ label {
   font-size: 1.8rem;
   text-align: center;
   color: var(--white);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   margin-top: 1rem;
+}
+.hero form .btn-slide{
+   margin-top: -33rem;
 }
 .inputs {
   display: flex;
   flex-direction: column;
   row-gap: 0.8rem;
 }
-.names {
-  display: flex;
-  column-gap: 0.6rem;
-}
+
 #phone.alert,
 #email.alert,
 #firstname.alert,
-#lastname.alert {
+#lastname.alert,
+#age.alert,
+#school.alert,
+#occupation.alert,
+#hobbies.alert,
+#heardAboutUs.alert,
+#interest.alert
+ {
   animation: shake 0.5s forwards;
   outline: 2px solid red;
 }
@@ -236,6 +244,7 @@ label {
     transform: translateX(0px);
   }
 }
+.inputs select,
 .inputs input {
   border-radius: 0.5rem;
   padding: 0.5rem;
@@ -244,6 +253,10 @@ label {
   color: var(--black);
   width: 100%;
   background: var(--fadedWhite);
+}
+.inputs select option{
+  background-color: var(--black);
+  color: var(--white);
 }
 .hero form .btn-slide {
   width: 100%;
@@ -311,11 +324,11 @@ label {
   .hero_text {
     width: 90%;
     text-align: center;
+    margin-top: 9rem;
   }
   .hero form {
-    width: 70%;
-    top: 8rem;
-
+    width: 80%;
+    top: 5rem;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -328,12 +341,22 @@ label {
 }
 @media (max-width: 600px) {
   .hero form {
-    width: 70%;
+    width: 90%;
   }
   .hero_text {
     align-self: center;
     width: 90%;
     gap: 1rem;
-    margin-top: 4rem;
+    margin-top: 12rem;
   }
 }
+ .names {
+  display: flex;
+  column-gap: 0.6rem;
+  justify-content: space-around;
+  align-items: normal;
+  width: 100%;
+ }
+ .names .input{
+  width: 100%;
+ }

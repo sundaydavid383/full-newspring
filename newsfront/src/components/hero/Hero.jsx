@@ -26,11 +26,18 @@ const Hero = ({
   const [emailStatus, setEmailStatus] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentidx = useRef(currentIndex);
-  const [registerNames, setRegisterNames] = useState({
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
+    age: "",
+    school: "",
+    occupation: "",
+    hobbies: "",
+    heardAboutUs: "",
+    interest: "", // Changed from 'interests' to 'interest' for single select
+    prayerRequest: "",
   });
 
   useEffect(() => {
@@ -73,14 +80,15 @@ const Hero = ({
     window.scrollBy({ top: 600, behavior: "smooth" });
   };
 
-  const handleNameChange = (e) => {
-    const name = e.target.name;
-    setRegisterNames((prev) => prev, (registerNames[name] = e.target.value));
-    console.log(registerNames);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    console.log(formData)
   };
   const onSubmit = (e) => {
     e.preventDefault();
-
+  
+    // Get all the DOM elements
     const firstNameLable = document.getElementById("firstNameLable");
     const firstname = document.getElementById("firstname");
     const lastNameLable = document.getElementById("lastNameLable");
@@ -89,102 +97,214 @@ const Hero = ({
     const emailLabel = document.getElementById("emailLabel");
     const phone = document.getElementById("phone");
     const phoneLable = document.getElementById("phoneLable");
+    const age = document.getElementById("age");
+    const ageLabel = document.getElementById("ageLabel");
+    const school = document.getElementById("school");
+    const schoolLabel = document.getElementById("schoolLabel");
+    const occupation = document.getElementById("occupation");
+    const occupationLabel = document.getElementById("occupationLabel");
+    const hobbies = document.getElementById("hobbies");
+    const hobbiesLabel = document.getElementById("hobbiesLabel");
+    const heardAboutUs = document.getElementById("heardAboutUs");
+    const heardAboutUsLabel = document.getElementById("heardAboutUsLabel");
+    const interest = document.getElementById("interest");
+    const interestLabel = document.getElementById("interestLabel");
+  
+    // Regex for phone and email validation
     const phoneRegx = /^\+?[0-9]\d{10,13}$/;
     const emailRegx =
       /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
-
-    if (registerNames.firstName.trim() === "") {
+  
+    // Check First Name
+    if (formData.firstName.trim() === "") {
       firstname.classList.add("alert");
-      firstNameLable.textContent = "input your first name";
+      firstNameLable.textContent = "Input your first name";
       setTimeout(() => {
         firstname.classList.remove("alert");
       }, 2000);
-
       return;
-    } else if (registerNames.lastName.trim() === "") {
+    }
+    // Check Last Name
+    else if (formData.lastName.trim() === "") {
       lastname.classList.add("alert");
-      lastNameLable.textContent = "input your last name";
+      lastNameLable.textContent = "Input your last name";
       setTimeout(() => {
         lastname.classList.remove("alert");
       }, 2000);
       return;
-    } else if (registerNames.email.trim() === "") {
+    }
+    // Check Email
+    else if (formData.email.trim() === "") {
       email.classList.add("alert");
-      emailLabel.textContent = "input email address";
+      emailLabel.textContent = "Input email address";
       setTimeout(() => {
         email.classList.remove("alert");
       }, 2000);
       return;
-    } else if (!emailRegx.test(registerNames.email)) {
+    } else if (!emailRegx.test(formData.email)) {
       email.classList.add("alert");
-      emailLabel.textContent = "input a valid email address";
+      emailLabel.textContent = "Input a valid email address";
       setTimeout(() => {
         email.classList.remove("alert");
       }, 2000);
       return;
-    } else if (registerNames.phone.trim() === "") {
+    }
+    // Check Phone
+    else if (formData.phone.trim() === "") {
       phone.classList.add("alert");
-      phoneLable.textContent = "input a phone number";
+      phoneLable.textContent = "Input a phone number";
       setTimeout(() => {
         phone.classList.remove("alert");
       }, 2000);
       return;
-    } else if (!phoneRegx.test(registerNames.phone)) {
+    } else if (!phoneRegx.test(formData.phone)) {
       phone.classList.add("alert");
-      phoneLable.textContent = "input a valid phone number";
+      phoneLable.textContent = "Input a valid phone number";
       setTimeout(() => {
         phone.classList.remove("alert");
       }, 2000);
       return;
-    } else {
+    }
+    // Check Age
+    else if (formData.age.trim() === "") {
+      age.classList.add("alert");
+      ageLabel.textContent = "Input your age";
+      setTimeout(() => {
+        age.classList.remove("alert");
+      }, 2000);
+      return;
+    } else if (isNaN(formData.age) || formData.age < 16|| formData.age > 24) {
+      age.classList.add("alert");
+      ageLabel.textContent = "Please input a valid age rrom 16 to 24";
+      setTimeout(() => {
+        age.classList.remove("alert");
+      }, 2000);
+      return;
+    }
+    // Check School (optional but should not be empty if provided)
+    else if (formData.school.trim() === "" || formData.school.trim().length < 3) {
+      school.classList.add("alert");
+      schoolLabel.textContent = "Please input none if you not in school";
+      setTimeout(() => {
+        school.classList.remove("alert");
+      }, 2000);
+      return;
+    }
+    //checkk for occupation
+    else if (formData.occupation.trim() === "" || formData.occupation.trim().length < 3) {
+      occupation.classList.add("alert");
+      occupationLabel.textContent = "Please input none if you have no occupation";
+      setTimeout(() => {
+        occupation.classList.remove("alert");
+      }, 2000);
+      return;
+    }
+    // Check Hobbies (optional but should not be empty if provided)
+    else if (formData.hobbies.trim() === "" || formData.hobbies.trim().length < 3) {
+      hobbies.classList.add("alert");
+      hobbiesLabel.textContent = "Please input a valid hobby (at least 3 characters)";
+      setTimeout(() => {
+        hobbies.classList.remove("alert");
+      }, 2000);
+      return;
+    }
+    // Check Heard About Us
+    else if (formData.heardAboutUs.trim() === "") {
+      heardAboutUs.classList.add("alert");
+      heardAboutUsLabel.textContent = "Please select how you heard about us";
+      setTimeout(() => {
+        heardAboutUs.classList.remove("alert");
+      }, 2000);
+      return;
+    }
+    // Check Interests (single select)
+    else if (formData.interest.trim() === "") {
+      interest.classList.add("alert");
+      interestLabel.textContent = "Please select your interest";
+      setTimeout(() => {
+        interest.classList.remove("alert");
+      }, 2000);
+      return;
+    }
+    // If everything is correct, reset the form and handle submission
+    else {
       e.target.reset();
-
       lastNameLable.textContent = "";
       firstNameLable.textContent = "";
       emailLabel.textContent = "";
       phoneLable.textContent = "";
+      ageLabel.textContent = "";
+      heardAboutUsLabel.textContent = "";
+      interestLabel.textContent = "";
+      schoolLabel.textContent = "";
+      hobbiesLabel.textContent = "";
+  
       phone.classList.remove("alert");
       email.classList.remove("alert");
       lastname.classList.remove("alert");
       firstname.classList.remove("alert");
-      console.log(
-        "this are the datas",
-        registerNames.firstName,
-        registerNames.email,
-        registerNames.lastName,
-        registerNames.phone
-      );
+      age.classList.remove("alert");
+      heardAboutUs.classList.remove("alert");
+      interest.classList.remove("alert");
+      school.classList.remove("alert");
+      hobbies.classList.remove("alert");
+  
+      console.log("Form Data:", formData);
+  
+      // Call your backend function or any necessary API for processing
       addPerson(
-        registerNames.firstName,
-        registerNames.lastName,
-        registerNames.email,
-        registerNames.phone
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.phone,
+        formData.age,
+        formData.school,
+        formData.occupation,
+        formData.hobbies,
+        formData.heardAboutUs,
+        formData.interest
       );
+  
       sendMail(
-        registerNames.firstName,
-        registerNames.lastName,
-        registerNames.email,
-        registerNames.phone
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.phone
       );
-      speakAfterRegistration()
-      setRegisterNames({
+  
+      speakAfterRegistration();
+  
+      setFormData({
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
+        age: "",
+        school: "",
+        occupation: "",
+        hobbies: "",
+        heardAboutUs: "",
+        interests: "",
       });
     }
   };
 
-  const speakAfterRegistration = async ()=>{
-    const response = await fetch("http://localhost:5001/speak/after/registration", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({firstname:registerNames.firstName, phone:registerNames.phone, email:registerNames.email})
-    })
-    const data = await response.json()
-    console.log(data)
-  }
+  const speakAfterRegistration = async () => {
+    const response = await fetch(
+      "http://localhost:5001/speak/after/registration",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstname: formData.firstName,
+          phone: formData.phone,
+          email: formData.email,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  };
 
   const sendMail = async (firstname, lastname, email, phone) => {
     try {
@@ -210,45 +330,73 @@ const Hero = ({
     }
   };
   console.log("database in Hero.jsx", dataBase);
-  async function addPerson(firstname, lastname, email, number) {
+  async function addPerson(
+    firstname,
+    lastname,
+    email,
+    phone,
+    age,
+    school,
+    occupation,
+    hobbies,
+    heardAboutUs,
+    interest
+  ) {
     try {
       console.log("Sending data to backend:", {
         firstname,
         lastname,
         email,
-        number,
+        phone,
+        age,
+        school,
+        occupation,
+        hobbies,
+        heardAboutUs,
+        interest,
       });
-
+  
       const response = await fetch("http://localhost:5001/api/people", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstname, lastname, email, number }),
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          phone,
+          age,
+          school,
+          occupation,
+          hobbies,
+          heardAboutUs,
+          interest,
+        }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log("Received response:", data);
+  
       if (!loading) {
         setEmailStatus(
-          ` ${
+          `${
             sentEmail
-              ? "You have been successfully added to the list! we've sent email to you, check your spam list and remove it from spam list if not found in inbox"
+              ? "You have been successfully added to the list! We've sent an email to you, check your spam list and remove it from spam list if not found in inbox."
               : "You have been successfully added to the list!"
           }`
         );
         setSeeEmailStatus(true);
       }
+  
       onLoad();
       setDataBase(data.data);
     } catch (error) {
       console.error("Error in addPerson:", error);
-      setEmailStatus("An Error Occurred: " + error.message);
+      setEmailStatus("An error occurred: " + error.message);
       setSeeEmailStatus(true);
-        
-  
     }
   }
   return (
@@ -344,58 +492,138 @@ const Hero = ({
         ></span>
       </div>
       {sectionType !== "contact" ? (
-        <form onSubmit={onSubmit}>
-          <h2>Register as a member</h2>{" "}
-          <div className="inputs">
-            <div className="names">
-              <div className="input">
-                <label htmlFor="">First Name:</label>
-                <input
-                  onChange={handleNameChange}
-                  type="text"
-                  name="firstName"
-                  id="firstname"
-                />
-                <label className="realLabels" id="firstNameLable"></label>{" "}
-              </div>
-              <div className="input">
-                <label htmlFor="">Last Name:</label>{" "}
-                <input
-                  onChange={handleNameChange}
-                  type="text"
-                  name="lastName"
-                  id="lastname"
-                />
-                <label className="realLabels" id="lastNameLable"></label>{" "}
-              </div>
-            </div>
-            <div className="input">
-              <label htmlFor="">Email:</label>{" "}
-              <input
-                onChange={handleNameChange}
-                type="text"
-                name="email"
-                id="email"
-              />{" "}
-              <label className="realLabels" id="emailLabel"></label>{" "}
-            </div>
-            <div className="input">
-              <label htmlFor="">Phone:</label>{" "}
-              <input
-                onChange={handleNameChange}
-                type="text"
-                name="phone"
-                id="phone"
-              />{" "}
-              <label className="realLabels" id="phoneLable"></label>{" "}
-            </div>{" "}
-            <button className="btn-slide" type="submit">
-              {" "}
-              <p>Register</p>{" "}
-            </button>{" "}
-          </div>{" "}
-          <p>RCCG NewSprings is located at 332 Ikorodu Road, near Idi Iroko Bus Stop in Maryland, Lagos, Nigeria.</p>{" "}
-        </form>
+       <form onSubmit={onSubmit}>
+       <h2>Register as a member</h2>
+       <div className="inputs">
+         <div className="names">
+           <div className="input">
+             <input
+               onChange={handleChange}
+               type="text"
+               name="firstName"
+               id="firstname"
+               placeholder="First Name"
+             />
+             <label className="realLabels" id="firstNameLable"></label>
+           </div>
+           <div className="input">
+             <input
+               onChange={handleChange}
+               type="text"
+               name="lastName"
+               id="lastname"
+               placeholder="Last Name"
+             />
+             <label className="realLabels" id="lastNameLable"></label>
+           </div>
+         </div>
+         <div className="input">
+           <input
+             onChange={handleChange}
+             type="text"
+             name="email"
+             id="email"
+             placeholder="Email"
+           />
+           <label className="realLabels" id="emailLabel"></label>
+         </div>
+         <div className="names">
+         <div className="input">
+           <input
+             onChange={handleChange}
+             type="text"
+             name="phone"
+             id="phone"
+             placeholder="Phone"
+           />
+           <label className="realLabels" id="phoneLable"></label>
+         </div>
+         <div className="input">
+           <input
+             type="number"
+             name="age"
+             id="age"
+             value={formData.age || ""}
+             onChange={handleChange}
+             placeholder="Age"
+             maxLength={4}
+           />
+           <label className="realLabels" id="ageLabel"></label>
+         </div>
+         </div>
+         <div className="input">
+           <input
+             onChange={handleChange}
+             type="text"
+             name="school"
+             id="school"
+             value={formData.school}
+             placeholder="School"
+           />
+           <label className="realLabels" id="schoolLabel"></label>
+         </div>
+         <div className="names">
+         <div className="input">
+           <input
+             onChange={handleChange}
+             type="text"
+             name="occupation"
+             id="occupation"
+             value={formData.occupation}
+             placeholder="Occupation "
+           />
+           <label className="realLabels" id="occupationLabel"></label>
+         </div>
+         <div className="input">
+           <input
+             onChange={handleChange}
+             type="text"
+             name="hobbies"
+             id="hobbies"
+             value={formData.hobbies}
+             placeholder="Hobbies / Interests"
+           />
+           <label className="realLabels" id="hobbiesLabel"></label>
+         </div>
+         </div>
+         <div className="input">
+           <select
+             name="heardAboutUs"
+             id="heardAboutUs"
+             onChange={handleChange}
+             value={formData.heardAboutUs}
+           >
+             <option value="">How did you hear about us? </option>
+             <option value="Instagram">Instagram</option>
+             <option value="Friend">A friend invited me</option>
+             <option value="Church">Church service</option>
+             <option value="Online">Randomly found you online</option>
+             <option value="Other">Other</option>
+           </select>
+           <label className="realLabels" id="heardAboutUsLabel"></label>
+         </div>
+         <div className="input">
+           <select
+             name="interest"
+             id="interest"
+             value={formData.interest}
+             onChange={handleChange}
+           >
+             <option value="">What would you love to be part of?</option>
+             <option value="Music team / Choir">Music team / Choir</option>
+             <option value="Media / Tech / Content">Media / Tech / Content</option>
+             <option value="Bible study">Bible study</option>
+             <option value="Outreach / Volunteering">Outreach / Volunteering</option>
+             <option value="Games & social hangouts">Games & social hangouts</option>
+             <option value="Not sure yet">Not sure yet</option>
+           </select>
+           <label className="realLabels" id="interestLabel"></label>
+         </div>
+         <button className="btn-slide" type="submit">
+           <p>Register</p>
+         </button>
+       </div>
+     </form>
       ) : null}
       <div className="hero_form"></div>
     </div>

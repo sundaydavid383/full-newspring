@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import im1 from "../../assets/rccg16.jpg";
 import im4 from "../../assets/rccg22.jpg";
 import im3 from "../../assets/rccg23.jpg";
@@ -40,8 +41,27 @@ import Upcommingevent from "../../components/upcommingevent/Upcommingevent";
 import Leaders from "../../components/leaders/Leaders";
 import Articles from "../../components/articles/Articles";
 import Videodata from "../../components/videodata/Videodata";
+import { getSection } from "../../dependencies/homecontentSection";
 
 const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
+  const [homedata, setHomeData] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const data = await getSection();
+        setHomeData(data);
+      console.log(data)
+      } catch (error) {
+        console.error("Failed to fetch sections:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
+  }, []);
   const videoData = {
     video: "https://www.youtube.com/embed/7FHJleNWqck" ,
     src: videoRccg,
@@ -52,58 +72,22 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
       "At Newspring, we believe in fostering an environment that encourages spiritual growth and personal development. Our programs are designed to help young people discover their unique gifts and callings, preparing them to confidently navigate life's challenges. By participating in our various initiatives, including youth conferences, small group sessions, and community service projects, our youth are empowered to live out their faith and make a meaningful difference in the world around them."
     ],
   };
-  const sections = [
-    {
-      id: 0,
-      title: "NEWSPRING YOUTH CHURCH <br/> TIM 412",
-      paragraphs: [
-        "Empowering the next generation through faith, love, and community is essential for fostering spiritual growth.",
-        "By creating a supportive environment rooted in Christian fellowship, we can nurture their faith and encourage them to become active participants in their spiritual journeys. Join us in our mission to make a positive impact in the lives of young believers.",
-        "Explore a vibrant community where faith meets action, and find support in your spiritual journey. Engaging youth in evangelism strengthens their own faith.",
-      ],
-    },
-    {
-      id: 1,
-      title: "Empowering Youth <br/>Through Faith",
-      paragraphs: [
-        "Guiding young minds towards spiritual enlightenment through mentorship and community engagement.",
-        "Our programs focus on building strong foundations in faith, encouraging personal growth, and fostering a sense of belonging within the community.",
-        "Join us in nurturing the leaders of tomorrow by providing them with the tools and support they need to thrive spiritually and socially.",
-      ],
-    },
-    {
-      id: 2,
-      title: "Building Strong <br/> Foundations",
-      paragraphs: [
-        "Establishing a solid base for spiritual growth through education and community involvement.",
-        "Our initiatives aim to provide resources and support to help individuals deepen their faith and understanding.",
-        "By fostering a culture of learning and engagement, we empower individuals to live out their faith with confidence and purpose.",
-      ],
-    },
-    {
-      id: 3,
-      title: "Fostering Community <br/>Engagement",
-      paragraphs: [
-        "Encouraging active participation in community activities to strengthen bonds and promote shared values.",
-        "Through various programs and events, we create opportunities for individuals to connect, collaborate, and grow together.",
-        "By building a vibrant and supportive community, we enhance the spiritual and social well-being of all members.",
-      ],
-    },
-  ];
-  const journeyData = [
-    {
-      title: "Our Journey of Faith and Fellowship",
-      paragraphs: [
-        "Welcome to our Church, a loving, faith-centered community dedicated to sharing the message of God’s love and grace. Our church has a rich history of serving our congregation and the wider community.",
-        "Our Mission: It is to bring people closer to God through worship, friendship, and service. We believe in creating a nurturing environment where individuals and families can deepen their faith, grow spiritually, and find support on their spiritual journey.",
-      ],
-      images: [
-        { src: rccg1, alt: "Journey Image 1", className: "image1" },
-        { src: rccg2, alt: "Journey Image 2", className: "image2" },
-      ],
-      link: { href: "/about", text: "More About" },
-    },
-  ];
+  
+  const journeyData = homedata.journeyData
+  // [
+  //   {
+  //     title: "Our Journey of Faith and Fellowship",
+  //     paragraphs: [
+  //       "Welcome to our Church, a loving, faith-centered community dedicated to sharing the message of God’s love and grace. Our church has a rich history of serving our congregation and the wider community.",
+  //       "Our Mission: It is to bring people closer to God through worship, friendship, and service. We believe in creating a nurturing environment where individuals and families can deepen their faith, grow spiritually, and find support on their spiritual journey.",
+  //     ],
+  //     images: [
+  //       { src: rccg1, alt: "Journey Image 1", className: "image1" },
+  //       { src: rccg2, alt: "Journey Image 2", className: "image2" },
+  //     ],
+  //     link: { href: "/about", text: "More About" },
+  //   },
+  // ];
   const ministryAreas = [
     {
       img: word,
@@ -338,9 +322,12 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
 
   console.log("database in Home.jsx",dataBase )
 
+  if (loading) return <div>Loading...</div>;
+
+  if (!homedata.journeyData) return <div>No data loaded</div>;
   return (
     <div>
-      <Hero sections={sections} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />
+      <Hero sections={homedata.sections} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />
       <Journey journeyData={journeyData} />
       <Videodata videoData={videoData} />
       <Churchdetails />
