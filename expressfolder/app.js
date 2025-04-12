@@ -16,8 +16,8 @@ const appPassword = "yvil cmib rtwc mfzl";
 const homeContent = require("./data/homeContent");
 
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json({ limit: '30mb' }));
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 // Serve static files from the "assets" folder
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
@@ -93,31 +93,38 @@ app.get("/api/home-content", (req, res) => {
  // Send homeContent data as response
 });
 
+
+  
+
+ 
 app.put("/api/update-home-content", (req, res) => {
   try {
-    const { journeyData, sections } = req.body;
+    const { journeyData, sections, videoData, churchCards, events, ministryAreas, features, schedule, eventData, articles } = req.body;
+      // Save rccg5.jpg if a new base64 image was sent
+      if (journeyData[0].images[0].src.startsWith("data:image")) {
+        const base64Data1 = journeyData[0].images[0].src.replace(/^data:image\/\w+;base64,/, "");
+        fs.writeFileSync(path.join(__dirname, "assets", "rccg5.jpg"), Buffer.from(base64Data1, "base64"));
+      }
+  
+      // Save rccg2.jpg if a new base64 image was sent
+      if (journeyData[0].images[1].src.startsWith("data:image")) {
+        const base64Data2 = journeyData[0].images[1].src.replace(/^data:image\/\w+;base64,/, "");
+        fs.writeFileSync(path.join(__dirname, "assets", "rccg2.jpg"), Buffer.from(base64Data2, "base64"));
+      }
 
-    // Save rccg5.jpg if a new base64 image was sent
-    if (journeyData[0].images[0].src.startsWith("data:image")) {
-      const base64Data1 = journeyData[0].images[0].src.replace(/^data:image\/\w+;base64,/, "");
-      fs.writeFileSync(path.join(__dirname, "assets", "rccg5.jpg"), Buffer.from(base64Data1, "base64"));
-    }
+    // ✅ Save the updated full content
+    fs.writeFileSync(
+      contentFilePath,
+      JSON.stringify({ journeyData, sections, videoData, churchCards, events, ministryAreas, features, schedule, eventData, articles }, null, 2)
+    );
 
-    // Save rccg2.jpg if a new base64 image was sent
-    if (journeyData[0].images[1].src.startsWith("data:image")) {
-      const base64Data2 = journeyData[0].images[1].src.replace(/^data:image\/\w+;base64,/, "");
-      fs.writeFileSync(path.join(__dirname, "assets", "rccg2.jpg"), Buffer.from(base64Data2, "base64"));
-    }
-
-    // Save the updated journeyData and sections
-    fs.writeFileSync(contentFilePath, JSON.stringify({ journeyData, sections }, null, 2));
-
-    return res.status(200).json({ success: true, message: "Content updated successfully!" });
+    res.status(200).json({ success: true, message: "Content updated successfully!" });
   } catch (error) {
     console.error("Error updating home content:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
+
 
 app.get("/api/people", async (req, res) => {
   try {

@@ -23,6 +23,11 @@
   --fadedWhite: #cecdcd;
   color-scheme: dark light;
 }
+.test2{
+  display: flex;
+  justify-content: space-between;
+  color: var(--black);
+}
 body {
   margin: 0;
   font-family: "Poppins", serif;
@@ -361,4 +366,39 @@ button {
     width: 80%;
   }
 }
-
+.dots{
+  padding: 5rem;
+  display: flex;
+  gap: .1rem;
+  align-items: center;
+}
+.dot{
+  width: 1rem;
+  height: 1rem;
+  background: var(--darkbrown);
+  border-radius: 50%;
+  animation: load 2s infinite;
+  transition: .2s ease-in-out;
+}
+.dots.dotsec{
+  margin-top: -11rem;
+}
+.dot1 { animation-delay: 0s; }
+.dot2 { animation-delay: 0.2s; }
+.dot3 { animation-delay: 0.4s; }
+.dot4 { animation-delay: 0.6s; }
+.dot5 { animation-delay: 0.8s; }
+.dot6 { animation-delay: 1s; }
+.dot7 { animation-delay: 1.2s; }
+.dot8 { animation-delay: 1.4s; }
+@keyframes load {
+   0%{
+    transform: translateY(0%);
+   }
+   50%{
+    transform: translateY(200%);
+   }
+   100%{
+    transform: translateY(0%);
+   }
+}

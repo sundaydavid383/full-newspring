@@ -183,6 +183,7 @@
   line-height: 2rem;
   align-self: flex-end;
   opacity: 0;
+  text-align: center;
 }
 .footer_details small {
   color: var(--brown);

@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from "react";
 import "./Upcommingevent.css";
 import { Link } from "react-router";
-import event from "../../assets/rccg18.jpg";
 
-const Upcommingevent = () => {
+
+const Upcommingevent = ({eventData}) => {
   const observer = useRef(null);
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -27,8 +27,9 @@ const Upcommingevent = () => {
       }
     };
   }, []);
+ 
 
-  const targetDate = new Date("October 9, 2025 00:00:00 GMT+0000");
+  const targetDate = new Date(eventData.datelogic);
   const [time, setTime] = useState({
     days: 0,
     hours: 0,
@@ -59,36 +60,31 @@ const Upcommingevent = () => {
 
   return (
     <div className="upcommingevent">
-      <h2 className="title">Our Upcoming Events</h2>
-      <p className="title_small">
-        Join us in celebrating our church anniversary as we reflect on God’s
-        faithfulness and build lasting memories together.
-      </p>
-      <div className="upcommingevent_container">
-        <div className="upcomming_image">
-          <img src={event} alt="" />
-        </div>
-        <div className="upcomming_details">
-          <h3>Celebrating Our Church Anniversary</h3>
-          <p>
-            <i className="fa-solid fa-calendar-days"></i>Oct 9, 2025 @ 07:00 -
-            15:00
-          </p>
-          <p>
-            <i className="fa-solid fa-location-dot"></i>332, Capital Building,
-            Idiroko Bus Stop, Lagos
-          </p>
-          <div className="countdown">
-            <div className="div"><p>Day</p><span>{String(time.days).padStart(2, "0")}</span></div>
-            <div className="div"><p>Hours</p><span>{String(time.hours).padStart(2, "0")}</span></div>
-            <div className="div"><p>Minutes</p><span>{String(time.minutes).padStart(2, "0")}</span></div>
-            <div className="div"><p>Seconds</p><span>{String(time.seconds).padStart(2, "0")}</span></div>
-          </div>
-          <Link to="/contact" className="btn">
-            <p>Contact Us</p>
-          </Link>
-        </div>
-      </div>
+  <h2 className="title">Our Upcoming Events</h2>
+<p className="title_small">{eventData.description}</p>
+<div className="upcommingevent_container">
+  <div className="upcomming_image">
+    <img src={eventData.image} alt="" />
+  </div>
+  <div className="upcomming_details">
+    <h3>{eventData.title}</h3>
+    <p>
+      <i className="fa-solid fa-calendar-days"></i> {eventData.dateTime}
+    </p>
+    <p>
+      <i className="fa-solid fa-location-dot"></i> {eventData.location}
+    </p>
+    <div className="countdown">
+      <div className="div"><p>Day</p><span>{String(time.days).padStart(2, "0")}</span></div>
+      <div className="div"><p>Hours</p><span>{String(time.hours).padStart(2, "0")}</span></div>
+      <div className="div"><p>Minutes</p><span>{String(time.minutes).padStart(2, "0")}</span></div>
+      <div className="div"><p>Seconds</p><span>{String(time.seconds).padStart(2, "0")}</span></div>
+    </div>
+    <Link to="/contact" className="btn">
+      <p>Contact Us</p>
+    </Link>
+  </div>
+</div>
     </div>
   );
 };
