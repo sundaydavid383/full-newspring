@@ -36,7 +36,7 @@ const ContentEditing = () => {
         setSchedule(res.data.schedule || []);
         setEventData(res.data.eventData || []);
         setArticles(res.data.articles || []);
-      })
+})
       .catch((err) => {
         if (!isMounted) return;
         setLoading(false);
@@ -73,10 +73,16 @@ const ContentEditing = () => {
     setArticles(updatedArticles);
   };
 
-  const handleScheduleChange =  (index, field, value) => {
-    const updated = [...schedule];
-    updated[index][field] = value;
-    setSchedule(updated);
+  const handleScheduleChange = (index, field, value) => {
+    setSchedule(prev => {
+      const updated = [...prev];
+      if (!updated[index]) return prev; // Prevent modifying if index doesn't exist
+      updated[index] = {
+        ...updated[index],
+        [field]: value
+      };
+      return updated;
+    });
   };
   
   const addEvent = () => {
@@ -91,9 +97,7 @@ const ContentEditing = () => {
   };
 
   const removeEvent = (index) => {
-    const updated = [...schedule];
-    updated.splice(index, 1);
-    setSchedule(updated);
+    setSchedule(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleVideoInputChange = (e, field) => {
