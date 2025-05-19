@@ -393,8 +393,10 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
   console.log("database in Home.jsx",dataBase )
 
   if (loading) return  <div className="loading">
-      <div className="loader"></div>
-  </div>;
+  <div className="bar bar1"></div>
+  <div className="bar bar2"></div>
+  <div className="bar bar3"></div>
+</div>;
   return (
     <div>
       <Hero sections={homedata.sections} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />

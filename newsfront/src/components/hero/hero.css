@@ -108,16 +108,25 @@
   background-image: url("../../assets/biblestudy1.jpg");
 }
 .hero_text_content24 {
-  background-image: url("../../assets/article4.jpg");
+  background-image: url("../../assets/rccg85.jpg");
 }
 .hero_text_content25 {
-  background-image: url("../../assets/article3.jpg");
+  background-image: url("../../assets/rccg86.jpg");
 }
 .hero_text_content26 {
-  background-image: url("../../assets/article2.jpg");
+  background-image: url("../../assets/rccg87.jpg");
 }
 .hero_text_content27 {
-  background-image: url("../../assets/article1.jpg");
+  background-image: url("../../assets/rccg88.jpg");
+}
+.hero_text_content28 {
+  background-image: url("../../assets/rccg82.jpg");
+}
+.hero_text_content29 {
+  background-image: url("../../assets/rccg83.jpg");
+}
+.hero_text_content30 {
+  background-image: url("../../assets/rccg84.jpg");
 }
 .hero_text {
   display: flex;
@@ -144,6 +153,9 @@
   font-size: 0.94rem;
   line-height: 1.6rem;
   color: var(--white);
+}
+.hero_button{
+  margin-top: 2rem;
 }
 
 .hero_button p {

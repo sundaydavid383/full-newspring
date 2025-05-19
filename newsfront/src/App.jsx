@@ -21,7 +21,7 @@ import Test2 from "./Test2";
 
 const App = () => {
   
-  const [active, setActive] = useState("home");
+  const [active, setActive] = useState("");
   const [dataBase, setDataBase] = useState([])
 
     const scrollTop = () => {

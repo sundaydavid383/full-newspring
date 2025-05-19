@@ -401,11 +401,13 @@ const Hero = ({
   }
   return (
     <div className="hero">
-      {loading ? (
-        <div className="loading">
-          <div className="loader"></div>
-        </div>
-      ) : null}
+   {loading && (
+       <div className="loading">
+       <div className="bar bar1"></div>
+       <div className="bar bar2"></div>
+       <div className="bar bar3"></div>
+     </div>
+      )}   
       {seeEmailStatus ? (
         <div className="emial_status">
           <p>{emailStatus}</p>

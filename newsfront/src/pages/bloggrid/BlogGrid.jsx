@@ -706,44 +706,44 @@ const articles = [
 ];
 const sectionType = "contact";
   const buttonType = "raedArticle"
-const sections = [
-  {
-    id: 24,
-    title: "Faith Through Difficult Times",
-    paragraphs: [
-      "Faith acts as a pillar in challenging moments, offering guidance and strength when life feels uncertain.",
-      "It’s in those tough moments that faith grows, teaching us to trust, persevere, and find peace amidst chaos.",
-      "Discover how leaning into your faith can transform struggles into opportunities for growth and resilience.",
-    ],
-  },
-  {
-    id: 25,
-    title: "The Importance of Faith-Based Communities",
-    paragraphs: [
-      "A supportive community strengthens our faith, providing encouragement and accountability.",
-      "By engaging with others who share similar beliefs, we build a foundation of trust and support that nurtures spiritual growth.",
-      "Explore how being part of a faith community can enhance your personal journey and provide lasting relationships.",
-    ],
-  },
-  {
-    id: 26,
-    title: "Faith in Action: Living Your Beliefs",
-    paragraphs: [
-      "Faith isn’t just a belief; it’s a lifestyle. Acting on your faith creates tangible change in the world.",
-      "From everyday kindness to outreach programs, living your faith helps to create a more compassionate society.",
-      "Learn how small actions driven by faith can have a big impact on those around you.",
-    ],
-  },
-  {
-    id: 27,
-    title: "The Power of Service in Faith",
-    paragraphs: [
-      "Serving others is an expression of love and faith, creating positive change in both our lives and the communities we serve.",
-      "Through acts of service, we develop empathy, humility, and a deeper connection to our faith.",
-      "Find out how service can be a transformative experience, shaping both the giver and the receiver.",
-    ],
-  },
-];
+  const sections = [
+    {
+      id: 28,
+      title: "Trusting God in Every Season",
+      paragraphs: [
+        "No matter the season of life—joy or sorrow—God remains faithful and present.",
+        "Trusting God means relying on His promises even when circumstances don’t make sense.",
+        "Learn how surrendering each season to God builds unshakable confidence in His plan.",
+      ],
+    },
+    {
+      id: 29,
+      title: "Growing Together in Christ",
+      paragraphs: [
+        "Walking with others in faith strengthens our relationship with Christ.",
+        "Through shared experiences and prayer, we grow in unity and love.",
+        "Discover how deep connections in Christ-centered communities lead to spiritual maturity.",
+      ],
+    },
+    {
+      id: 30,
+      title: "Living Out the Gospel Daily",
+      paragraphs: [
+        "The gospel isn't just a message—it's a way of life filled with purpose and grace.",
+        "Each act of kindness and truth we live out reflects Christ to the world.",
+        "Explore how your everyday choices can mirror the love and truth of the gospel.",
+      ],
+    },
+    {
+      id: 27,
+      title: "Serving with a Christlike Heart",
+      paragraphs: [
+        "True service flows from a heart that mirrors Jesus’ compassion and humility.",
+        "Serving others draws us closer to God and reveals His love in action.",
+        "Uncover how a lifestyle of service reflects God’s character and transforms lives.",
+      ],
+    },
+  ];
 const BlogGrid = ({ setActive }) => {
   const {categoryIndex} = useParams()
   // const currentCategory = articles[categoryIndex]
@@ -769,9 +769,9 @@ const BlogGrid = ({ setActive }) => {
                       <p>{blog.author}</p> <small></small>{" "}
                       <span>{blog.date}</span>
                     </div>
-                    <h2 className="blog_title">{blog.title}</h2>
+                    <h2 className="blog_title"><small>{blog.id}.</small>  {blog.title}</h2>
                     <p className="blog_text">{blog.text.slice(0, 250)}...</p>
-                    <Link onClick={()=> window.location.href = `/readblog/${blog.id}`}  to={`/readblog/${blog.id}`}className="btn">
+                    <Link onClick={()=> window.location.href = `/readblog/${blog.id}`}  className="btn">
                       <p>Read now</p>
                     </Link>
                   </div>

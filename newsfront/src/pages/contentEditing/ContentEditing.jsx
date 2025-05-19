@@ -3,6 +3,9 @@ import axios from 'axios';
 import "./ContentEditing.css";
 
 const ContentEditing = () => {
+  const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState(false)
+  const [alertText, setAlertText] = useState("unable to receive content data")
   const [journey, setJourney] = useState(null);
   const [sections, setSections] = useState([]);
   const [videoData, setVideoData] = useState(null);
@@ -15,21 +18,34 @@ const ContentEditing = () => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+  
     axios.get("http://localhost:5001/api/home-content")
       .then((res) => {
-        console.log(res.data);  // Verify the structure of the response
-        setJourney(res.data.journeyData[0]);
-        setSections(res.data.sections);
+        if (!isMounted) return;
+        setLoading(false);
+        console.log("data from the home content", res.data);
+        setJourney(res.data.journeyData?.[0]);
+        setSections(res.data.sections || []);
         setVideoData(res.data.videoData || []);
         setChurchCards(res.data.churchCards || []);
         setEvents(res.data.events || []);
         setMinistryAreas(res.data.ministryAreas || []);
         setFeatures(res.data.features || { type: "home", data: [] });
-        setSchedule(res.data.schedule || [])
-        setEventData(res.data.eventData || [])
-        setArticles(res.data.articles || [])
+        setSchedule(res.data.schedule || []);
+        setEventData(res.data.eventData || []);
+        setArticles(res.data.articles || []);
       })
-      .catch(err => console.error("Error fetching home content", err));
+      .catch((err) => {
+        if (!isMounted) return;
+        setLoading(false);
+        console.error("Error fetching home content", err);
+      });
+  
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleInputChange = (e, type, index = null, field = null) => {
@@ -176,16 +192,40 @@ const ContentEditing = () => {
         eventData,
         articles
       });
-      alert("Content updated!");
+      setAlert(true)
+      setAlertText("Content updated!");
     } catch (err) {
       console.error(err);
-      alert("Error updating content");
+      setAlert(true)
+      setAlertText("Error updating content");
     }
   };
 
-  if (!journey) return <p>Loading...</p>;
+ 
+   if(loading){
+  return(
+    <div className="loading">
+      <div className="bar bar1"></div>
+       <div className="bar bar2"></div>
+       <div className="bar bar3"></div>
+     </div>
+  ) }
+
+  if(alert){
+    return (
+      <div className="alert_holder">
+      <div className="alert">
+        <p>{alertText}</p>
+        <div onClick={() => setAlert(false)} className="btn">
+          <p>OK</p>
+        </div>
+      </div>
+    </div>
+    );
+  }
 
   return (
+    journey ? 
     <div className="content_form_holder">
       <form className="contentediting-form" onSubmit={handleSubmit}>
         <h1>Journey Data</h1>
@@ -726,7 +766,7 @@ const ContentEditing = () => {
 
         <button className='btn' type="submit"><p>Update Content</p></button>
       </form>
-    </div>
+    </div> : null
   );
 };
 

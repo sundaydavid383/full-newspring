@@ -7,9 +7,6 @@
 }
 .event_card h3{
     color: var(--black);
-    margin-block: .8rem;
-    font-weight: 600;
-    font-size: 1.8rem;
     line-height: 2rem;
 }
 .event_card{
