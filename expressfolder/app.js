@@ -20,6 +20,7 @@ app.use(bodyParser.json({ limit: '30mb' }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 // Serve static files from the "assets" folder
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+const port = process.env.Port
 
 //const peoplePath = path.join(__dirname, "./data.json");
 
@@ -420,7 +421,7 @@ const connectDB = async () => {
     );
     console.log("connected successfuly to mongo");
 
-    app.listen(5001, () => {
+    app.listen(port||5001, () => {
       console.log("listening on port 5001...");
     });
   } catch (error) {
