@@ -32,11 +32,9 @@ import img1 from "../../assets/rccg44.jpg"
 import img2 from "../../assets/rccg10.jpg"
 import img3 from "../../assets/rccg40.jpg"
 import Hero from '../../components/hero/Hero'
-import Nav from '../../components/nav/Nav';
 import Journey from '../../components/journey/Journey';
 import Minareas from '../../components/minareas/Minareas'
 import Articles from "../../components/articles/Articles"
-import Footer from "../../components/footer/Footer"
 import Gallery from '../../components/gallery/Gallery'
 
 

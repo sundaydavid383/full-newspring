@@ -1,5 +1,5 @@
 import React from 'react'
-import "./NoRoute.css"
+import "./noRoute.css"
 import image from "../../assets/noFound.svg"
 import { Link } from 'react-router'
 

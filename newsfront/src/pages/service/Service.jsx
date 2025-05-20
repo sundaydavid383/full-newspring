@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import "./service.css"
 
 import Hero from '../../components/hero/Hero'
-import ServiceTalk from '../../components/serviceTalk/serviceTalk'
+import ServiceTalk from '../../components/serviceTalk/ServiceTalk'
 
 const Service = ({setActive}) => {
   useEffect(() => {

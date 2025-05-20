@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router';
 import Hero from '../../components/hero/Hero';
-import ScrollImage from '../../components/scrollImage/scrollImage';
+import ScrollImage from '../../components/scrollImage/ScrollImage';
 import image1 from "../../assets/rccg83.jpg"
 import image2 from "../../assets/rccg12.jpg"
 import image3 from "../../assets/rccg14.jpg"

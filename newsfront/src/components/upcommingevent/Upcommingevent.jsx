@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import "./Upcommingevent.css";
+import "./upcommingevent.css";
 import { Link } from "react-router";
 
 

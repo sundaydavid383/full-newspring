@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./ContentEditing.css";
+import "./contentEditing.css";
 
 const ContentEditing = () => {
   const [loading, setLoading] = useState(true);
