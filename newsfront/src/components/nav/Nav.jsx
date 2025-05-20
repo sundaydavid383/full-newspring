@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./nav.css"
-import logo from "../../assets/rccglogo.png"
+import logo from "../../assets/logo.png"
 import menu from "../../assets/menu.png"
 import { Link } from 'react-router'
 
@@ -31,7 +31,6 @@ const Nav = ({active}) => {
     <div className={`nav ${fixed ? "navFixed":""}`}>
       <Link to="/" className="logo">
        <img src={logo} alt="" />
-       <h2>Newspring Tim412</h2>
       </Link>
            <ul className={`${seeNav?"active":""}`}>
       <Link onClick={()=>{setSeeNav(prev=>!prev)}} className={`${ active == "home" ? "active":""}`} to="/" ><span></span>Home</Link>

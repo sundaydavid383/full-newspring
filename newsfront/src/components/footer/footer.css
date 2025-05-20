@@ -134,6 +134,7 @@
 .footer .main p {
   font-weight: 300;
   font-size: 0.93rem;
+  margin-top: 2rem;
 }
 .footer .explore {
   display: flex;

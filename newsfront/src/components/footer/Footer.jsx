@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import "./footer.css";
-import logo from "../../assets/rccglogo.png";
+import logo from "../../assets/logo.png";
 import { Link } from "react-router";
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -99,7 +99,6 @@ const Footer = () => {
         <div className="main futup">
           <div className="logo">
             <img src={logo} alt="" />
-            <h2>Newspring TIm412</h2>
           </div>
           <p>
             At Newspring Tim412, we are dedicated to guiding youth towards a

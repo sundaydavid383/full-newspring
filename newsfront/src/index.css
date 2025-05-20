@@ -84,8 +84,8 @@ button {
   animation: bounce 4s forwards;
 }
 .logo img {
-  width: 6.7rem;
-  margin-bottom: -2.7rem;
+  width: 8rem;
+  margin-bottom: -2rem;
 }
 .logo h2 {
    color: var(--white);
