@@ -183,8 +183,9 @@ const ContentEditing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
-      await axios.put("http://localhost:5001/api/update-home-content", {
+      await axios.put(`${base_Url}api/update-home-content`, {
         journeyData: [journey],
         sections,
         videoData,
@@ -197,10 +198,12 @@ const ContentEditing = () => {
         articles
       });
       setAlert(true)
+      setLoading(false)
       setAlertText("Content updated!");
     } catch (err) {
       console.error(err);
       setAlert(true)
+      setLoading(false)
       setAlertText("Error updating content");
     }
   };
@@ -232,7 +235,19 @@ const ContentEditing = () => {
     journey ? 
     <div className="content_form_holder">
       <form className="contentediting-form" onSubmit={handleSubmit}>
-        <h1>Journey Data</h1>
+        <ul className='content-nav'>
+      <li><a href="#JourneyData">JourneyData</a></li>
+      <li><a href="#Sections">Sections</a></li>
+      <li><a href="#VideoData">VideoData</a></li>
+      <li><a href="#ChurchCards">ChurchCards</a></li>
+      <li><a href="#Events">Events</a></li>
+      <li><a href="#MinistryAreas">MinistryAreas</a></li>
+      <li><a href="#Features">Features</a></li>
+      <li><a href="#Schedule">Schedule</a></li>
+      <li><a href="#UpcomingEvent">UpcomingEvent</a></li>
+      <li><a href="#Articles">Articles</a></li>
+       </ul>
+      <h1 id="JourneyData">Journey Data</h1>
         <h2>Journey Title</h2>
         <label htmlFor="journey-title">Title:</label>
         <input
@@ -310,7 +325,7 @@ const ContentEditing = () => {
           />
         </div>
 
-        <h1>Sections</h1>
+        <h1 id="Sections">Sections</h1>
         {sections.map((sec, idx) => (
           <div key={idx}>
             <div>
@@ -342,7 +357,7 @@ const ContentEditing = () => {
           </div>
         ))}
 
-        <h1>Video Data</h1>
+        <h1 id="VideoData">Video Data</h1>
         <img src={videoData.src} alt="" width="200" />
         <div>
           <label htmlFor="video-src">Image Source:</label>
@@ -388,7 +403,7 @@ const ContentEditing = () => {
           ))}
         </div>
 
-        <h1>Church Cards</h1>
+            <h1 id="ChurchCards">Church Cards</h1>
         {churchCards.map((card, idx) => (
           <div key={idx}>
             <img src={card.image} alt={card.alt} width="200" />
@@ -430,7 +445,7 @@ const ContentEditing = () => {
           </div>
         ))}
 
-        <h1>Events</h1>
+    <h1 id="Events">Events</h1>
         {events.map((event, i) => (
           <div key={i}>
             <div>
@@ -483,7 +498,7 @@ const ContentEditing = () => {
         ))}
 
 
-<h1>ministry Areas</h1>
+<h1 id="MinistryAreas">Ministry Areas</h1>
 {ministryAreas.map((area, index) => (
   <div key={index}>
     <div>
@@ -520,7 +535,7 @@ const ContentEditing = () => {
   </div>
 ))}
 
-<h1>features</h1>
+<h1 id="Features">Features</h1>
 {features.data.map((feature, index) => (
   <div key={index}>
     <div>
@@ -555,7 +570,7 @@ const ContentEditing = () => {
 ))}
 
 
-<h1>schedule</h1>
+<h1 id="Schedule">Schedule</h1>
 <div className="space-y-4">
       {schedule.map((item, index) => (
         <div key={index} className="bg-white p-4 rounded shadow space-y-2">
@@ -602,7 +617,7 @@ const ContentEditing = () => {
 
 
 <div className="space-y-4 bg-white p-4 rounded shadow mt-6">
-  <h2 className="text-2xl font-bold mb-4">Edit Upcoming Event</h2>
+  <h1 id="UpcomingEvent" className="text-2xl font-bold mb-4">Edit Upcoming Event</h1>
 
   {/* Event Title */}
   <input
@@ -669,7 +684,7 @@ const ContentEditing = () => {
 
 
 <div className="space-y-6">
-<h1 className="text-3xl font-bold mb-6">Edit Articles</h1>
+<h1 id="Articles" className="text-3xl font-bold mb-6">Edit Articles</h1>
 
 {articles.map((article, articleIndex) => (
   <div key={article.id} className="p-4 border border-gray-300 rounded-lg bg-white space-y-4">

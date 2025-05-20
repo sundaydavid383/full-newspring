@@ -125,8 +125,8 @@ const Journey = ({ journeyData }) => {
           </div>
           <div className="journey_image observe">
               {item.images.map((image, i) => (
-            <div className={image.className}>
-               <img key={i} src={image.src} alt={image.alt}  />
+            <div key={i} className={image.className}>
+               <img  src={image.src} alt={image.alt}  />
             </div>
   
           ))}

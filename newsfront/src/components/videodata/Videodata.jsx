@@ -36,7 +36,7 @@ const Videodata = ({ videoData }) => {
         <img className="VDimage" src={videoData.src} alt="" />
         <small></small>
         <span onClick={() => setSeeVideo(true)}>
-        <i class="fa-solid fa-play"></i>
+        <i className="fa-solid fa-play"></i>
         </span>
       </div>
       {seeVideo ? (
