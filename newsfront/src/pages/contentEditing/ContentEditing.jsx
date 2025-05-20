@@ -16,12 +16,12 @@ const ContentEditing = () => {
   const [schedule, setSchedule] = useState([]);
   const [eventData, setEventData] = useState([]);
   const [articles, setArticles] = useState([]);
-
+  const base_Url = 'https://full-newspring.onrender.com/'
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
   
-    axios.get("http://localhost:5001/api/home-content")
+    axios.get(`${base_Url}api/home-content`)
       .then((res) => {
         if (!isMounted) return;
         setLoading(false);

@@ -23,6 +23,7 @@ const App = () => {
   
   const [active, setActive] = useState("");
   const [dataBase, setDataBase] = useState([])
+  const base_Url = 'https://full-newspring.onrender.com/'
 
     const scrollTop = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
