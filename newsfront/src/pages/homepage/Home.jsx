@@ -41,30 +41,11 @@ import Upcommingevent from "../../components/upcommingevent/Upcommingevent";
 import Leaders from "../../components/leaders/Leaders";
 import Articles from "../../components/articles/Articles";
 import Videodata from "../../components/videodata/Videodata";
-import { getSection } from "../../dependencies/homecontentSection";
 
-const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
-  const [homedata, setHomeData] = useState({});
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchSections = async () => {
-      try {
-        const data = await getSection();
-        setHomeData(data);
-      console.log(data)
-      } catch (error) {
-        console.error("Failed to fetch sections:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-   
+const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
 
-    fetchSections();
-  }, []);
 
-    
   const videoData = homedata.videoData
   const journeyData = homedata.journeyData
   const churchCards = homedata.churchCards;
@@ -392,11 +373,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad}) => {
 
   console.log("database in Home.jsx",dataBase )
 
-  if (loading) return  <div className="loading">
-  <div className="bar bar1"></div>
-  <div className="bar bar2"></div>
-  <div className="bar bar3"></div>
-</div>;
+
   return (
     <div>
       <Hero sections={homedata.sections} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />

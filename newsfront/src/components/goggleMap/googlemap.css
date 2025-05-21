@@ -5,6 +5,10 @@
     display: flex;
     flex-direction: column;
     font-weight: 500;
+    align-items: center;
     gap:3rem;
     font-size: 1.2rem;
+}
+.map .text a{
+    color: var(--brown)
 }

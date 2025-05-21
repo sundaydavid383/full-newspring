@@ -17,21 +17,40 @@ import Retreat from "./pages/retreat/Retreat";
 import ContentEditing from "./pages/contentEditing/ContentEditing";
 import Test from "./Test";
 import Test2 from "./Test2";
+import { getSection } from "../src/dependencies/homecontentSection";
 
 
 const App = () => {
   
   const [active, setActive] = useState("");
-  const [dataBase, setDataBase] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [dataBase, setDataBase] = useState([]);
+  const [homedata, setHomeData] = useState({});
   const base_Url = 'https://full-newspring.onrender.com/'
 
     const scrollTop = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+      useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const data = await getSection();
+        setHomeData(data);
+      console.log(data)
+      } catch (error) {
+        console.error("Failed to fetch sections:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+   
+
+    fetchSections();
+  }, []);
     const onLoad = async ()=>{
       try {
-        const response = await fetch('http://localhost:5001/api/people')
+        const response = await fetch(`${base_Url}api/people`)
         const data = await response.json()
         console.log(data)
         setDataBase(data.data)
@@ -45,18 +64,29 @@ const App = () => {
       onLoad()
     }, [])
     console.log("database at App.jsx", dataBase)
-
+     
+    window.onerror = function(message, source, lineno, colno, error) {
+  fetch(`${base_Url}log`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, source, lineno, colno, error: error?.stack })
+  });
+};
     
   
-
+    if (loading) return  <div className="loading">
+    <div className="bar bar1"></div>
+    <div className="bar bar2"></div>
+    <div className="bar bar3"></div>
+  </div>;
   return (
     <div>
      
       <Nav active={active} />
       <Routes>
-        <Route path="/" element={<Home setActive={setActive} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />} />
+        <Route path="/" element={<Home setActive={setActive} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} homedata={homedata} />} />
         <Route path="/about" element={<About setActive={setActive} />} />
-        <Route path="/contact" element={<Contact setActive={setActive} />} />
+        <Route path="/contact" element={<Contact/>} />
         <Route path="/services" element={<Service setActive={setActive} />} />
         <Route path="/worshipnight" element={<WorshipNight />} />
         <Route path="/biblestudy" element={<BibleStudy />} />

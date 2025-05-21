@@ -1,19 +1,45 @@
-import React from 'react';
+import React from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import "./googlemap.css";
 
+// Fix for marker icons (Vite compatible)
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
+  iconUrl:
+    new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+  shadowUrl:
+    new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
+});
+
 const GoogleMap = () => {
+  // Coordinates for 332 Ikorodu Road, Lagos (approximate)
+  const churchPosition = [6.5643487, 3.3676279]; // Updated to match the real-world address
+
   return (
-    <div className='map container_flex_around'>
-      <p>Reload if there is no map</p>
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.6618169560543!2d3.364656674359608!3d6.564300622689191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8d88f6105f45%3A0x9816a89e9be63dc4!2sCapital%20Building%2C%20332%20Ikorodu%20Rd%2C%20Anthony%2C%20Lagos%20105102%2C%20Lagos!5e0!3m2!1sen!2sng!4v1737748453297!5m2!1sen!2sng"
-        width="100%"
-        height="500"
-        style={{ border: 0 }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-      />
+    <div className="map">
+      <div className="text">
+        Click <a href="https://www.google.com/maps/place/332+Ikorodu+Rd,+Lagos/" target="_blank" rel="noopener noreferrer">here</a> to navigate to Google Maps
+      </div>
+
+      <div style={{ height: "90vh", width: "100%" }}>
+        <MapContainer
+          center={churchPosition}
+          zoom={16}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <Marker position={churchPosition}>
+            <Popup>RCCG Newspring Church</Popup>
+          </Marker>
+        </MapContainer>
+      </div>
     </div>
   );
 };

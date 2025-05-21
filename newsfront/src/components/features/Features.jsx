@@ -52,8 +52,8 @@ const Features = ({features, featuresTitle, featuresTitleSmall}) => {
     <div className="feature_text">
     <h3>{feature.title}</h3>
     <div className="description_text_container">
-    {feature.description.map((description)=>(
-      <div className="description_text">
+    {feature.description.map((description,i)=>(
+      <div key={i} className="description_text">
       <small>{description.descrpSpan}</small> <p>{description.descrpText}</p>
       </div>
     ))}

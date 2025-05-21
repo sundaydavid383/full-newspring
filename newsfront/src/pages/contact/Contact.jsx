@@ -6,7 +6,7 @@ import ContactForm from '../../components/contactForm/ContactForm';
 import img1 from "../../assets/rccg66.jpg";
 
 
-const Contact = ({setActive}) => {
+const Contact = () => {
       useEffect(() => {
         window.scrollTo({top:0})
       
@@ -96,7 +96,7 @@ const Contact = ({setActive}) => {
     
     const featuresTitle = "Contact Us Now";
     const featuresTitleSmall = "Have questions or need assistance? We're here to help. Reach out to us through any of the methods below, and let’s stay connected.";
-      setActive("contact")
+      
   return (
     <>
        
