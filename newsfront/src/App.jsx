@@ -69,7 +69,7 @@ const App = () => {
   fetch(`${base_Url}log`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, source, lineno, colno, error: error?.stack })
+    body: JSON.stringify({ message, source, lineno, colno, error: error?.stack }),
   });
 };
     

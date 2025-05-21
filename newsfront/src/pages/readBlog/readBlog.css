@@ -316,9 +316,9 @@ margin-right: 0rem;
 }
 }
 @media (max-width: 690px) {
-  body{
+  /* body{
     background: red;
-   }
+   } */
    .readBlog_holder {
     display: flex;
     flex-direction: column;
