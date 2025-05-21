@@ -127,6 +127,39 @@ app.put("/api/update-home-content", (req, res) => {
 });
 
 
+
+app.post('/log', (req,res)=>{
+  const logData = req.body;
+
+  //format the log entry
+  const logEntry = `
+  [${new Date().toISOString()}] ERROR:
+  Message: ${logData.message}
+  Source: ${logData.source}
+  Line: ${logData.lineno}, Column:${logData.colno}
+  Stack: ${logData.error || 'No stack trace'}
+  ............................
+  `;
+
+  // Append log entry to a file (logs/errors.log)
+  const logFilePath = path.join(__dirname, 'logs', 'errors.log')
+
+  //Ensure the logs directory exists
+  fs.mkdir(path.join(__dirname, 'logs'), {recursive:true}, (err)=>{
+    if(err){
+      console.error('Could not create logs dirctory:', err);
+      return res.status(500).send('Could not create logs dirctory');
+    }
+
+    fs.appendFile(logFilePath, logEntry, (err)=> {
+      if(err){
+        console.error('Failed to write log:', err);
+        return res.status(500).send('Internal server Error')
+      }
+      res.status(200).send('log recieved')
+    })
+  })
+})
 app.get("/api/people", async (req, res) => {
   try {
     const people = await User.find({});
