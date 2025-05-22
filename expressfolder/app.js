@@ -15,6 +15,7 @@ const { spawn } = require("child_process");
 const appPassword = "yvil cmib rtwc mfzl";
 const homeContent = require("./data/homeContent");
 
+
 app.use(cors());
 app.use(bodyParser.json({ limit: '30mb' }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
@@ -379,30 +380,8 @@ const harsFirstPassword = async () => {
 harsFirstPassword();
 
 //python speak
-app.post("/speak/after/registration", (req, res) => {
-  const { firstname, phone, email } = req.body;
-
-  let pythonProcess;
-
-  setTimeout(() => {
-    pythonProcess = spawn("python", ["speak.py", firstname, phone, email]);
-  }, 5001);
-
-  pythonProcess.stdout.on("data", (data) => {
-    console.log(`Python data: ${data.toString()}`);
-    //send response only if not already sent
-    if (!res.headersSent) {
-      res.status(200).json({ message: data.toString().trim() });
-    }
-  });
-  pythonProcess.stderr.on("data", (data) => {
-    console.log(`Python Error: ${data.toString()}`);
-    //send response onlu if not already sent
-    if (!res.headersSent) {
-      res.status(500).json({ error: data.toString() });
-    }
-  });
-});
+const speakAfterRegistration = require("./service/afterRegistration")
+app.use("/speak", speakAfterRegistration);
 
 app.post("/password", async (req, res) => {
   try {
