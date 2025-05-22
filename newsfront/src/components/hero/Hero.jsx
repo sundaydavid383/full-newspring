@@ -79,6 +79,7 @@ const Hero = ({
   const handleLearnMore = () => {
     window.scrollBy({ top: 600, behavior: "smooth" });
   };
+  const base_Url = 'https://full-newspring.onrender.com/'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -291,7 +292,7 @@ const Hero = ({
 
   const speakAfterRegistration = async () => {
     const response = await fetch(
-      "http://localhost:5001/speak/after/registration",
+      `${base_Url}speak/after/registration`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -310,7 +311,7 @@ const Hero = ({
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:5001/sendmessage/oncreated",
+        `${base_Url}sendmessage/oncreated`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

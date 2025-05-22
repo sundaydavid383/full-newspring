@@ -6,6 +6,7 @@ import "./contactForm.css";
 const ContactForm = ({contactFormData}) => {
   const [emailStatus, setEmailStatus] = useState("")
   const [loading, setLoading] = useState(false)
+  const base_Url = 'https://full-newspring.onrender.com/'
   const [seeEmailStatus, setseeEmailStatus] = useState(false)
   const [formData, setformData] = useState({
     firstname: "",
@@ -29,7 +30,7 @@ const ContactForm = ({contactFormData}) => {
     e.preventDefault()
 
     try {
-      const response = await fetch("http://localhost:5001/sendmessage/oncontact",{
+      const response = await fetch(`${base_Url}sendmessage/oncontact`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({name:formData.firstname, email:formData.email, message:formData.message})
