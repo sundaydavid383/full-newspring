@@ -14,6 +14,7 @@ const bodyParser = require("body-parser")
 const { spawn } = require("child_process");
 const appPassword = "yvil cmib rtwc mfzl";
 const homeContent = require("./data/homeContent");
+const fetch = require('node-fetch');
 
 
 app.use(cors());
@@ -379,6 +380,40 @@ const harsFirstPassword = async () => {
 };
 harsFirstPassword();
 
+
+
+// This is the endpoint React will call
+
+app.post('/api/getverse', (req, res) => {
+  const { mood } = req.body;
+
+  if (!mood) {
+    return res.status(400).json({ error: 'No mood provided' });
+  }
+
+  const pythonProcess = spawn('python', ['speak.py', mood]);
+
+  let verse = '';
+  let error = '';
+
+  pythonProcess.stdout.on('data', (data) => {
+    verse += data.toString();
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    error += data.toString();
+  });
+
+  pythonProcess.on('close', (code) => {
+    if (code !== 0 || error) {
+      console.error('Python error:', error);
+      return res.status(500).json({ error: 'Error from Python script' });
+    }
+
+    res.json({ verse: verse.trim() });
+  });
+});
+
 //python speak
 const speakAfterRegistration = require("./service/afterRegistration")
 app.use("/speak", speakAfterRegistration);
@@ -442,3 +477,19 @@ const connectDB = async () => {
 };
 
 connectDB();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

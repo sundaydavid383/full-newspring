@@ -1,35 +1,27 @@
-import pyttsx3
 import sys
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.neighbors import NearestNeighbors
 
+# Load data
+df = pd.read_csv('data/bible_verses.csv')
+moods = df['mood']
+verses = df['verse']
 
-firstname = sys.argv[1]
-phone = sys.argv[2]
-email = sys.argv[3]
+# Vectorize moods
+vectorizer = TfidfVectorizer()
+x = vectorizer.fit_transform(moods)
 
-ttsEngine = pyttsx3.init()
+# Nearest neighbor model
+model = NearestNeighbors(n_neighbors=1, metric='cosine')
+model.fit(x)
 
-
-# create message
-message = f"""
-Dear {firstname},  
-
-Welcome to RCCG Newspring Youth Church! We are delighted to have you join our community of faith, growth, and purpose.  
-
-At Newspring, we believe that every individual has a divine calling, and we are committed to helping you grow spiritually, build meaningful connections, and make a positive impact.  
-
-As you embark on this journey with us, know that you are not alone. We are here to support, pray with, and walk alongside you.  
-
-May this new chapter bring you closer to God’s purpose for your life.  
-
-God bless you, and once again, welcome to the family!  
-
-**Warm regards,**  
-RCCG Newspring Youth Church Team  
-"""
-
-ttsEngine.say(message)
-ttsEngine.runAndWait()
-
-print(message)
-
-
+# Get user mood from command line
+if len(sys.argv) > 1:
+    user_mood = sys.argv[1]
+    mood_vec = vectorizer.transform([user_mood])
+    dist, idx = model.kneighbors(mood_vec)
+    verse = verses.iloc[idx[0][0]]
+    print(verse)
+else:
+    print("No mood provided")

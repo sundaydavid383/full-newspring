@@ -80,7 +80,7 @@ useEffect(() => {
       <i className="fa-solid fa-calendar-days"></i> {eventData.dateTime}
     </p>
     <p>
-      <i className="fa-solid fa-location-dot"></i> {eventData.location} {eventData.datelogic} 
+      <i className="fa-solid fa-location-dot"></i> {eventData.location}
     </p>
     <div className="countdown">
       <div className="div"><p>Day</p><span>{String(time.days).padStart(2, "0")}</span></div>

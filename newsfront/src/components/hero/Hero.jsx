@@ -273,7 +273,7 @@ const Hero = ({
         formData.phone
       );
   
-      speakAfterRegistration();
+      
   
       setFormData({
         firstName: "",
@@ -290,19 +290,27 @@ const Hero = ({
     }
   };
 
-  const speakAfterRegistration = async () => {
-      try{
-       const response = await fetch(`http://localhost:5001/speak/after/registration`)
-       const data = await response.json();
-       if(data && data.speech){
-        const speech = new SpeechSynthesisUtterance(data.speech);
-        window.speechSynthesis.speak(speech)
-       }
-      }
-      catch(error){
-        console.error("Failed to fetch and speak:", error)
-      }
-  };
+ const speakAfterRegistration = async (
+  firstname, lastname, email, phone,
+  age, school, occupation, hobbies,
+  heardAboutUs, interest
+) => {
+  try {
+    const response = await fetch(`http://localhost:5001/speak/after/registration`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstname, lastname, email, phone, age, school, occupation, hobbies, heardAboutUs, interest })
+    });
+
+    const data = await response.json();
+    if (data && data.speech) {
+      const speech = new SpeechSynthesisUtterance(data.speech);
+      window.speechSynthesis.speak(speech);
+    }
+  } catch (error) {
+    console.error("Failed to fetch and speak:", error);
+  }
+};
 
   const sendMail = async (firstname, lastname, email, phone) => {
     try {
@@ -320,6 +328,7 @@ const Hero = ({
       }
       setLoading(false);
       const data = response.json();
+     
       setSentEmail(true);
       console.log(data.message);
     } catch (error) {
@@ -388,7 +397,18 @@ const Hero = ({
         );
         setSeeEmailStatus(true);
       }
-  
+        speakAfterRegistration( 
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        formData.phone,
+        formData.age,
+        formData.school,
+        formData.occupation,
+        formData.hobbies,
+        formData.heardAboutUs,
+        formData.interest
+        );
       onLoad();
       setDataBase(data.data);
     } catch (error) {

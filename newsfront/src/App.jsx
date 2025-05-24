@@ -14,6 +14,7 @@ import BlogGrid from "./pages/bloggrid/BlogGrid";
 import NoRoute from "./pages/noRoute/NoRoute";
 import DataBase from "./pages/dataBase/DataBase";
 import Retreat from "./pages/retreat/Retreat";
+import BottomMoodBox from "./components/bottommoodBox/BottomMoodBox"
 import ContentEditing from "./pages/contentEditing/ContentEditing";
 import Test from "./Test";
 import Test2 from "./Test2";
@@ -81,6 +82,7 @@ const App = () => {
   </div>;
   return (
     <div>
+      <BottomMoodBox/>
      
       <Nav active={active} />
       <Routes>
