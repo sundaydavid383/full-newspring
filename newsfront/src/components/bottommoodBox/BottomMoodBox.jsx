@@ -293,6 +293,7 @@ const moodVerseMap = {
   };
 
   const handleSelect = (mood) => {
+
     setInputMood(mood);
     setFilteredMoods([]);
     setVerse(moodVerseMap[mood] || 'No verse found.');
@@ -321,7 +322,7 @@ const moodVerseMap = {
             ))}
           </ul>
         )}
-        <form onSubmit={()=>handleSelect(inputMood)} className="box_form">
+        <form onSubmit={(e)=>{e.preventDefault(); handleSelect(inputMood)}} className="box_form">
             <input
           type="text"
           value={inputMood}
