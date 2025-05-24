@@ -19,7 +19,24 @@
    line-height: 1.9rem;
    font-size: 1.3rem;
 }
-
+.box_form{
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding-right: 1rem;
+}
+.box_form button{
+  color: var(--brown);
+  cursor: pointer;
+  font-size: 1.52rem;
+  transition: .3s;
+  padding: .3rem;
+  border-radius: 50%;
+  width: 3rem;
+}
+.box_form button:hover{
+   color: var(--gold)
+}
 .woman{
   position: fixed;
   bottom: .2rem;
@@ -69,8 +86,7 @@
   width: 100%;
   padding: 0.7rem 1rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+
   outline: none;
   box-sizing: border-box;
 }
@@ -111,6 +127,9 @@
   font-style: italic;
   font-size: 0.95rem;
   border-radius: 6px;
+  position: relative;
+  max-height: 10rem;
+  overflow-y: scroll;
   color: #333;
 }
 .verse img{

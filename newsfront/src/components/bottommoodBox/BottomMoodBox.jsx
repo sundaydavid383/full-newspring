@@ -18,6 +18,22 @@ const moods = [
 ];
 
 const moodVerseMap = {
+            joyless: `Psalm 51:10–12 - Create in me a clean heart, O God; and renew a right spirit within me.  
+             Cast me not away from thy presence; and take not thy holy spirit from me.  
+             Restore unto me the joy of thy salvation; and uphold me with thy free spirit.
+             
+             John 15:9–11 - As the Father hath loved me, so have I loved you: continue ye in my love.  
+             If ye keep my commandments, ye shall abide in my love; even as I have kept my Father's commandments, and abide in his love.  
+             These things have I spoken unto you, that my joy might remain in you, and that your joy might be full.
+             
+             Isaiah 61:3 - To appoint unto them that mourn in Zion, to give unto them beauty for ashes, the oil of joy for mourning,  
+             the garment of praise for the spirit of heaviness; that they might be called trees of righteousness,  
+             the planting of the LORD, that he might be glorified.
+             
+             Nehemiah 8:10 - ...for the joy of the LORD is your strength.
+
+            Psalm 30:5 - For his anger endureth but a moment; in his favour is life:  
+            weeping may endure for a night, but joy cometh in the morning`,
             sad: `Psalm 34:18 - The Lord is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.  
              Revelation 21:4 - And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away.  
              John 16:20 - Verily, verily, I say unto you, That ye shall weep and lament, but the world shall rejoice: and ye shall be sorrowful, but your sorrow shall be turned into joy.  
@@ -305,12 +321,16 @@ const moodVerseMap = {
             ))}
           </ul>
         )}
-        <input
+        <form onSubmit={()=>handleSelect(inputMood)} className="box_form">
+            <input
           type="text"
           value={inputMood}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Hey Dear how are you feeling today"
+          placeholder="joyful, anxious, or grateful."
         />
+        <button type="submit"><i className="fa-solid fa-paper-plane"></i></button>
+        </form>
+      
        
         {verse && <p className="verse"><img src={woman}/>{verse}</p>}
       </div>
