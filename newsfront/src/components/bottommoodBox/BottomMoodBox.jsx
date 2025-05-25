@@ -13,7 +13,7 @@ const moods = [
   "trusted", "hope-drained", "faithful", "rejected", "anguished", "fulfilled", "patient", "lively", "low", "exhausted",
   "inspired", "conflicted", "fulfilled", "brave", "ashamed", "joyless", "panicked", "alert", "attentive", "distant",
   "brokenhearted", "worried", "loved", "cheerful", "afraid", "healing", "redeemed", "renewed", "stressed", "distracted",
-  "watchful", "tempted", "sleepy", "warm", "cold", "withdrawn", "alert", "foolish", "wise", "growing",
+  "watchful", "sleepy", "warm", "cold", "withdrawn", "alert", "foolish", "wise", "growing",
   "lost", "found", "secure", "unloved", "focused", "protective", "determined", "faithless", "unforgiving", "diligent"
 ];
 
@@ -37,8 +37,12 @@ const moodVerseMap = {
             sad: `Psalm 34:18 - The Lord is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.  
              Revelation 21:4 - And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away.  
              John 16:20 - Verily, verily, I say unto you, That ye shall weep and lament, but the world shall rejoice: and ye shall be sorrowful, but your sorrow shall be turned into joy.  
-             Psalm 147:3 - He healeth the broken in heart, and bindeth up their wounds.`,  
-            joyful: `Nehemiah 8:10 - Then he said unto them, Go your way, eat the fat, and drink the sweet, and send portions unto them for whom nothing is prepared: for this day is holy unto our Lord: neither be ye sorry; for the joy of the LORD is your strength.`,
+             Psalm 147:3 - He healeth the broken in heart, and bindeth up their wounds.`,
+
+            joyful: `Nehemiah 8:10 - Then he said unto them, Go your way, eat the fat, and drink the sweet, and send portions unto them for whom nothing is prepared: for this day is holy unto our Lord: neither be ye sorry; for the joy of the LORD is your strength.
+            Psalm 16:11 - Thou wilt shew me the path of life: in thy presence is fulness of joy; 
+          at thy right hand there are pleasures for evermore.
+          Philippians 4:4 - Rejoice in the Lord alway: and again I say, Rejoice.`,
 
             peaceful: `Isaiah 26:3 - Thou wilt keep him in perfect peace, whose mind is stayed on thee: because he trusteth in thee.
             John 14:27 - Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. 
@@ -60,7 +64,9 @@ const moodVerseMap = {
 
             tempted: `1 Corinthians 10:13 - There hath no temptation taken you but such as is common to man: but God is faithful, who will not suffer you to be tempted above that ye are able;  
           but will with the temptation also make a way to escape, that ye may be able to bear it.  
-          James 1:12 - Blessed is the man that endureth temptation: for when he is tried, he shall receive the crown of life, which the Lord hath promised to them that love him.`,
+          James 1:12 - Blessed is the man that endureth temptation: for when he is tried, he shall receive the crown of life, which the Lord hath promised to them that love him.
+          Hebrews 4:15 - For we have not an high priest which cannot be touched with the feeling of our infirmities; 
+          but was in all points tempted like as we are, yet without sin.`,
 
             hopeful: `Romans 15:13 - Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope, through the power of the Holy Ghost.`,
 
@@ -169,9 +175,6 @@ const moodVerseMap = {
 
             strong: `Philippians 4:13 - I can do all things through Christ which strengtheneth me.`,
 
-            joyful: `Psalm 16:11 - Thou wilt shew me the path of life: in thy presence is fulness of joy; 
-          at thy right hand there are pleasures for evermore.`,
-
           mourning: `Matthew 5:4 - Blessed are they that mourn: for they shall be comforted.
           Psalm 34:18 - The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.`,
 
@@ -203,9 +206,6 @@ const moodVerseMap = {
             unlovable: `Romans 8:38-39 - For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, 
           nor things present, nor things to come, nor height, nor depth, nor any other creature, 
           shall be able to separate us from the love of God, which is in Christ Jesus our Lord.`,
-
-            tempted: `Hebrews 4:15 - For we have not an high priest which cannot be touched with the feeling of our infirmities; 
-          but was in all points tempted like as we are, yet without sin.`,
 
             bitter: `Hebrews 12:15 - Looking diligently lest any man fail of the grace of God; 
           lest any root of bitterness springing up trouble you, and thereby many be defiled.`,
@@ -248,9 +248,6 @@ const moodVerseMap = {
             distracted: `Luke 10:41-42 - And Jesus answered and said unto her, Martha, Martha, thou art careful and troubled about many things: 
           But one thing is needful: and Mary hath chosen that good part, which shall not be taken away from her.`,
 
-
-
-            joyful: `Philippians 4:4 - Rejoice in the Lord alway: and again I say, Rejoice.`,
 
             watchful: `1 Peter 5:8 - Be sober, be vigilant; because your adversary the devil, as a roaring lion, 
           walketh about, seeking whom he may devour.`,

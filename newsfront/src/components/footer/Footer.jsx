@@ -4,6 +4,7 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router";
 const Footer = () => {
   const [email, setEmail] = useState("");
+    const base_Url = 'https://full-newspring.onrender.com/'
   const observer = useRef(null);
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -27,36 +28,66 @@ const Footer = () => {
       }
     };
   }, []);
-  const onSubmit = (e)=>{
-    const updateReciever = document.querySelector(".updateReciever")
-    const emailLb = document.getElementById("emailLb");
-    const regEmail = /^[A-Za-z0-9%._+-]{2,}@[A-Za-z0-9\-]{2,}\.[A-Za-z]{2,}$/;
-    e.preventDefault();
 
-    if (email === "") {
-      emailLb.classList.add("alert");
+  
+const onSubmit = async (e) => {
+  const updateReciever = document.querySelector(".updateReciever");
+  const emailLb = document.getElementById("emailLb");
+  const regEmail = /^[A-Za-z0-9%._+-]{2,}@[A-Za-z0-9\-]{2,}\.[A-Za-z]{2,}$/;
+
+  e.preventDefault();
+
+  if (email === "") {
+    emailLb.classList.add("alert");
+    emailLb.textContent = "enter your email";
+    setTimeout(() => {
+      emailLb.classList.remove("alert");
+    }, 200);
+    return;
+  } else if (!regEmail.test(email)) {
+    emailLb.classList.add("alert");
+    emailLb.textContent = "enter a valid email address";
+    setTimeout(() => {
+      emailLb.classList.remove("alert");
+    }, 2000);
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5001/api/subscribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      updateReciever.classList.add("active");
       setTimeout(() => {
-        emailLb.classList.remove("alert");
-      }, 200);
-      emailLb.textContent = "enter your email"
-      return;
-    }
-    else if(!regEmail.test(email)){
+        updateReciever.classList.remove("active");
+      }, 7000);
+
+      emailLb.textContent = "";
+      setEmail("");
+    } else {
       emailLb.classList.add("alert");
+      emailLb.textContent = data.message || "Subscription failed";
       setTimeout(() => {
         emailLb.classList.remove("alert");
       }, 2000);
-      emailLb.textContent = "enter a valid email address"
-      return;
     }
-    
-    updateReciever.classList.add("active")
+  } catch (error) {
+    emailLb.classList.add("alert");
+    emailLb.textContent = "Network error";
     setTimeout(() => {
-      updateReciever.classList.remove("active")
-    }, 7000);
-          emailLb.textContent = ""
-          setEmail("")
+      emailLb.classList.remove("alert");
+    }, 2000);
+    console.error("Error submitting email:", error);
   }
+};
 
   return (
     <div className="footer ">
@@ -80,8 +111,8 @@ const Footer = () => {
           </button>
         </form>
         <div className="updateReciever">
-          <span>You will now be receiving updates from us</span>
-          <div onClick={()=>{document.querySelector(".updateReciever").classList.remove("active")}} className="btn"><p>Thank You</p></div>
+         <span>Welcome aboard! You're now subscribed to our newsletter. Stay tuned for updates and inspiration.</span>
+         <div onClick={()=>{document.querySelector(".updateReciever").classList.remove("active")}} className="btn"><p>Thank You</p></div>
         </div>
         <div className="socials">
           <Link target="_blank" to="https://www.facebook.com/RCCGNewSprings">

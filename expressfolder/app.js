@@ -414,6 +414,13 @@ app.post('/api/getverse', (req, res) => {
   });
 });
 
+
+
+//// ==========================
+///=================================newsletter subscription and messging
+const subscriberRoutes = require('./service/subscribe');
+
+app.use(subscriberRoutes);
 //python speak
 const speakAfterRegistration = require("./service/afterRegistration")
 app.use("/speak", speakAfterRegistration);
