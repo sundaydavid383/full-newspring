@@ -13,11 +13,18 @@ const moods = [
   "trusted", "hope-drained", "faithful", "rejected", "anguished", "fulfilled", "patient", "lively", "low", "exhausted",
   "inspired", "conflicted", "fulfilled", "brave", "ashamed", "joyless", "panicked", "alert", "attentive", "distant",
   "brokenhearted", "worried", "loved", "cheerful", "afraid", "healing", "redeemed", "renewed", "stressed", "distracted",
-  "watchful", "sleepy", "warm", "cold", "withdrawn", "alert", "foolish", "wise", "growing",
+  "watchful", "sleepy", "warm", "cold", "withdrawn", "alert", "foolish", "wise", "growing","lustful","tempted",
   "lost", "found", "secure", "unloved", "focused", "protective", "determined", "faithless", "unforgiving", "diligent"
 ];
 
 const moodVerseMap = {
+            lustful:`  Matthew 5:28 - But I say unto you, That whosoever looketh on a woman to lust after her hath committed adultery with her already in his heart.,
+             Job 31:1 - I made a covenant with mine eyes; why then should I think upon a maid?,
+             2 Timothy 2:22 - Flee also youthful lusts: but follow righteousness, faith, charity, peace, with them that call on the Lord out of a pure heart.`,
+            tempted: `1 Corinthians 10:13 - There hath no temptation taken you but such as is common to man: but God is faithful, who will not suffer you to be tempted above that ye are able; but will with the temptation also make a way to escape, that ye may be able to bear it.,
+             James 1:14-15 - But every man is tempted, when he is drawn away of his own lust, and enticed. Then when lust hath conceived, it bringeth forth sin: and sin, when it is finished, bringeth forth death.,
+             Hebrews 4:15 - For we have not an high priest which cannot be touched with the feeling of our infirmities; but was in all points tempted like as we are, yet without sin.,
+             Galatians 5:16 - This I say then, Walk in the Spirit, and ye shall not fulfil the lust of the flesh.`,
             joyless: `Psalm 51:10–12 - Create in me a clean heart, O God; and renew a right spirit within me.  
              Cast me not away from thy presence; and take not thy holy spirit from me.  
              Restore unto me the joy of thy salvation; and uphold me with thy free spirit.
