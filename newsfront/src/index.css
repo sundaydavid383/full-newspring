@@ -74,6 +74,7 @@ body {
   color: var(--black);
   background: var(--gold);
   box-shadow: 0px 0px 10px 5px var(--brown);
+  transform: scale(1.2);
 }
 input,
 button {
