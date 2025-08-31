@@ -21,10 +21,10 @@
  row-gap: 3rem;
 }
 .database .user-card{
-    width: 30rem;
+    width: 20rem;
     box-shadow: var(--box-shadow);
     border-radius: 1rem;
-    padding: .7rem;
+    padding: .4rem;
     justify-content: space-around;
     background: var(--white);
 }
@@ -38,7 +38,7 @@
     border-top: 1px solid var(--black);
     border-inline: 1px solid var(--black);
     justify-content: space-between;
-    padding: .7rem;
+    padding: .5rem;
 }
 .database .user-actions{
     border: 0;
@@ -46,7 +46,7 @@
 }
 .database .user-card strong{
     color: var(--brown);
-    margin-left: 1rem;
+    margin-left: .4rem;
 }
 .database .user-card p{
     color: var(--text-color);
@@ -56,17 +56,17 @@
     background: var(--brown);
 }
 .database table thead td{
-    padding: 1rem 2rem;
+    padding: .5rem 1rem;
     color: var(--white);
-    font-size: .9rem;
+    font-size: .8rem;
     align-items: center;
 }
 
 .database table tbody td{
-    padding: .4rem;
+    padding: .3rem;
     text-align: center;
     border: 1px solid var(--gray);
-    font-size: .86rem;
+    font-size: .8rem;
     /* width: 2rem;
     word-wrap: break-word; */
 }

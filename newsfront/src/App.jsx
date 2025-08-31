@@ -3,6 +3,7 @@ import "./App.css"
 import Nav from "./components/nav/Nav";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/homepage/Home";
+import SignupForm from "./pages/signup/SignUp"
 import About from "./pages/about/About";
 import Contact from "./pages/contact/Contact";
 import Footer from "./components/footer/Footer";
@@ -90,6 +91,7 @@ const App = () => {
         <Route path="/about" element={<About setActive={setActive} />} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/services" element={<Service setActive={setActive} />} />
+        <Route path="/register" element={<SignupForm  />} />
         <Route path="/worshipnight" element={<WorshipNight />} />
         <Route path="/biblestudy" element={<BibleStudy />} />
         <Route path="/retreat" element={<Retreat />} />

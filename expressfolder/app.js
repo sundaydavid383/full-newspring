@@ -162,17 +162,28 @@ app.post('/log', (req,res)=>{
     })
   })
 })
+// ================== GET ALL PEOPLE ==================
 app.get("/api/people", async (req, res) => {
+  console.log("➡️ STEP 1: GET /api/people called");
+
   try {
+    console.log("➡️ STEP 2: Fetching all people from database...");
     const people = await User.find({});
+    console.log("✅ STEP 3: Successfully fetched", people.length, "records");
+
     return res.status(200).json({ success: true, data: people });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, data: "internal server error" });
+    console.error("❌ ERROR: Failed to fetch people:", error.message);
+    return res.status(500).json({ success: false, data: "internal server error" });
   }
 });
-app.post("/api/people/", async (req, res) => {
+
+
+// ================== ADD A NEW PERSON ==================
+app.post("/api/people", async (req, res) => {
+  console.log("➡️ STEP 1: POST /api/people called");
+  console.log("➡️ STEP 2: Request body received:", req.body);
+
   try {
     const {
       firstname,
@@ -187,75 +198,96 @@ app.post("/api/people/", async (req, res) => {
       interest,
     } = req.body;
 
-    console.log(req.body);  // This will print the received data for debugging
-
-    // Check if required fields are present
+    console.log("➡️ STEP 3: Validating required fields...");
     if (!firstname || !lastname || !email || !phone) {
-      return res
-        .status(400)
-        .json({ success: false, data: "Please provide all required fields." });
+      console.warn("⚠️ STEP 3.1: Missing required fields");
+      return res.status(400).json({ success: false, data: "Please provide all required fields." });
     }
+    console.log("✅ STEP 3.2: Validation passed");
 
-    // Create a new person in the database
+    console.log("➡️ STEP 4: Creating user in database...");
     const person = await User.create({
       firstname: String(firstname),
       lastname: String(lastname),
       email: String(email),
       phone: String(phone),
-      age: age ? Number(age) : null,  // If age is provided, convert it to a number, otherwise set as null
-      school: school ? String(school) : "",  // Optional field
-      occupation: occupation ? String(occupation) : "",  // Optional field
-      hobbies: hobbies ? String(hobbies) : "",  // Optional field
-      heardAboutUs: heardAboutUs ? String(heardAboutUs) : "",  // Optional field
-      interest: interest ? String(interest) : "",  // Optional field
+      age: age ? Number(age) : null,
+      school: school ? String(school) : "",
+      occupation: occupation ? String(occupation) : "",
+      hobbies: hobbies ? String(hobbies) : "",
+      heardAboutUs: heardAboutUs ? String(heardAboutUs) : "",
+      interest: interest ? String(interest) : "",
     });
-    console.log("user added successfully")
+
+    console.log("✅ STEP 5: User created successfully with ID:", person._id);
     return res.status(200).json({ success: true, data: person });
-    
+
   } catch (error) {
-    console.error("Error in adding person:", error);
-    return res
-      .status(500)
-      .json({ success: false, data: "Internal server error" });
+    console.error("❌ ERROR: Failed to add person:", error.message);
+    return res.status(500).json({ success: false, data: "Internal server error" });
   }
 });
+
+
+// ================== UPDATE A PERSON ==================
 app.put("/api/people/:id", async (req, res) => {
+  console.log("➡️ STEP 1: PUT /api/people called with ID:", req.params.id);
+  console.log("➡️ STEP 2: Request body received:", req.body);
+
   try {
     const { firstname, lastname, email, number, school, occupation, hobbies, heardAboutUs, interest } = req.body;
+
+    console.log("➡️ STEP 3: Validating all fields...");
     if (!firstname || !lastname || !email || !number || !school || !occupation || !hobbies || !heardAboutUs || !interest) {
+      console.warn("⚠️ STEP 3.1: Validation failed - missing fields");
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
+    console.log("✅ STEP 3.2: Validation passed");
 
+    console.log("➡️ STEP 4: Updating user in database...");
     const updatedPerson = await User.findByIdAndUpdate(
       req.params.id,
       { firstname, lastname, email, number, school, occupation, hobbies, heardAboutUs, interest },
       { new: true }
     );
+
     if (!updatedPerson) {
+      console.warn("⚠️ STEP 5: User not found with ID:", req.params.id);
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
+    console.log("✅ STEP 6: User updated successfully:", updatedPerson._id);
     return res.status(200).json({ success: true, data: updatedPerson });
+
   } catch (error) {
+    console.error("❌ ERROR: Failed to update user:", error.message);
     return res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
+
+// ================== DELETE A PERSON ==================
 app.delete("/api/people/:id", async (req, res) => {
+  console.log("➡️ STEP 1: DELETE /api/people called with ID:", req.params.id);
+
   try {
+    console.log("➡️ STEP 2: Attempting to delete user from DB...");
     const { id } = req.params;
     const deletedPerson = await User.findByIdAndDelete(id);
+
     if (deletedPerson) {
-      return res
-        .status(200)
-        .json({ success: true, data: "person deleted successfully" });
+      console.log("✅ STEP 3: Person deleted successfully:", id);
+      return res.status(200).json({ success: true, data: "Person deleted successfully" });
     }
-    return res
-      .status(400)
-      .json({ message: true, data: "user not found and unable to delete" });
+
+    console.warn("⚠️ STEP 3: User not found, unable to delete:", id);
+    return res.status(400).json({ success: false, data: "User not found and unable to delete" });
+
   } catch (error) {
+    console.error("❌ ERROR: Failed to delete person:", error.message);
     return res.status(500).json({
-      message: false,
-      data: "server internal error, unable to delete user",
+      success: false,
+      data: "Server internal error, unable to delete user",
     });
   }
 });

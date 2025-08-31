@@ -4,7 +4,7 @@ import './bottomMoodBox.css';
 
 function BottomMoodBox() {
 const moods = [
-  "joyful", "sad", "peaceful", "anxious", "lonely", "angry", "thankful", "tempted", "hopeful", "discouraged", "happy",
+  "joyful", "sad", "peaceful", "anxious", "lonely", "angry", "thankful", "hopeful", "discouraged", "happy",
   "ashamed", "weak", "tired", "confused", "broken", "fearful", "guilty", "content", "nervous", "excited",
   "betrayed", "loved", "humbled", "bitter", "insecure", "curious", "desperate", "doubtful", "eager", "bold",
   "restless", "calm", "free", "trapped", "overwhelmed", "helpless", "empowered", "mournful", "jealous", "grateful",
@@ -64,18 +64,11 @@ const moodVerseMap = {
             Psalm 25:16 - Turn thee unto me, and have mercy upon me; for I am desolate and afflicted.
             Psalm 68:6 - God setteth the solitary in families: he bringeth out those which are bound with chains: but the rebellious dwell in a dry land.`,
 
-            angry: `Proverbs 15:1 - A soft answer turneth away wrath: but grievous words stir up anger.  
+            angry: `Ephesians 4:26 - Be ye angry, and sin not: let not the sun go down upon your wrath.
+            Proverbs 15:1 - A soft answer turneth away wrath: but grievous words stir up anger.  
           Ephesians 4:26 - Be ye angry, and sin not: let not the sun go down upon your wrath.`,
 
             thankful: `1 Thessalonians 5:18 - In every thing give thanks: for this is the will of God in Christ Jesus concerning you.`,
-
-            tempted: `1 Corinthians 10:13 - There hath no temptation taken you but such as is common to man: but God is faithful, who will not suffer you to be tempted above that ye are able;  
-          but will with the temptation also make a way to escape, that ye may be able to bear it.  
-          James 1:12 - Blessed is the man that endureth temptation: for when he is tried, he shall receive the crown of life, which the Lord hath promised to them that love him.
-          Hebrews 4:15 - For we have not an high priest which cannot be touched with the feeling of our infirmities; 
-          but was in all points tempted like as we are, yet without sin.`,
-
-            hopeful: `Romans 15:13 - Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope, through the power of the Holy Ghost.`,
 
 
             happy: `Psalm 144:15 - Happy is that people, that is in such a case: yea, happy is that people, whose God is the LORD.  
@@ -192,7 +185,6 @@ const moodVerseMap = {
             desperate: `Psalm 40:1-2 - I waited patiently for the LORD; and he inclined unto me, and heard my cry. 
           He brought me up also out of an horrible pit, out of the miry clay, and set my feet upon a rock, and established my goings.`,
 
-            angry: `Ephesians 4:26 - Be ye angry, and sin not: let not the sun go down upon your wrath.`,
 
             nervous: `Isaiah 41:10 - Fear thou not; for I am with thee: be not dismayed; for I am thy God: 
           I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.`,

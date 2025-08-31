@@ -4,47 +4,45 @@ const UserSchema = mongoose.Schema(
   {
     firstname: {
       type: String,
-      required: [true, "Please enter a first name"],
     },
     lastname: {
       type: String,
-      required: [true, "Please enter a last name"],
     },
     email: {
       type: String,
-      required: [true, "Please enter an email address"],
+    },
+    password: {
+      type: String,
     },
     phone: {
       type: String,
-      required: [true, "Please enter a phone number"],
     },
     age: {
       type: Number,
-      required: [true, "Please enter your age"],
     },
     school: {
       type: String,
-      required: [true, "Please enter your school name"],
     },
     occupation: {
       type: String,
-      required: [true, "Please enter your occupation"],
     },
     hobbies: {
       type: String,
-      required: [true, "Please enter your hobbies or interests"],
     },
     heardAboutUs: {
       type: String,
-      required: [true, "Please tell us how you heard about us"],
     },
     interest: {
       type: String,
-      required: [true, "Please specify your area of interest"],
     },
     image: {
-      type: String,
-      required: false, // Optional field for image
+      type: String, // For profile or any uploaded image
+    },
+    department: {
+      type: String, // Example: "ushering", "media", "music", or "none"
+    },
+    education: {
+      type: String, // Education level input
     },
   },
   {

@@ -1,0 +1,129 @@
+.hero {
+  display: flex;
+  align-items: center;
+ background-color: rgb(29, 29, 29, 0.8);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+  background-attachment: fixed;
+  z-index: 1;
+
+}
+
+.hero form {
+  box-shadow: inset 0px 0px 10px 2px var(--white);
+  border-radius: 0.7rem;
+  padding: 0.3rem 0.9rem 1.5rem;
+  width: 44%;
+  height: fit-content;
+  backdrop-filter: blur(30px);
+  z-index: 1;
+  background-color: var(--blurblack);
+  justify-content: center;
+  margin: auto;
+    margin-block: 7rem;
+}
+
+.hero form .realLabels {
+  color: red;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.hero form h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  color: var(--white);
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.hero form .btn-slide {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.hero form .btn-slide p {
+  font-size: 1.1rem;
+}
+
+.hero form p {
+  font-size: .9rem;
+  font-weight: 300;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.8rem;
+}
+
+.inputs select,
+.inputs input {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  padding-block: 0.8rem;
+  font-size: 1rem;
+  color: var(--black);
+  width: 100%;
+  background: var(--fadedWhite);
+}
+
+.inputs select option {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.names {
+  display: flex;
+  column-gap: 0.6rem;
+  justify-content: space-around;
+  align-items: normal;
+  width: 100%;
+}
+
+.names .input {
+  width: 100%;
+}
+
+#phone.alert,
+#email.alert,
+#firstname.alert,
+#lastname.alert,
+#age.alert,
+#school.alert,
+#occupation.alert,
+#hobbies.alert,
+#heardAboutUs.alert,
+#interest.alert {
+  animation: shake 0.5s forwards;
+  outline: 2px solid red;
+}
+
+@keyframes shake {
+  0% { transform: translateX(-7px); }
+  10% { transform: translateX(7px); }
+  30% { transform: translateX(-7px); }
+  40% { transform: translateX(7px); }
+  50% { transform: translateX(-7px); }
+  60% { transform: translateX(7px); }
+  70% { transform: translateX(-7px); }
+  80% { transform: translateX(-7px); }
+  90% { transform: translateX(7px); }
+  100% { transform: translateX(0px); }
+}
+
+@media (max-width: 1200px) {
+  .hero form {
+    width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero form {
+    width: 90%;
+  }
+}

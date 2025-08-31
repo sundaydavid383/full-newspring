@@ -11,6 +11,7 @@ function getBase64Image(imagePath) {
   }
 }
 
+
 // Updated homeContent with Base64 images
 const homeContent = {
   journeyData: [
