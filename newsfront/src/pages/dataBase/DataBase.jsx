@@ -5,6 +5,9 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
  
   const [seeForm, setSeeForm] = useState(false);
   const [seeData, setSeeData] = useState(false);
+  const [loading, setLoading] = useState(false)
+
+
   const [seeEmailStatus, setSeeEmailStatus] = useState(false)
   const [emailStatus, setEmailStatus] = useState("")
   const [newAdminPassword, setNewAdminPassword] = useState("")
@@ -120,6 +123,7 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
       }, 2000);
       return;
     } else {
+   
       e.target.reset();
       setUpdateData({
         firstname: "",
@@ -168,83 +172,98 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
 
 
   const upDatePerson = async (
-    id,
-    firstname,
-    lastname,
-    email,
-    number,
-    school,
-    occupation,
-    hobbies,
-    heardAboutUs,
-    interest
-  ) => {
-    try {
-      const response = await fetch(`${base_Url}api/people/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstname,
-          lastname,
-          email,
-          number,
-          school,
-          occupation,
-          hobbies,
-          heardAboutUs,
-          interest,
-        }),
-      });
-      const data = await response.json();
-      console.log(data.data);
-      onLoad();
-    } catch (error) {
-      alert("Error occurred during the update", error);
+  id,
+  firstname,
+  lastname,
+  email,
+  number,
+  school,
+  occupation,
+  hobbies,
+  heardAboutUs,
+  interest
+) => {
+  try {
+    setLoading(true);
+
+    const response = await fetch(`${base_Url}api/people/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstname,
+        lastname,
+        email,
+        number,
+        school,
+        occupation,
+        hobbies,
+        heardAboutUs,
+        interest,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      // If backend sent a message, show it
+      const errorMessage = data?.message || "An error occurred while updating.";
+      setEmailStatus(errorMessage);
+      setSeeEmailStatus(true);
+      return;
     }
-  };
 
-
-  const onSubmitPass = async(e)=>{
-    try {
-      e.preventDefault()
-      const response = await fetch(`${base_Url}password`,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ userType: password})
-      })
-      if(!response.ok){
-        throw new Error(`couldnt get response${response.statusText}`)
-      }
-      else{
-        const data = await response.json()
-        if(response.status == 400){
-          //const adminPass = document.getElementById("adminPass")
-          //adminPass.textContent = data.message
-          
-          setSeeEmailStatus(true)
-          // setTimeout(() => {
-          //       adminPass.textContent = ""
-          //       setPassword("")
-          // }, 2000);
-        }
-        else{
-          setSeeData(true)
-          setSeeEmailStatus(false)
-        }
-      }
-    } catch (error) {
-         setEmailStatus(error.message)
-         setSeeEmailStatus(true)
-         setTimeout(() => {
-          setSeeEmailStatus(false)
-          setEmailStatus("")
-         }, 2000);
-         setPassword("")
-    }
-  
-
- 
+    // If successful
+    console.log(data.data);
+    onLoad();
+  } catch (error) {
+    // If fetch itself failed (network, etc.)
+    setEmailStatus(error.message || "Something went wrong.");
+    setSeeEmailStatus(true);
+  } finally {
+    setLoading(false);
   }
+};
+
+
+const onSubmitPass = async (e) => {
+  e.preventDefault();
+  try {
+    setLoading(true)
+    const response = await fetch(`${base_Url}password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userType: password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Prefer backend message if available
+      const errorMessage = data?.message || `Error: ${response.statusText}`;
+      setEmailStatus(errorMessage);
+      setSeeEmailStatus(true);
+      return;
+    }
+
+    if (response.status === 400) {
+      setEmailStatus(data.message || "Invalid password.");
+      setSeeEmailStatus(true);
+    } else {
+      setSeeData(true);
+      setSeeEmailStatus(false);
+    }
+  } catch (error) {
+    setEmailStatus(error.message || "Network error.");
+    setSeeEmailStatus(true);
+  } finally {
+    setPassword("");
+    setLoading(false)
+    setTimeout(() => {
+      setSeeEmailStatus(false);
+      setEmailStatus("");
+    }, 2000);
+  }
+};
 
 
   const onSubmitAdminPass = async(e)=>{
@@ -269,7 +288,11 @@ const DataBase = ({ setActive, dataBase, setDataBase, onLoad }) => {
     }
   }
 
-
+if (loading) return  <div className="loading">
+    <div className="bar bar1"></div>
+    <div className="bar bar2"></div>
+    <div className="bar bar3"></div>
+  </div>;
   return (
     <div className="database">
      { seeEmailStatus ?<div className="emial_status">

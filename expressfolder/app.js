@@ -201,11 +201,18 @@ app.post("/api/people", async (req, res) => {
     console.log("➡️ STEP 3: Validating required fields...");
     if (!firstname || !lastname || !email || !phone) {
       console.warn("⚠️ STEP 3.1: Missing required fields");
-      return res.status(400).json({ success: false, data: "Please provide all required fields." });
+      return res.status(400).json({ success: false, message: "Please provide all required fields." });
     }
     console.log("✅ STEP 3.2: Validation passed");
 
-    console.log("➡️ STEP 4: Creating user in database...");
+    // 🔎 STEP 4: Check if user already exists
+    const existingUser = await User.findOne({ email: String(email) });
+    if (existingUser) {
+      console.warn("⚠️ STEP 4.1: User with this email already exists:", email);
+      return res.status(409).json({ success: false, message: "User already exists." });
+    }
+
+    console.log("➡️ STEP 5: Creating user in database...");
     const person = await User.create({
       firstname: String(firstname),
       lastname: String(lastname),
@@ -219,12 +226,12 @@ app.post("/api/people", async (req, res) => {
       interest: interest ? String(interest) : "",
     });
 
-    console.log("✅ STEP 5: User created successfully with ID:", person._id);
-    return res.status(200).json({ success: true, data: person });
+    console.log("✅ STEP 6: User created successfully with ID:", person._id);
+    return res.status(201).json({ success: true, data: person });
 
   } catch (error) {
     console.error("❌ ERROR: Failed to add person:", error.message);
-    return res.status(500).json({ success: false, data: "Internal server error" });
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 

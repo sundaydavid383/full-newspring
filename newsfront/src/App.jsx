@@ -91,7 +91,7 @@ const App = () => {
         <Route path="/about" element={<About setActive={setActive} />} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/services" element={<Service setActive={setActive} />} />
-        <Route path="/register" element={<SignupForm  />} />
+        <Route path="/register" element={<SignupForm  setDataBase={setDataBase} onLoad={onLoad}/>} />
         <Route path="/worshipnight" element={<WorshipNight />} />
         <Route path="/biblestudy" element={<BibleStudy />} />
         <Route path="/retreat" element={<Retreat />} />
