@@ -26,97 +26,110 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const {
-      firstname,
-      lastname,
-      email,
-      phone,
-      age,
-      school,
-      occupation,
-      hobbies,
-      heardAboutUs,
-      interest,
-    } = formData;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const {
+    firstname,
+    lastname,
+    email,
+    phone,
+    age,
+    school,
+    occupation,
+    hobbies,
+    heardAboutUs,
+    interest,
+  } = formData;
 
-    const phoneRegx = /^\+?[0-9]\d{10,13}$/;
-    const emailRegx =
-      /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
+  // Validation (unchanged)
+  const phoneRegx = /^\+?[0-9]\d{10,13}$/;
+  const emailRegx = /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
 
-    if (
-      !firstname ||
-      !lastname ||
-      !email ||
-      !phone ||
-      !age ||
-      !school ||
-      !occupation ||
-      !hobbies ||
-      !heardAboutUs ||
-      !interest
-    ) {
-      alert("Please fill out all fields correctly.");
-      return;
-    }
-    if (!emailRegx.test(email)) {
-      alert("Invalid email format");
-      return;
-    }
-    if (!phoneRegx.test(phone)) {
-      alert("Invalid phone number");
-      return;
-    }
-    if (isNaN(age) || age < 16 || age > 24) {
-      alert("Age must be between 16 and 24");
-      return;
-    }
+  if (
+    !firstname ||
+    !lastname ||
+    !email ||
+    !phone ||
+    !age ||
+    !school ||
+    !occupation ||
+    !hobbies ||
+    !heardAboutUs ||
+    !interest
+  ) {
+    alert("Please fill out all fields correctly.");
+    return;
+  }
+  if (!emailRegx.test(email)) {
+    alert("Invalid email format");
+    return;
+  }
+  if (!phoneRegx.test(phone)) {
+    alert("Invalid phone number");
+    return;
+  }
+  if (isNaN(age) || age < 16 || age > 24) {
+    alert("Age must be between 16 and 24");
+    return;
+  }
 
-    try {
-      setLoading(true);
-      console.log("Form data before submit:", formData);
-      const response = await fetch(`${base_Url}api/people`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  try {
+    setLoading(true);
+    console.log("Form data before submit:", formData);
 
-      if (!response.ok) throw new Error("Failed to submit form");
+    const response = await fetch(`${base_Url}api/people`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      const data = await response.json();
-      setLoading(false);
-      setEmailStatus(
-        sentEmail
-          ? "You’ve been added! Check your spam if no email."
-          : "You’ve been successfully added!"
-      );
+    // Always parse JSON
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Show backend error if provided, else fallback
+      const errorMessage = data?.message || "Failed to submit form.";
+      setEmailStatus(errorMessage);
       setSeeEmailStatus(true);
-      onLoad();
-      setDataBase(data.data);
-      onSuccess?.();
-
-      speakAfterRegistration(formData);
-      sendMail(firstname, lastname, email, phone);
-
-      setFormData({
-        firstname: "",
-        lastname: "",
-        email: "",
-        phone: "",
-        age: "",
-        school: "",
-        occupation: "",
-        hobbies: "",
-        heardAboutUs: "",
-        interest: "",
-      });
-    } catch (err) {
       setLoading(false);
-      setEmailStatus("An error occurred: " + err.message);
-      setSeeEmailStatus(true);
+      return;
     }
-  };
+
+    // ✅ Success flow
+    setLoading(false);
+    setEmailStatus(
+      sentEmail
+        ? "You’ve been added! Check your spam if no email."
+        : "You’ve been successfully added!"
+    );
+    setSeeEmailStatus(true);
+
+    onLoad();
+    setDataBase(data.data);
+    onSuccess?.();
+
+    speakAfterRegistration(formData);
+    sendMail(firstname, lastname, email, phone);
+
+    // Reset form
+    setFormData({
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      age: "",
+      school: "",
+      occupation: "",
+      hobbies: "",
+      heardAboutUs: "",
+      interest: "",
+    });
+  } catch (err) {
+    setLoading(false);
+    setEmailStatus(err.message || "Something went wrong.");
+    setSeeEmailStatus(true);
+  }
+};
 
   const sendMail = async (firstname, lastname, email, phone) => {
     try {
