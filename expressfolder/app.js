@@ -66,20 +66,20 @@ app.use(express.json());
 const contentFilePath = path.join(__dirname, "data", "homeContent.json");
 
 
-const removeDuplicateVerses = (moodVerseMap) => {
-  const cleaned = {};
+const removeDuplicateError = (moodVerseMap)=>{
+  const cleaned = {}
 
-  Object.keys(moodVerseMap).forEach((mood) => {
-    const { verses, explanation } = moodVerseMap[mood];
+  Object.keys(moodVerseMap).forEach((mood)=>{
+    const { verses, explanation } = moodVerseMap[mood]
 
-    cleaned[mood] = {
+    cleaned[mood] =  {
       explanation,
-      verses: [...new Set(verses)] // remove duplicates automatically
-    };
-  });
+      verses: [...new Set(verses)]
+    }
+  })
 
-  return cleaned;
-};
+  return cleaned
+}
 const moodVerseMap = {
                 joyful: {
               verses: [

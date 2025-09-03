@@ -365,15 +365,7 @@ const moodVerseMap = {
               "Exhaustion is met with Jesus’ invitation: come to Him for rest. God renews your strength and refreshes your soul."
           },
 
-          confused: {
-            verses: [
-              "Proverbs 3:5-6 - Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.",
-              "James 1:5 - If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.",
-              "Psalm 119:105 - Thy word is a lamp unto my feet, and a light unto my path."
-            ],
-            explanation:
-              "Confusion fades when you trust God. He gives wisdom liberally and guides your path through His Word."
-          },
+         
 
           broken: {
             verses: [
