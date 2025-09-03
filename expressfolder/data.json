@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "firstname": "mikeller",
+    "lastname": "sunday",
+    "email": "mike@gmail.com",
+    "phone": "09014886853"
+  },
+  {
+    "id": 3,
+    "firstname": "folarin",
+    "lastname": "divin",
+    "email": "mtmisaiah@gmail.com",
+    "phone": "080473737237"
+  },
+  {
+    "id": 3,
+    "firstname": "fola",
+    "lastname": "divin",
+    "email": "mtmisaiah@gmail.com",
+    "phone": "080473737237"
+  }
+]

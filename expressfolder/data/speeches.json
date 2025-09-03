@@ -1,0 +1,3 @@
+{
+  "afterRegistration": "{greeting} {firstname} {lastname}, thank you for registering with Newspring Church! We’re honored to welcome a {age}-year-old {occupation} like you from {school}. It's great to know you're interested in {interest} and discovered us through {heardAboutUs}. Your passion for {hobbies} is inspiring!\n\nWe’ve noted your contact as {email} and {phone} — rest assured, this helps us serve you better in the future.\n\nWelcome aboard, and may God bless you mightily!"
+}

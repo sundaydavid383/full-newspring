@@ -1,0 +1,97 @@
+.contentediting-form {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--black);
+
+  }
+  .content_form_holder{
+    background-color: var(--black);
+    padding-top: 7rem;
+    margin-top: -1rem;
+  }
+  .contentediting-form h1,
+  .contentediting-form h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: var(--darkbrown);
+  }
+  
+  .contentediting-form h1{
+    margin-top: 6rem;
+    text-decoration: underline;
+    text-underline-offset: 0.4rem;
+    width: 100%;
+    text-align: center;
+  
+    border-top: 1px dashed var(--black);
+  }
+  .contentediting-form input[type="text"],
+  .contentediting-form input[type="file"],
+  .contentediting-form textarea {
+    width: 100%;
+    padding: .7rem;
+    margin: 10px 0 20px;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: var(--lightbrown);
+    color: var(--black);
+  }
+  
+  .contentediting-form textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .contentediting-img {
+    display: block;
+    max-width: 300px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px var(--gray);
+  }
+  
+  .contentediting-image-preview {
+    margin-bottom: 20px;
+  }
+  
+  .contentediting-section-block {
+    padding: 20px;
+    background-color: var(--white);
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    margin-bottom: 25px;
+  }
+  
+  .contentediting-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--brown);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .contentediting-submit-btn:hover {
+    background-color: var(--darkbrown);
+  }
+  .contentediting-form input{
+    padding: .8rem;
+    width: 40%;
+  }
+.contentediting-form label{
+  margin-right: 1rem;
+  color: var(--black);
+}
+  
