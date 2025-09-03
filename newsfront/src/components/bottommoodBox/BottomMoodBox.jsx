@@ -948,85 +948,7 @@ fulfilled: {
   ],
   explanation: "True fulfillment comes only from Christ, who satisfies your soul and fills you with His goodness."
 },
-
-patient: {
-  verses: [
-    "Romans 12:12 - Rejoicing in hope; patient in tribulation; continuing instant in prayer;",
-    "James 1:4 - But let patience have her perfect work, that ye may be perfect and entire, wanting nothing.",
-    "Hebrews 10:36 - For ye have need of patience, that, after ye have done the will of God, ye might receive the promise.",
-    "Psalm 37:7 - Rest in the LORD, and wait patiently for him: fret not thyself because of him who prospereth in his way, because of the man who bringeth wicked devices to pass."
-  ],
-  explanation: "Patience is developed through trials. It shapes you into maturity and wholeness in Christ."
-},
-
-lively: {
-  verses: [
-    "1 Peter 2:5 - Ye also, as lively stones, are built up a spiritual house, an holy priesthood, to offer up spiritual sacrifices, acceptable to God by Jesus Christ.",
-    "John 10:10 - The thief cometh not, but for to steal, and to kill, and to destroy: I am come that they might have life, and that they might have it more abundantly.",
-    "Romans 6:11 - Likewise reckon ye also yourselves to be dead indeed unto sin, but alive unto God through Jesus Christ our Lord.",
-    "Galatians 2:20 - I am crucified with Christ: nevertheless I live; yet not I, but Christ liveth in me: and the life which I now live in the flesh I live by the faith of the Son of God, who loved me, and gave himself for me."
-  ],
-  explanation: "In Christ, you are alive and vibrant, part of His living temple, with abundant life."
-},
-
-low: {
-  verses: [
-    "Psalm 34:18 - The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.",
-    "James 4:10 - Humble yourselves in the sight of the Lord, and he shall lift you up.",
-    "Isaiah 57:15 - For thus saith the high and lofty One that inhabiteth eternity, whose name is Holy; I dwell in the high and holy place, with him also that is of a contrite and humble spirit, to revive the spirit of the humble, and to revive the heart of the contrite ones.",
-    "Psalm 9:12 - When he maketh inquisition for blood, he remembereth them: he forgetteth not the cry of the humble."
-  ],
-  explanation: "When you feel low, God draws near. He promises to lift you up as you humble yourself before Him."
-},
-
-exhausted: {
-  verses: [
-    "Isaiah 40:29 - He giveth power to the faint; and to them that have no might he increaseth strength.",
-    "Matthew 11:28 - Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
-    "Psalm 68:9 - Thou, O God, didst send a plentiful rain, whereby thou didst confirm thine inheritance, when it was weary.",
-    "Jeremiah 31:25 - For I have satiated the weary soul, and I have replenished every sorrowful soul."
-  ],
-  explanation: "When you are weary, the Lord renews your strength and gives you true rest."
-},
-
-inspired: {
-  verses: [
-    "2 Timothy 3:16 - All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness:",
-    "Exodus 35:31 - And he hath filled him with the spirit of God, in wisdom, in understanding, and in knowledge, and in all manner of workmanship;",
-    "Job 32:8 - But there is a spirit in man: and the inspiration of the Almighty giveth them understanding.",
-    "Micah 3:8 - But truly I am full of power by the spirit of the LORD, and of judgment, and of might, to declare unto Jacob his transgression, and to Israel his sin."
-  ],
-  explanation: "God inspires by His Word and Spirit, filling you with wisdom, creativity, and guidance."
-},
-rejected: {
-    verses: [
-      "Psalm 27:10 - When my father and my mother forsake me, then the LORD will take me up.",
-      "Isaiah 41:9 - Thou whom I have taken from the ends of the earth, and called thee from the chief men thereof, and said unto thee, Thou art my servant; I have chosen thee, and not cast thee away.",
-      "John 6:37 - All that the Father giveth me shall come to me; and him that cometh to me I will in no wise cast out.",
-      "1 Peter 2:4 - To whom coming, as unto a living stone, disallowed indeed of men, but chosen of God, and precious,"
-    ],
-    explanation: "Even when others reject you, God receives you and calls you chosen. His love is constant and unfailing."
-  },
-
-  anguished: {
-    verses: [
-      "Psalm 31:9 - Have mercy upon me, O LORD, for I am in trouble: mine eye is consumed with grief, yea, my soul and my belly.",
-      "2 Corinthians 1:3-4 - Blessed be God, even the Father of our Lord Jesus Christ, the Father of mercies, and the God of all comfort; Who comforteth us in all our tribulation, that we may be able to comfort them which are in any trouble, by the comfort wherewith we ourselves are comforted of God.",
-      "Psalm 42:11 - Why art thou cast down, O my soul? and why art thou disquieted within me? hope thou in God: for I shall yet praise him, who is the health of my countenance, and my God.",
-      "Matthew 5:4 - Blessed are they that mourn: for they shall be comforted."
-    ],
-    explanation: "God is the Father of mercies who comforts you in anguish and gives strength to comfort others."
-  },
-
-  fulfilled: {
-    verses: [
-      "John 6:35 - And Jesus said unto them, I am the bread of life: he that cometh to me shall never hunger; and he that believeth on me shall never thirst.",
-      "Psalm 107:9 - For he satisfieth the longing soul, and filleth the hungry soul with goodness.",
-      "Philippians 4:19 - But my God shall supply all your need according to his riches in glory by Christ Jesus.",
-      "Psalm 23:1 - The LORD is my shepherd; I shall not want."
-    ],
-    explanation: "True fulfillment comes only from Christ, who satisfies your soul and fills you with His goodness."
-  },
+  
 
   patient: {
     verses: [
@@ -1048,25 +970,6 @@ rejected: {
     explanation: "In Christ, you are alive and vibrant, part of His living temple, with abundant life."
   },
 
-  low: {
-    verses: [
-      "Psalm 34:18 - The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit.",
-      "James 4:10 - Humble yourselves in the sight of the Lord, and he shall lift you up.",
-      "Isaiah 57:15 - For thus saith the high and lofty One that inhabiteth eternity, whose name is Holy; I dwell in the high and holy place, with him also that is of a contrite and humble spirit, to revive the spirit of the humble, and to revive the heart of the contrite ones.",
-      "Psalm 9:12 - When he maketh inquisition for blood, he remembereth them: he forgetteth not the cry of the humble."
-    ],
-    explanation: "When you feel low, God draws near. He promises to lift you up as you humble yourself before Him."
-  },
-
-  exhausted: {
-    verses: [
-      "Isaiah 40:29 - He giveth power to the faint; and to them that have no might he increaseth strength.",
-      "Matthew 11:28 - Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
-      "Psalm 68:9 - Thou, O God, didst send a plentiful rain, whereby thou didst confirm thine inheritance, when it was weary.",
-      "Jeremiah 31:25 - For I have satiated the weary soul, and I have replenished every sorrowful soul."
-    ],
-    explanation: "When you are weary, the Lord renews your strength and gives you true rest."
-  },
 
   inspired: {
     verses: [

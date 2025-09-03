@@ -13,7 +13,7 @@
   min-height: 100vh;
   background-color: rgb(29, 29, 29, 0.8);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover;   /* default for large screens */
   background-position: center;
   background-blend-mode: multiply;
   background-attachment: fixed;
@@ -191,7 +191,21 @@
 }
 
 
+@media (max-width: 1024px) {
+  .hero_text_content {
+    background-size: contain;  /* don’t crop image */
+    background-position: top center;
+    background-attachment: scroll; /* improves mobile performance */
+  }
+}
+
 @media (max-width: 600px) {
+    .hero_text_content {
+    background-size: contain;   /* shrink instead of zoom */
+    background-position: center top;
+    background-repeat: no-repeat;
+    padding: 6rem 1.5rem 3rem 1.5rem; /* adjust spacing so content fits */
+  }
   .hero_text {
     align-self: center;
     width: 90%;
