@@ -1096,7 +1096,11 @@ rejected: {
       "Hebrews 12:2 - Looking unto Jesus the author and finisher of our faith; who for the joy that was set before him endured the cross, despising the shame, and is set down at the right hand of the throne of God."
     ],
     explanation: "Distractions fade when your focus is set on Christ. Keep your eyes on Him, the author and finisher of your faith."
+<<<<<<< HEAD
   },
+=======
+  }
+>>>>>>> 1a7465a800d3d54e58255053a4c2f6d78e23dcec
 
   watchful: {
     verses: [
