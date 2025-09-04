@@ -11,7 +11,7 @@
   width: 100%;
   padding: 10rem 3rem 0 3rem;
   min-height: 100vh;
-  background-color: rgb(29, 29, 29, 0.8);
+  background-color: rgba(29, 29, 29, 0.8);
   background-repeat: no-repeat;
   background-size: cover;   /* default for large screens */
   background-position: center;
@@ -190,26 +190,49 @@
   }
 }
 
-
-@media (max-width: 1024px) {
+/* Desktop and large screens (keep parallax if you like it) */
+@media (min-width: 1025px) {
   .hero_text_content {
-    background-size: contain;  /* don’t crop image */
-    background-position: top center;
-    background-attachment: scroll; /* improves mobile performance */
+    background-size: cover;          /* always fill */
+    background-position: center;     /* good focal point */
+    background-attachment: fixed;    /* desktop-only for performance */
+    min-height: 100vh;               /* full viewport */
   }
 }
 
-@media (max-width: 600px) {
-    .hero_text_content {
-    background-size: contain;   /* shrink instead of zoom */
-    background-position: center top;
-    background-repeat: no-repeat;
-    padding: 6rem 1.5rem 3rem 1.5rem; /* adjust spacing so content fits */
+/* Tablets and small laptops */
+@media (max-width: 1024px) {
+  .hero_text_content {
+    background-size: cover;          /* fill, no empty bands */
+    background-position: center top; /* show important top area */
+    background-attachment: scroll;   /* avoids mobile/safari bugs */
+    min-height: 100svh;              /* full screen, stable on mobile UI bars */
+    padding: 6rem 1.5rem 3rem;       /* room for text */
   }
-  .hero_text {
-    align-self: center;
-    width: 90%;
-    gap: 1rem;
-    margin-top: 2rem;
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .hero_text_content {
+    background-size: cover;          /* still fill */
+    background-position: center;     /* safe focal point on narrow screens */
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    min-height: 100svh;              /* full-height hero */
+    padding: 5rem 1.2rem 3rem;
+  }
+
+  /* optional but helps prevent text overflow on small screens */
+  .hero_text { width: 100%; text-align: center; }
+
+  .hero h1 { font-size: 2rem; line-height: 2.4rem; }
+  .hero p  { font-size: 0.95rem; line-height: 1.5rem; }
+}
+
+/* Extra: landscape phones/tablets (short viewports) */
+@media (max-width: 900px) and (orientation: landscape) {
+  .hero_text_content {
+    min-height: 100dvh;              /* handle very short heights */
+    background-position: center;     
   }
 }
