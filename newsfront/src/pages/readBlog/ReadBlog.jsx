@@ -866,7 +866,7 @@ const ReadBlog = ({setActive}) => {
       ],
     },
   ];
-  const [recPost, setRecPost] = useState([]);
+   const [recPost, setRecPost] = useState([]);
 
   useEffect(() => {
     const indexies = [];
@@ -883,128 +883,138 @@ const ReadBlog = ({setActive}) => {
 
   return (
     <div className="holder">
-       <Link to={`/bloggrid/${1}`}>
-              <i title="Go Back" className="fa-solid fa-backward"></i>
-            </Link>
-          <Hero sections={sections} sectionType={sectionType} buttonType={buttonType}/>
-       <div className="readBlog_holder container_flex_between">
-      <div className="readBlog_container">
-        {articles.map((article) =>
-          id == article.id ? (
-            <div key={article.id} className="article">
-              <img src={article.image} alt="" />
-              <div className="article_date_author">
-                <p>
-                  <span></span>
-                  <p>{article.author}</p>
-                </p>
-                <p>
-                  <span></span>
-                  <p>{article.date}</p>
-                </p>
-              </div>
-              <h2>{article.title}</h2>
-              <p className="gist1"><span>{article.gist1.charAt(0)}</span>{article.gist1.slice(1,)}</p>
-              <div className="quote">
-                <i class="fa-solid fa-quote-right"></i>
-                <i class="fa-solid fa-quote-left"></i>
-                <p>{article.quote}</p>
-                <small>-{article.quoteAuthor}</small>
-              </div>
-              <p className="gist1">{article.gist2}</p>
-              <ul className="advice">
-                {article.advice.map((advc) => (
-                  <li><i class="fa-solid fa-square-check"></i> {advc}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null
-        )}
-      </div>
-      <div className="readBlog_extra">
-        <ul className="categories">
-          <h1>Categories</h1>
-          <li>
-            <Link to={`/bloggrid/${1}`} >
-              <p className="categories_column">Biblical Devotionals</p>
-              <p>24 posts</p>
-            </Link>
-          </li>
-          <li>
-            <Link to={`/bloggrid/${2}`}>
-              <p className="categories_column">Theology Studies</p>
-              <p>15 posts</p>
-            </Link>
-          </li>
-          <li>
-            <Link to={`/bloggrid/${3}`}>
-              <p className="categories_column">Christian Growth</p>
-              <p>18 posts</p>
-            </Link>
-          </li>
-          <li>
-            <Link to={`/bloggrid/${4}`}>
-              <p className="categories_column">Testimonies Stories</p>
-              <p>10 posts</p>
-            </Link>
-          </li>
-          <li>
-            <Link to={`/bloggrid/${5}`}>
-              <p className="categories_column">Church News</p>
-              <p>12 posts</p>
-            </Link>
-          </li>
-          <li>
-            <Link to={`/bloggrid/${6}`}>
-              <p className="categories_column">Christian Ministry</p>
-              <p>8 posts</p>
-            </Link>
-          </li>
-          <li > 
-            <Link to={`/bloggrid/${7}`}>
-              <p className="categories_column">Book Reviews</p>
-              <p>5 posts</p>
-            </Link>
-          </li>
-          <li>
-            <Link to={`/bloggrid/${8}`}>
-              <p className="categories_column">Contemporary Issues</p>
-              <p>9 posts</p>
-            </Link>
-          </li>
-        </ul>
+      <a href={`/bloggrid/${1}`}>
+        <i title="Go Back" className="fa-solid fa-backward"></i>
+      </a>
 
-        {
+      <Hero
+        sections={sections}
+        sectionType={sectionType}
+        buttonType={buttonType}
+      />
+
+      <div className="readBlog_holder container_flex_between">
+        <div className="readBlog_container">
+          {articles.map((article) =>
+            id == article.id ? (
+              <div key={article.id} className="article">
+                <img src={article.image} alt="" />
+                <div className="article_date_author">
+                  <p>{article.author}</p>
+                  <p>{article.date}</p>
+                </div>
+                <h2>{article.title}</h2>
+                <p className="gist1">
+                  <span>{article.gist1.charAt(0)}</span>
+                  {article.gist1.slice(1)}
+                </p>
+                <div className="quote">
+                  <i className="fa-solid fa-quote-right"></i>
+                  <i className="fa-solid fa-quote-left"></i>
+                  <p>{article.quote}</p>
+                  <small>-{article.quoteAuthor}</small>
+                </div>
+                <p className="gist1">{article.gist2}</p>
+                <ul className="advice">
+                  {article.advice.map((advc, i) => (
+                    <li key={i}>
+                      <i className="fa-solid fa-square-check"></i> {advc}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null
+          )}
+        </div>
+
+        <div className="readBlog_extra">
+          <ul className="categories">
+            <h1>Categories</h1>
+            <li>
+              <a href={`/bloggrid/${1}`}>
+                <p className="categories_column">Biblical Devotionals</p>
+                <p>24 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${2}`}>
+                <p className="categories_column">Theology Studies</p>
+                <p>15 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${3}`}>
+                <p className="categories_column">Christian Growth</p>
+                <p>18 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${4}`}>
+                <p className="categories_column">Testimonies Stories</p>
+                <p>10 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${5}`}>
+                <p className="categories_column">Church News</p>
+                <p>12 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${6}`}>
+                <p className="categories_column">Christian Ministry</p>
+                <p>8 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${7}`}>
+                <p className="categories_column">Book Reviews</p>
+                <p>5 posts</p>
+              </a>
+            </li>
+            <li>
+              <a href={`/bloggrid/${8}`}>
+                <p className="categories_column">Contemporary Issues</p>
+                <p>9 posts</p>
+              </a>
+            </li>
+          </ul>
+
           <div className="related_post">
-            <h2>Lastest Blogs</h2>
+            <h2>Latest Blogs</h2>
             <div className="related_post_cards">
-              {recPost.map((post) => (
-                <Link to={`/readblog/${post.id}`} onClick={()=> window.scrollBy({ top: -400, behavior: "smooth" })} key={post.id} className="related_card">
-                  <div className="related_card_image">
-                    <img src={post.image} alt="" />
-                  </div>
-                  <div className="related_card_text">
-                    <span>{post.date}</span>
-                    <p>{post.title}..</p>
-                  </div>
-                </Link>
-              ))}
+              {recPost.map(
+                (post) =>
+                  post && (
+                    <a
+                      href={`/readblog/${post.id}`}
+                      key={post.id}
+                      className="related_card"
+                    >
+                      <div className="related_card_image">
+                        <img src={post.image} alt="" />
+                      </div>
+                      <div className="related_card_text">
+                        <span>{post.date}</span>
+                        <p>{post.title}..</p>
+                      </div>
+                    </a>
+                  )
+              )}
             </div>
           </div>
-        }
 
-        <div className="know_us">
-          <span>Call 123 234-567-890</span>
-          <h2>Have a Blessed</h2>
-          <h1>Sunday Service</h1>
-          <Link to="/contact" className="btn">
-            <p>Know About Us</p>
-          </Link>
+          <div className="know_us">
+            <span>Call 123 234-567-890</span>
+            <h2>Have a Blessed</h2>
+            <h1>Sunday Service</h1>
+            <a href="/contact" className="btn">
+              <p>Know About Us</p>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-   
   );
 };
 
