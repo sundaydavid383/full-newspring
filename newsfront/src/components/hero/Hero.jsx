@@ -17,22 +17,37 @@ const Hero = ({
 
   const [title, setTitle] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
-  const currentidx = useRef(currentIndex);
+    const currentidx = useRef(currentIndex);
+    const intervalRef = useRef(null);
+
+
+      const startAutoPlay = () => {
+    // clear any existing timer
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    // start a fresh one
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % sections.length);
+    }, 86000); // 86 seconds
+  };
 
   useEffect(() => {
     currentidx.current = currentIndex;
   }, [currentIndex]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % sections.length);
-    }, 76000);
-    return () => clearInterval(intervalId);
+useEffect(() => {
+    startAutoPlay(); // start when component mounts
+    return () => clearInterval(intervalRef.current); // cleanup on unmount
   }, [sections.length]);
 
   useEffect(() => {
     setTitle(sections[currentIndex].title);
   }, [currentIndex, sections]);
+
+  const handleIndicatorClick = (i) => {
+    setCurrentIndex(i);
+    startAutoPlay(); // reset timer to 86s
+  };
 
   // Scroll handler for non-contact sections
   const handleLearnMore = () => {
@@ -41,7 +56,7 @@ const Hero = ({
 
   return (
     <div className="hero">
-      {currentIndex < 3 && (
+      {/* {currentIndex < 3 && (
         <i
           onClick={() => setCurrentIndex((prev) => prev + 1)}
           className="fa-solid fa-arrow-right"
@@ -52,7 +67,7 @@ const Hero = ({
           onClick={() => setCurrentIndex((prev) => prev - 1)}
           className="fa-solid fa-arrow-left"
         ></i>
-      )}
+      )} */}
 
       {sections.map((section, index) =>
         currentidx.current === index ? (
@@ -95,7 +110,7 @@ const Hero = ({
         {[0, 1, 2, 3].map((i) => (
           <span
             key={i}
-            onClick={() => setCurrentIndex(i)}
+            onClick={handleIndicatorClick}
             className={currentidx.current === i ? "opacity1" : ""}
           ></span>
         ))}

@@ -136,6 +136,10 @@
   font-size: 0.93rem;
   margin-top: 2rem;
 }
+.footer .main img{
+   width: 6rem;
+   margin-bottom: -2rem;
+}
 .footer .explore {
   display: flex;
   flex-direction: column;

@@ -354,17 +354,6 @@ const moodVerseMap = {
             explanation:
               "When you feel weak, God’s strength shines through. He strengthens the faint and becomes the anchor of your heart."
           },
-
-          tired: {
-            verses: [
-              "Matthew 11:28 - Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
-              "Isaiah 40:31 - But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.",
-              "Psalm 23:1-2 - The LORD is my shepherd; I shall not want. He maketh me to lie down in green pastures: he leadeth me beside the still waters."
-            ],
-            explanation:
-              "Exhaustion is met with Jesus’ invitation: come to Him for rest. God renews your strength and refreshes your soul."
-          },
-
          
 
           broken: {

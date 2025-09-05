@@ -747,19 +747,24 @@ const sectionType = "";
 const BlogGrid = ({ scrollTop, setActive }) => {
   const {categoryIndex} = useParams()
   // const currentCategory = articles[categoryIndex]
+
+  useEffect(() => {
   setActive("blog");
+  }, [])
+  
+  
   return (
     <div className="Bloggrid">
       <Hero sections={sections} sectionType={sectionType} buttonType={buttonType}/>
       <div className="bloggrid_container ">
         {articles.map((category, index) =>
-        (categoryIndex == index ?
+        categoryIndex == index &&
           (
             <div key={index} id={index} className="category_holder ">
               <h2 className="title">{category.category}</h2>
               <div className="category container_flex_around">
-                {category.articles.map((blog) => (
-                  <div key={index} className="blog">
+                {category.articles.map((blog, blogIdx) => (
+                  <div key={blogIdx} className="blog">
                     <div className="blog_image">
                     <img src={blog.image} alt="" />
                     </div>
@@ -778,8 +783,8 @@ const BlogGrid = ({ scrollTop, setActive }) => {
                 ))}
               </div>
             </div>
-          ):null
-        ) )}
+          )
+         )}
       </div>
     </div>
   );

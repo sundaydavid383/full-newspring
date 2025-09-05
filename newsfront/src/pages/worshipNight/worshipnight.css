@@ -5,8 +5,8 @@
      background: var(--brown);
      color: var(--white);
      z-index: 12;
-     width: 3.4rem;
-     height: 3.4rem;
+     width: 1.7rem;
+     height: 1.7rem;
      border: 1px solid var(--gold);
      text-align: center;
      transition: .2s linear;

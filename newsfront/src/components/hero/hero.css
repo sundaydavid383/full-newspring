@@ -1,7 +1,7 @@
 /* hero.css */
 .hero {
   position: relative;
-  margin-top: 6rem;
+  margin-top: 4.37rem;
   min-height: auto;
 }
 
@@ -38,6 +38,7 @@
   background: var(--fadedWhite);
   border-radius: 50%;
   opacity: 0.3;
+  cursor: pointer;
 }
 
 .bar_active .opacity1 {

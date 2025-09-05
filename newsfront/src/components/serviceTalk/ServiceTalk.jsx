@@ -106,10 +106,10 @@ const ServiceTalk = () => {
             <i className="fa-brands fa-facebook-f"></i>
           </Link>
           <Link target="_blank" to="https://www.instagram.com/rccgnewsprings/">
-            <i class="fa-brands fa-instagram"></i>
+            <i className="fa-brands fa-instagram"></i>
           </Link>
           <Link target="_blank" to="https://www.youtube.com/@RCCGNewSprings">
-            <i class="fa-brands fa-youtube"></i>
+            <i className="fa-brands fa-youtube"></i>
           </Link>
         </div>
           </div>
