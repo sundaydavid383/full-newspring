@@ -12,7 +12,7 @@ import Video from "../../components/video/Video";
 import DiscussionQuestion from "../../components/discussionQuestion/DiscussionQuestion";
 import Resourcerec from "../../components/resourcerec/Resourcerec";
 const BibleStudy = () => {
-  const sectionType = "contact";
+  const sectionType = "";
   const sections = [
     {
       id: 21,

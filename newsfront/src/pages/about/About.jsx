@@ -46,7 +46,7 @@ const About = ({setActive, setDataBase}) => {
           window.scrollTo({top:0})
         }
       }, [])
-       const sectionType = "contact"
+       const sectionType = ""
     const sections = [
         {
           id:4,

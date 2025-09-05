@@ -1,6 +1,5 @@
-// Hero.jsx (only UI section — no form logic)
 import React, { useState, useEffect, useRef } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import "./hero.css";
 
 const Hero = ({
@@ -11,7 +10,7 @@ const Hero = ({
 }) => {
   let buttonParagrah = "Register";
   if (buttonType === "raedArticle") {
-    buttonParagrah = "views articles";
+    buttonParagrah = "View articles";
   } else if (buttonType === "article") {
     buttonParagrah = "Read article";
   }
@@ -29,12 +28,13 @@ const Hero = ({
       setCurrentIndex((prev) => (prev + 1) % sections.length);
     }, 76000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [sections.length]);
 
   useEffect(() => {
     setTitle(sections[currentIndex].title);
-  }, [currentIndex]);
+  }, [currentIndex, sections]);
 
+  // Scroll handler for non-contact sections
   const handleLearnMore = () => {
     window.scrollBy({ top: 600, behavior: "smooth" });
   };
@@ -42,19 +42,23 @@ const Hero = ({
   return (
     <div className="hero">
       {currentIndex < 3 && (
-        <i onClick={() => setCurrentIndex((prev) => prev + 1)} className="fa-solid fa-arrow-right"></i>
+        <i
+          onClick={() => setCurrentIndex((prev) => prev + 1)}
+          className="fa-solid fa-arrow-right"
+        ></i>
       )}
       {currentIndex > 0 && (
-        <i onClick={() => setCurrentIndex((prev) => prev - 1)} className="fa-solid fa-arrow-left"></i>
+        <i
+          onClick={() => setCurrentIndex((prev) => prev - 1)}
+          className="fa-solid fa-arrow-left"
+        ></i>
       )}
 
       {sections.map((section, index) =>
         currentidx.current === index ? (
           <div
             key={index}
-            className={` hero_text_content
-               noContact
-             hero_text_content${section.id}`}
+            className={`hero_text_content noContact hero_text_content${section.id}`}
           >
             <div className="hero_text">
               <h1
@@ -69,10 +73,19 @@ const Hero = ({
                 ))}
               </div>
             </div>
+
             <div className="hero_button">
-              <Link to={"/register"} className="btn">
-                <p>{buttonParagrah}</p>
-              </Link>
+              {sectionType === "contact" ? (
+                // 👉 Go to registration if contact section
+                <Link to="/register" className="btn">
+                  <p>{buttonParagrah}</p>
+                </Link>
+              ) : (
+                // 👉 Otherwise scroll down
+                <button onClick={handleLearnMore} className="btn">
+                  <p>Learn More</p>
+                </button>
+              )}
             </div>
           </div>
         ) : null
@@ -90,7 +103,6 @@ const Hero = ({
 
       {/* Inject the registration form or any custom content */}
       {sectionType !== "contact" && children}
-
     </div>
   );
 };

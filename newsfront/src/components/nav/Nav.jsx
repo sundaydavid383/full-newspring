@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import "./nav.css"
-import logo from "../../assets/logo.png"
-import menu from "../../assets/menu.png"
-import { Link } from 'react-router'
+import React, { useEffect, useState } from 'react';
+import "./nav.css";
+import logo from "../../assets/logo.png";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { Link } from 'react-router';
 
 const Nav = ({ active }) => {
   const [fixed, setFixed] = useState(false);
@@ -25,63 +25,56 @@ const Nav = ({ active }) => {
 
   return (
     <div className={`nav ${fixed ? "navFixed" : ""}`}>
-      
-      {/* Hamburger on the LEFT */}
-      <img
-        onClick={() => setSeeNav(prev => !prev)}
-        className={`menu ${seeNav ? "active" : ""}`}
-        src={menu}
-        alt="menu"
-      />
-
-      {/* Logo on the RIGHT */}
+      {/* Logo on the LEFT */}
       <Link to="/" className="logo">
         <img src={logo} alt="Logo" />
       </Link>
 
+      {/* Hamburger on the RIGHT */}
+     <div className="menu-icon" onClick={() => setSeeNav(prev => !prev)}>
+        {seeNav ? <FaTimes size={24} /> : <FaBars size={24} />}
+      </div>
+
       {/* Nav Links */}
       <ul className={`${seeNav ? "active" : ""}`}>
-        <Link
-          onClick={() => setSeeNav(false)}
-          className={`${active === "home" ? "active" : ""}`}
-          to="/"
-        ><span></span>Home</Link>
-
-        <Link
-          onClick={() => setSeeNav(false)}
-          className={`${active === "about" ? "active" : ""}`}
-          to="/about"
-        ><span></span>About Us</Link>
-
-        <Link
-          onClick={() => setSeeNav(false)}
-          className={`${active === "service" ? "active" : ""}`}
-          to="/services"
-        ><span></span>Services</Link>
-
-        <Link
-          onClick={() => setSeeNav(false)}
-          className={`${active === "blog" ? "active" : ""}`}
-          to={`/bloggrid/1`}
-        ><span></span>Blogs</Link>
-
-        <Link
-          onClick={() => setSeeNav(false)}
-          className={`${active === "database" ? "active" : ""}`}
-          to="/dataBase"
-        ><span></span>DataBase</Link>
-
-        {/* Contact inside the mobile nav */}
-        <Link
-          onClick={() => setSeeNav(false)}
-          className={`${active === "contact" ? "active" : ""} contact-link`}
-          to="/contact"
-        >
-          Contact Us
-        </Link>
+        <li>
+          <Link onClick={() => setSeeNav(false)} className={`${active === "home" ? "active" : ""}`} to="/">
+            <span></span>Home
+          </Link>
+        </li>
+        <li>
+          <Link onClick={() => setSeeNav(false)} className={`${active === "about" ? "active" : ""}`} to="/about">
+            <span></span>About Us
+          </Link>
+        </li>
+        <li>
+          <Link onClick={() => setSeeNav(false)} className={`${active === "service" ? "active" : ""}`} to="/services">
+            <span></span>Services
+          </Link>
+        </li>
+        <li>
+          <Link onClick={() => setSeeNav(false)} className={`${active === "blog" ? "active" : ""}`} to={`/bloggrid/1`}>
+            <span></span>Blogs
+          </Link>
+        </li>
+        <li>
+          <Link onClick={() => setSeeNav(false)} className={`${active === "database" ? "active" : ""}`} to="/dataBase">
+            <span></span>DataBase
+          </Link>
+        </li>
+        {/* Contact link (mobile only, styled differently) */}
+        <li>
+          <Link
+            onClick={() => setSeeNav(false)}
+            className={`${active === "contact" ? "active" : ""} nav-contact-link`}
+            to="/contact"
+          >
+            Contact Us
+          </Link>
+        </li>
       </ul>
 
-      {/* Contact button (desktop only) */}
+      {/* Desktop Contact button */}
       <Link to="/contact" className={`btn desktop-contact ${active === "contact" ? "deactive" : ""}`}>
         <p>Contact Us</p>
       </Link>

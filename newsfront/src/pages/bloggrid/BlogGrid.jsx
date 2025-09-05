@@ -704,7 +704,7 @@ const articles = [
     ],
   },
 ];
-const sectionType = "contact";
+const sectionType = "";
   const buttonType = "raedArticle"
   const sections = [
     {
@@ -744,7 +744,7 @@ const sectionType = "contact";
       ],
     },
   ];
-const BlogGrid = ({ setActive }) => {
+const BlogGrid = ({ scrollTop, setActive }) => {
   const {categoryIndex} = useParams()
   // const currentCategory = articles[categoryIndex]
   setActive("blog");
@@ -771,7 +771,7 @@ const BlogGrid = ({ setActive }) => {
                     </div>
                     <h2 className="blog_title"><small>{blog.id}.</small>  {blog.title}</h2>
                     <p className="blog_text">{blog.text.slice(0, 250)}...</p>
-                    <Link onClick={()=> window.location.href = `/readblog/${blog.id}`}  className="btn">
+                    <Link onClick={scrollTop} to={`/readblog/${blog.id}`}  className="btn">
                       <p>Read now</p>
                     </Link>
                   </div>

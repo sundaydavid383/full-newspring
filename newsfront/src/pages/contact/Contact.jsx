@@ -14,7 +14,7 @@ const Contact = () => {
           window.scrollTo({top:0})
         }
       }, [])
-    const sectionType = "contact"
+    
     const sections = [{
         id: 9,
         title: "Get in Touch",

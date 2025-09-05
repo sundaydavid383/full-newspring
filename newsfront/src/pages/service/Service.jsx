@@ -10,7 +10,7 @@ const Service = ({setActive}) => {
   }, [])
   
  
-  const sectionType = "contact"
+  const sectionType = ""
   const sections = [
     {
       id: 13,

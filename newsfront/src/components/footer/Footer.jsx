@@ -90,7 +90,7 @@ const onSubmit = async (e) => {
 };
 
   return (
-    <div className="footer ">
+    <footer className="footer ">
       <div className="subscribe container_flex_between">
         <h2>Stay in Touch</h2>
         <form onSubmit={onSubmit} action="">
@@ -206,7 +206,7 @@ const onSubmit = async (e) => {
         @2024 All Rights Copyright <span>Tim 412</span>. Design & Developed By
         DavidFoster.
       </div>
-    </div>
+    </footer>
   );
 };
 

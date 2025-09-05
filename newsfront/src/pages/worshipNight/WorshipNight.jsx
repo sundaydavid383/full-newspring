@@ -13,7 +13,7 @@ import Leaders from "../../components/leaders/Leaders";
 import { Link } from "react-router";
 
 const WorshipNight = () => {
-  const sectionType = "contact";
+  const sectionType = "";
   const sections = [
     {
       id: 17,

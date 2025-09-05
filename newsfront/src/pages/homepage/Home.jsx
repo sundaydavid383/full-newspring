@@ -376,7 +376,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
 
   return (
     <div>
-      <Hero sections={homedata.sections} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />
+      <Hero sections={homedata.sections} sectionType={"contact"} dataBase={dataBase} setDataBase={setDataBase} onLoad={onLoad} />
       <Journey journeyData={journeyData} />
       <Videodata videoData={videoData} />
       <Churchdetails churchCards={churchCards} />

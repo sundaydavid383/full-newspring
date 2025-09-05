@@ -43,7 +43,7 @@ import img40 from "../../assets/rccg23.jpg";
 import { Link, useParams } from "react-router";
 import Hero from "../../components/hero/Hero";
 
-const ReadBlog = ({setActive}) => {
+const ReadBlog = ({setActive, scrollTop}) => {
   const { id } = useParams();
   const articles = [
     {
@@ -826,7 +826,7 @@ const ReadBlog = ({setActive}) => {
     },
   ];
   setActive("blog");
-  const sectionType = "contact"
+  const sectionType = ""
   const buttonType = "article"
   const sections = [
     {
@@ -869,115 +869,106 @@ const ReadBlog = ({setActive}) => {
    const [recPost, setRecPost] = useState([]);
 
   useEffect(() => {
-    const indexies = [];
-    for (let i = 0; i < 3; i++) {
-      const index = Math.floor(Math.random() * articles.length);
-      indexies.push(index);
+    // Pick 3 random unique indexes
+    const chosen = new Set();
+    while (chosen.size < 3 && chosen.size < articles.length) {
+      chosen.add(Math.floor(Math.random() * articles.length));
     }
-    setRecPost([
-      articles[indexies[0]],
-      articles[indexies[1]],
-      articles[indexies[2]],
-    ]);
+    setRecPost(Array.from(chosen).map((i) => articles[i]));
   }, []);
+
+  const article = articles.find((a) => a.id == id);
+
+  if (!article) {
+    return (
+      <div className="holder">
+        <p>Article not found.</p>
+        <Link to="/bloggrid/1" onClick={scrollTop}>
+          Back to Blogs
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="holder">
-      <a href={`/bloggrid/${1}`}>
+      <Link to={`/bloggrid/${1}`} onClick={scrollTop}>
         <i title="Go Back" className="fa-solid fa-backward"></i>
-      </a>
+      </Link>
 
-      <Hero
-        sections={sections}
-        sectionType={sectionType}
-        buttonType={buttonType}
-      />
+      {/* Remove Hero if you don’t have props ready */}
+      {/* <Hero sections={sections} sectionType={sectionType} buttonType={buttonType} /> */}
 
       <div className="readBlog_holder container_flex_between">
+        {/* Main Article */}
         <div className="readBlog_container">
-          {articles.map((article) =>
-            id == article.id ? (
-              <div key={article.id} className="article">
-                <img src={article.image} alt="" />
-                <div className="article_date_author">
-                  <p>{article.author}</p>
-                  <p>{article.date}</p>
-                </div>
-                <h2>{article.title}</h2>
-                <p className="gist1">
-                  <span>{article.gist1.charAt(0)}</span>
-                  {article.gist1.slice(1)}
-                </p>
-                <div className="quote">
-                  <i className="fa-solid fa-quote-right"></i>
-                  <i className="fa-solid fa-quote-left"></i>
-                  <p>{article.quote}</p>
-                  <small>-{article.quoteAuthor}</small>
-                </div>
-                <p className="gist1">{article.gist2}</p>
-                <ul className="advice">
-                  {article.advice.map((advc, i) => (
-                    <li key={i}>
-                      <i className="fa-solid fa-square-check"></i> {advc}
-                    </li>
-                  ))}
-                </ul>
+          <div key={article.id} className="article">
+            {article.image && <img src={article.image} alt={article.title} />}
+            <div className="article_date_author">
+              <p>{article.author}</p>
+              <p>{article.date}</p>
+            </div>
+            <h2>{article.title}</h2>
+
+            {/* If gist1/gist2 exist */}
+            {article.gist1 && (
+              <p className="gist1">
+                <span>{article.gist1.charAt(0)}</span>
+                {article.gist1.slice(1)}
+              </p>
+            )}
+            {article.quote && (
+              <div className="quote">
+                <i className="fa-solid fa-quote-right"></i>
+                <i className="fa-solid fa-quote-left"></i>
+                <p>{article.quote}</p>
+                <small>-{article.quoteAuthor}</small>
               </div>
-            ) : null
-          )}
+            )}
+            {article.gist2 && <p className="gist1">{article.gist2}</p>}
+
+            {/* If advice exists */}
+            {article.advice && (
+              <ul className="advice">
+                {article.advice.map((advc, i) => (
+                  <li key={i}>
+                    <i className="fa-solid fa-square-check"></i> {advc}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* If paragraphs exist */}
+            {article.paragraphs &&
+              article.paragraphs.map((para, i) => (
+                <p key={i} className="gist1">
+                  {para}
+                </p>
+              ))}
+          </div>
         </div>
 
+        {/* Sidebar */}
         <div className="readBlog_extra">
           <ul className="categories">
             <h1>Categories</h1>
-            <li>
-              <a href={`/bloggrid/${1}`}>
-                <p className="categories_column">Biblical Devotionals</p>
-                <p>24 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${2}`}>
-                <p className="categories_column">Theology Studies</p>
-                <p>15 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${3}`}>
-                <p className="categories_column">Christian Growth</p>
-                <p>18 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${4}`}>
-                <p className="categories_column">Testimonies Stories</p>
-                <p>10 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${5}`}>
-                <p className="categories_column">Church News</p>
-                <p>12 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${6}`}>
-                <p className="categories_column">Christian Ministry</p>
-                <p>8 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${7}`}>
-                <p className="categories_column">Book Reviews</p>
-                <p>5 posts</p>
-              </a>
-            </li>
-            <li>
-              <a href={`/bloggrid/${8}`}>
-                <p className="categories_column">Contemporary Issues</p>
-                <p>9 posts</p>
-              </a>
-            </li>
+            {[
+              "Biblical Devotionals",
+              "Theology Studies",
+              "Christian Growth",
+              "Testimonies Stories",
+              "Church News",
+              "Christian Ministry",
+              "Book Reviews",
+              "Contemporary Issues",
+            ].map((cat, idx) => (
+              <li key={idx}>
+                <Link to={`/bloggrid/${idx + 1}`} onClick={scrollTop}>
+                  <p className="categories_column">{cat}</p>
+                  <p>{Math.floor(Math.random() * 20) + 5} posts</p>
+                </Link>
+              </li>
+            ))}
           </ul>
 
           <div className="related_post">
@@ -986,19 +977,22 @@ const ReadBlog = ({setActive}) => {
               {recPost.map(
                 (post) =>
                   post && (
-                    <a
-                      href={`/readblog/${post.id}`}
+                    <Link
+                      to={`/readblog/${post.id}`}
                       key={post.id}
                       className="related_card"
+                      onClick={scrollTop}
                     >
-                      <div className="related_card_image">
-                        <img src={post.image} alt="" />
-                      </div>
+                      {post.image && (
+                        <div className="related_card_image">
+                          <img src={post.image} alt={post.title} />
+                        </div>
+                      )}
                       <div className="related_card_text">
                         <span>{post.date}</span>
-                        <p>{post.title}..</p>
+                        <p>{post.title}</p>
                       </div>
-                    </a>
+                    </Link>
                   )
               )}
             </div>
@@ -1008,9 +1002,9 @@ const ReadBlog = ({setActive}) => {
             <span>Call 123 234-567-890</span>
             <h2>Have a Blessed</h2>
             <h1>Sunday Service</h1>
-            <a href="/contact" className="btn">
+            <Link to="/contact" className="btn" onClick={scrollTop}>
               <p>Know About Us</p>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

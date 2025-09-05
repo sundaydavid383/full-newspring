@@ -149,7 +149,7 @@ const journeyData = [
       };
       const featuresTitle = "Why Come For Retreat";
       const featuresTitleSmall ="NewSpring Tim412 empowers teens to grow in faith, one of the ways which is by build a create a time for intimacy and quiteness with the lord for the upliftment of the youth of this generation. ";
-       const sectionType = "contact"
+       const sectionType = ""
        const testimonials = [
         {
           id: 1,
