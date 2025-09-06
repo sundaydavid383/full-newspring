@@ -45,5 +45,8 @@
 }
 }
 @media (max-width: 600px) {
-
+.video_holder iframe{
+    width: 90%;
+    aspect-ratio: 16/9
+}
 }
