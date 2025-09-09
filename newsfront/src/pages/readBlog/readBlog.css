@@ -1,0 +1,491 @@
+
+/* ---------- Layout wrapper ---------- */
+.readBlog_holder {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 4.4rem;
+}
+
+/* Make any stray img rule safe */
+.readBlog_holder img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* ---------- Columns (main + sidebar) ---------- */
+.readBlog_container {
+  flex: 1 1 68%;
+  max-width: 68%;
+  box-sizing: border-box;
+}
+
+.readBlog_extra {
+  flex: 0 0 30%;
+  max-width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  box-sizing: border-box;
+}
+
+/* ---------- Article ---------- */
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.article img {
+  width: 100%;
+  max-height: 600px;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+/* date + author row */
+.article_date_author {
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 0.7rem 0;
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.article_date_author p {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--lightBlack);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* small badge circle */
+.article_date_author p span {
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--brown);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* H2 */
+.article h2 {
+  font-size: 2.2rem;
+  line-height: 1.15;
+  color: var(--black);
+  margin: 0.4rem 0;
+}
+
+/* Body text (gist & paragraphs) */
+.gist1 {
+  color: var(--lightBlack);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8rem;
+  margin: 0;
+}
+
+/* Big decorative first-letter style (keeps inline) */
+.gist1 span {
+  display: inline-block;
+  background: var(--brown);
+  color: var(--white);
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: 0.45rem;
+  line-height: 1.2;
+  vertical-align: top;
+  margin-right: 0.8rem;
+}
+
+/* ---------- Quote box ---------- */
+.readBlog_holder .quote {
+  background: var(--gray);
+  padding: 2rem;
+  border-radius: 0.9rem;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  margin: 1rem 0;
+}
+
+.readBlog_holder .quote p {
+  color: var(--black);
+  font-size: 1.55rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin: 0;
+}
+
+.readBlog_holder .quote .fa-quote-right,
+.readBlog_holder .quote .fa-quote-left {
+  position: absolute;
+  color: var(--brown);
+  font-size: 1.8rem;
+}
+
+.readBlog_holder .quote .fa-quote-left {
+  top: 0.6rem;
+  left: 1rem;
+}
+
+.readBlog_holder .quote .fa-quote-right {
+  right: 1rem;
+  bottom: 0.6rem;
+}
+
+.readBlog_holder .quote small {
+  display: block;
+  color: var(--brown);
+  font-weight: 500;
+  font-size: 1.05rem;
+  margin-top: 0.8rem;
+}
+
+/* ---------- Advice list ---------- */
+.readBlog_holder .advice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.readBlog_holder .advice li {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.readBlog_holder .advice li i {
+  color: var(--brown);
+}
+
+/* ---------- Sidebar: categories ---------- */
+.readBlog_extra .categories h1,
+.related_post h2 {
+  color: var(--black);
+  font-size: 1.6rem;
+  font-family: cursive;
+  margin: 0 0 0.6rem 0;
+}
+
+.readBlog_extra .categories {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 0.8rem;
+  padding: 0.65rem 0.9rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.readBlog_extra .categories li {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+.readBlog_extra .categories li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  gap: 0.5rem;
+  color: var(--black);
+  text-decoration: none;
+  padding: 0.3rem 0.3rem;
+  transition: color .18s linear, padding-left .18s linear;
+}
+
+.readBlog_extra .categories li a:hover {
+  color: var(--brown);
+}
+
+.readBlog_extra .categories_column {
+  position: relative;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 70%;
+  transition: padding-left .2s linear;
+}
+
+.readBlog_extra .categories_column::before {
+  content: "";
+  position: absolute;
+  height: 0.4rem;
+  width: 0.4rem;
+  transition: opacity .2s linear;
+  background: var(--brown);
+  top: 40%;
+  left: 0;
+  opacity: 0;
+}
+
+.readBlog_extra .categories_column:hover {
+  padding-left: 0.8rem;
+}
+
+.readBlog_extra .categories_column:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Related posts ---------- */
+.related_post {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 0.7rem 0.9rem;
+  box-sizing: border-box;
+}
+
+.related_post_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* each related card */
+.related_card {
+  display: flex;
+  gap: 0.9rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 0.9rem;
+  border-radius: 0.6rem;
+  align-items: center;
+  transition: background .18s linear, transform .12s linear;
+  text-decoration: none;
+  color: inherit;
+}
+
+.related_card:hover {
+  background: var(--brown);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* image in card - responsive sizing */
+.related_card_image {
+  width: 36%;
+  max-width: 120px;
+  height: 70px;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  flex-shrink: 0;
+}
+
+.related_card_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* text area */
+.related_card_text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.related_card_text span {
+  font-weight: 600;
+  color: var(--brown);
+}
+
+.related_card_text p {
+  font-weight: 500;
+  line-height: 1.2rem;
+  color: var(--black);
+  margin: 0;
+}
+
+/* ---------- Know us block ---------- */
+.know_us {
+  width: 100%;
+  border-radius: 1rem;
+  background-image: url("../../assets/biblestudy2.jpg");
+  background-color: rgba(0, 0, 0, 0.45);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+  padding: 3.5rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  box-sizing: border-box;
+}
+
+.know_us span {
+  font-size: 0.85rem;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+.know_us h2 {
+  color: var(--gold);
+  margin: 0.8rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.know_us h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+}
+
+.know_us .btn {
+  width: 9rem;
+  margin-top: 0.5rem;
+}
+
+/* ---------- Breakpoints ---------- */
+
+/* Tablet / small laptops */
+@media (max-width: 1000px) {
+  .readBlog_holder {
+    gap: 1rem;
+    padding: 1.6rem;
+  }
+  .readBlog_container {
+    flex-basis: 66%;
+    max-width: 66%;
+  }
+  .readBlog_extra {
+    flex-basis: 33%;
+    max-width: 33%;
+  }
+
+  .related_card_image {
+    max-width: 110px;
+    height: 65px;
+  }
+
+  .article h2 {
+    font-size: 2rem;
+  }
+
+  .readBlog_holder .quote p {
+    font-size: 1.45rem;
+  }
+}
+
+/* Narrow tablets / large phones */
+@media (max-width: 800px) {
+  .readBlog_holder {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.2rem;
+  }
+
+  .readBlog_container,
+  .readBlog_extra {
+    flex-basis: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .readBlog_extra {
+    margin-top: 1.25rem;
+  }
+
+  /* Quote should be full width in stacked layout */
+  .readBlog_holder .quote {
+    padding: 2.14rem;
+  }
+
+  .related_card {
+    flex-direction: row;
+    gap: 0.9rem;
+    padding: 0.9rem;
+  }
+
+  .related_card_image {
+    width: 36%;
+    max-width: none;
+    height: 72px;
+  }
+
+  .related_card_text {
+    text-align: left;
+  }
+
+  .article h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .readBlog_holder {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .article h2 {
+    font-size: 1.6rem;
+  }
+
+  .gist1 {
+    font-size: 0.97rem;
+    line-height: 1.6rem;
+  }
+
+  .related_card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .related_card_image {
+    width: 100%;
+    height: 8rem;
+  }
+
+  .related_card_text {
+    text-align: left;
+    padding-top: 0.5rem;
+  }
+
+  .readBlog_extra .categories_column {
+    width: 100%;
+  }
+
+  .know_us {
+    padding: 2.5rem 1rem;
+  }
+}
+
+/* Micro screens */
+@media (max-width: 360px) {
+  .article h2 {
+    font-size: 1.45rem;
+  }
+  .readBlog_holder {
+    padding: 0.8rem;
+  }
+  .related_card_image {
+    height: 6.5rem;
+  }
+}

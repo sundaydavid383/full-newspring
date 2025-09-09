@@ -1,0 +1,116 @@
+<<<<<<< HEAD
+/* Uses your root variables like --gold, --blurwhite, --box-shadow, etc. */
+.ScrollImage {
+  width: 100%;
+  padding: 4rem 2rem;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* This wrapper allows touch/drag scrolling; animation runs on the inner track */
+.ScrollInner {
+  overflow-x: auto;        /* allows manual touch-scrolling */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  outline: none;           /* we'll still handle focus styles if you want */
+  cursor: grab;
+}
+
+/* The moving row (duplicate items included for seamless loop) */
+.ScrollTrack {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  width: max-content; /* so it sizes to content (needed for duplication technique) */
+  animation-name: scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  will-change: transform;
+}
+
+/* Pause when hovering, focusing keyboard or dragging */
+.ScrollImage:hover .ScrollTrack,
+.ScrollImage.is-dragging .ScrollTrack,
+.ScrollInner:focus + .ScrollTrack, /* not used here but safe */
+.ScrollInner:active + .ScrollTrack {
+  animation-play-state: paused;
+}
+
+/* each image card */
+.image {
+  position: relative;
+  border-radius: 1rem;
+  flex: 0 0 auto;     /* prevent flex children from shrinking/growing */
+  height: 320px;      /* taller height as you requested */
+  width: 420px;       /* fixed card width — adjust to taste */
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  background: var(--blurwhite);
+}
+
+/* image fills the card */
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* subtle overlay / blocker effect if you had it in your earlier styles */
+.imageBlocker {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* social icons overlay */
+.imageOverlay {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 5;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 0.5rem;
+  background: var(--blurblack);
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+/* hover feedback for socials */
+.social:hover {
+  transform: translateY(-3px);
+}
+
+/* marquee animation: move left by half the track width (because we duplicated the items) */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* small screens: reduce sizes so it fits nicely */
+@media (max-width: 740px) {
+  .image {
+    height: 220px;
+    width: 300px;
+  }
+  .ScrollImage {
+    padding: 2.5rem 1rem;
+  }
+  .ScrollTrack {
+    gap: 1rem;
+    animation-duration: 40s; /* slower on small screens */
+  }
+}

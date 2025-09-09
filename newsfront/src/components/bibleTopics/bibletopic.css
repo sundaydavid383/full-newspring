@@ -1,0 +1,55 @@
+.BibleTopics{
+    background: var(--white);
+}
+.BibleTopics .title{
+        color: var(--black);
+        border-bottom-color: var(--brown);
+        width: 24rem;
+}
+.bibletopic_container{
+    flex-wrap: wrap;
+    row-gap: 2rem;
+}
+.bible_topic_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20rem;
+    opacity: 0;
+    text-align: center;
+    gap: .4rem
+}
+.bible_topic_card i{
+    color: var(--white);
+    background: var(--brown);
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    line-height: 4rem;
+    font-size: 2rem;
+    border: 1px solid var(--gold);
+}
+.bible_topic_card h2{
+    font-size: 1.3rem;
+    color: var(--black);
+}
+.bible_topic_card span{
+    color: var(--gold);
+    font-weight: 500;
+}
+.bible_topic_card p{
+    color: var(--lightBlack);
+    font-size: .9rem;
+}
+.bible_topic_card .btn-slide{
+   width: 100%;
+}
+.bible_topic_card .btn-slide p{
+    color: var(--white);
+}
+.bible_topic_card .btn-slide:hover p{
+    color:var(--black)
+}
+.bible_topic_card.active{
+    animation: bottomfadeIn 1.2s forwards;
+}

@@ -1,0 +1,154 @@
+/* Fixed bottom container */
+.bottom-box {
+  position: fixed;
+  bottom: 0rem;
+  right: 1rem;
+  width: 25rem;
+  background-color: #f8f9fa;
+  border-top: 2px solid #ddd;
+  padding: 1rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.bottom-box .iconactive.fa-times{
+   position: absolute;
+   top: -0.21rem;
+   left: 95%;
+   width: 2rem;
+   height: 2rem;
+   line-height: 1.9rem;
+   font-size: 1.3rem;
+}
+.box_form{
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding-right: 1rem;
+}
+.box_form button{
+  color: var(--brown);
+  cursor: pointer;
+  font-size: 1.52rem;
+  transition: .3s;
+  padding: .3rem;
+  border-radius: 50%;
+  width: 3rem;
+}
+.box_form button:hover{
+   color: var(--gold)
+}
+.woman {
+  position: fixed;
+  bottom: .2rem;
+  right: 1rem;   /* 👈 move to bottom-right */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: white;
+  padding: 1rem;
+  border-radius: 30%;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.4);
+  transition: .2s linear;
+}
+.woman:hover{
+  background: var(--brown);
+}
+.woman_text{
+  position: absolute;
+  top: -2rem;
+  left: -5rem; 
+  width: 8rem;
+  padding: 0.2rem .1rem;
+  border-radius: 12%;
+  background-color: white;
+  font-size: .9rem;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-around;
+  line-height: 1rem
+
+}
+.woman img{
+   width: 3.44rem;
+}
+/* The filter area */
+.filter-area {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Input field */
+.filter-area input[type="text"] {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Dropdown styles */
+.dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  max-height: 180px;
+  overflow-y: auto;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  z-index: 1001;
+}
+
+/* Dropdown list item */
+.dropdown li {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Bible verse display */
+.verse {
+  margin-top: 0.8rem;
+  background-color: #eef6ff;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #007bff;
+  font-style: italic;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  position: relative;
+  max-height: 10rem;
+  overflow-y: scroll;
+  color: #333;
+}
+.verse img{
+  width: 2rem;
+  margin-right: 1rem;
+}
+@media (max-width: 480px) {
+  .filter-area input[type="text"] {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .dropdown li {
+    padding: 0.6rem 0.9rem;
+  }
+
+  .verse {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.9rem;
+  }
+}

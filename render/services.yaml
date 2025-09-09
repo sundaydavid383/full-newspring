@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: newspring-backend
+    env: node
+    rootDir: expressfolder
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"

@@ -1,0 +1,6 @@
+.take_up{
+    position: fixed;
+    bottom: 2.29rem;
+    left: 1rem;
+    z-index: 11;
+}

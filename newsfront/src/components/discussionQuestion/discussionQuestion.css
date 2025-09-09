@@ -1,0 +1,47 @@
+.DiscussionQuestion{
+    background: var(--white);
+}
+.DiscussionQuestion .title{
+    color: var(--black);
+    border-bottom-color: var(--brown);
+    width: 21rem;
+}
+.DiscussionQuestion_container{
+    row-gap:4rem;
+    flex-wrap: wrap;
+}
+.discussionQuestionCard{
+    width: 23rem;
+    position: relative;
+    border: 1px solid var(--lightBlack);
+    padding: 2rem .72rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    padding-top: 2.5rem;
+}
+
+.discussionQuestionCard h2{
+    font-size: 1.3rem;
+    color: var(--black);
+    text-align: center;
+}
+.discussionQuestionCard ul{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.discussionQuestionCard ul li{
+    list-style:disc;
+    margin-left: 1.3rem;
+    color: var(--lightBlack);
+    font-size: .96rem;
+}
+.discussionQuestionCard.active{
+    animation: bottomfadeIn 1.3s forwards;
+}
+.iconinactive{
+    top:0rem;
+}

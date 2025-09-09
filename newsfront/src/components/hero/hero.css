@@ -1,0 +1,244 @@
+/* hero.css */
+.hero {
+  position: relative;
+  margin-top: 4.37rem;
+  min-height: auto;
+}
+
+/* ========== HERO BASE ========== */
+.hero_text_content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 5rem 3rem 5rem;   /* bottom padding keeps button above bar */
+  min-height: 100vh;
+  background-color: rgba(29, 29, 29, 0.8);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+  background-attachment: fixed;
+  z-index: 1;
+}
+
+/* Bar stays consistent */
+.bar_active {
+  display: flex;
+  column-gap: 1rem;
+  position: absolute;
+  bottom: 1.5rem;   /* fixed distance from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.bar_active span {
+  width: 1rem;
+  height: 1rem;
+  background: var(--fadedWhite);
+  border-radius: 50%;
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.bar_active .opacity1 {
+  opacity: 1;
+}
+
+.hero_text_content0 { background-image: url("../../assets/rccg3.jpg"); }
+.hero_text_content1 { background-image: url("../../assets/rccg37.jpg"); }
+.hero_text_content2 { background-image: url("../../assets/rccg38.jpg"); }
+.hero_text_content3 { background-image: url("../../assets/rccg14.jpg"); }
+.hero_text_content4 { background-image: url("../../assets/rccg31.jpg"); }
+.hero_text_content5 { background-image: url("../../assets/rccg13.jpg"); }
+.hero_text_content6 { background-image: url("../../assets/rccg28.jpg"); }
+.hero_text_content7 { background-image: url("../../assets/rccg32.jpg"); }
+.hero_text_content8 { background-image: url("../../assets/rccg29.jpg"); }
+.hero_text_content9 { background-image: url("../../assets/rccg62.jpg"); }
+.hero_text_content10 { background-image: url("../../assets/rccg64.jpg"); }
+.hero_text_content11 { background-image: url("../../assets/hero.jpg"); }
+.hero_text_content12 { background-image: url("../../assets/rccg55.jpg"); }
+.hero_text_content13 { background-image: url("../../assets/rccg54.jpg"); }
+.hero_text_content14 { background-image: url("../../assets/rccg51.jpg"); }
+.hero_text_content15 { background-image: url("../../assets/rccg7.jpg"); }
+.hero_text_content16 { background-image: url("../../assets/rccg5.jpg"); }
+.hero_text_content17 { background-image: url("../../assets/rccg18.jpg"); }
+.hero_text_content18 { background-image: url("../../assets/rccg4.jpg"); }
+.hero_text_content19 { background-image: url("../../assets/rccg6.jpg"); }
+.hero_text_content20 { background-image: url("../../assets/rccg11.jpg"); }
+.hero_text_content21 { background-image: url("../../assets/biblestudy3.jpg"); }
+.hero_text_content22 { background-image: url("../../assets/biblestudy2.jpg"); }
+.hero_text_content23 { background-image: url("../../assets/biblestudy1.jpg"); }
+.hero_text_content24 { background-image: url("../../assets/rccg85.jpg"); }
+.hero_text_content25 { background-image: url("../../assets/rccg86.jpg"); }
+.hero_text_content26 { background-image: url("../../assets/rccg87.jpg"); }
+.hero_text_content27 { background-image: url("../../assets/rccg88.jpg"); }
+.hero_text_content28 { background-image: url("../../assets/rccg82.jpg"); }
+.hero_text_content29 { background-image: url("../../assets/rccg83.jpg"); }
+.hero_text_content30 { background-image: url("../../assets/rccg84.jpg"); }
+
+.hero_text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  width: 50%;
+}
+
+.hero .para {
+  opacity: 0;
+  animation: leftfadeIn 2s forwards 2s;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  line-height: 3.7rem;
+  color: var(--white);
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+  transform-origin: bottom;
+  min-height: 4rem;
+  animation: riseUp 4s forwards;
+}
+
+.hero p {
+  font-size: 0.94rem;
+  line-height: 1.6rem;
+  color: var(--white);
+}
+
+.hero_button {
+  margin-top: 2rem;
+}
+
+.hero_button p {
+  font-size: 1rem;
+}
+
+.hero_button .btn {
+  width: 12rem;
+  margin-top: -1rem;
+}
+
+.hero_button .btn:hover::after {
+  bottom: -1.5rem;
+  right: -0.5rem;
+}
+
+.hero_button .btn:hover::before {
+  top: -1.5rem;
+  left: -0.5rem;
+}
+
+.fa-arrow-right,
+.fa-arrow-left {
+  position: absolute;
+  top: 40%;
+  height: 2rem;
+  width: 2rem;
+  box-shadow: 0px 0px 10px 0px var(--brown);
+  background: var(--brown);
+  color: var(--white);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 2rem;
+  z-index: 13;
+}
+
+.fa-arrow-left { left: 0rem; }
+.fa-arrow-right { right: 0rem; }
+
+.fa-arrow-right:hover,
+.fa-arrow-left:hover {
+  color: var(--black);
+  background: var(--gold);
+  box-shadow: 0px 0px 10px 5px var(--brown);
+}
+
+
+
+/* ========== LARGE DESKTOPS ========== */
+@media (min-width: 1025px) {
+  .hero_text_content {
+    min-height: 100vh;        /* fullscreen */
+    background-attachment: fixed;
+    padding-bottom: 7rem;     /* safe space for bar */
+  }
+}
+
+/* ========== TABLETS & SMALL LAPTOPS ========== */
+@media (max-width: 1024px) {
+  .hero_text_content {
+    min-height: auto;         /* fit content instead of forcing vh */
+    background-attachment: scroll;
+    padding: 6rem 1.5rem 5rem; /* balanced padding */
+  }
+}
+@media (max-width: 1024px) and (min-width: 601px) {
+  .hero_text {
+    width: 100%;              /* use full width */
+    text-align: center;       /* center the text */
+    padding: 0 2rem;          /* side padding for breathing room */
+    margin: 0 auto;           /* ensure centering */
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;        /* scale down slightly for tablets */
+    line-height: 3rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    line-height: 1.6rem;
+  }
+   .hero_text {
+    width: 100%;
+    text-align: center;
+    padding: 0 2rem;
+    margin: 0 auto;
+  }
+
+  .hero_button {
+    display: flex;
+    justify-content: center;  /* centers the button horizontally */
+  }
+}
+/* ========== PHONES ========== */
+@media (max-width: 600px) {
+  .hero_text_content {
+    min-height: auto;
+    padding: 5rem 1.2rem 5.5rem; /* extra bottom padding */
+  }
+
+
+  .hero h1 {
+    font-size: 2rem;
+    line-height: 2.4rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+    line-height: 1.5rem;
+  }
+    .hero_text {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero_button {
+    display: flex;
+    justify-content: center;  /* centers the button for phones too */
+  }
+}
+
+
+/* ========== LANDSCAPE PHONES ========== */
+@media (max-width: 900px) and (orientation: landscape) {
+  .hero_text_content {
+    min-height: auto;
+    padding-bottom: 5rem;
+  }
+}

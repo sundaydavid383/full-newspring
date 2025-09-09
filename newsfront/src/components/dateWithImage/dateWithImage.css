@@ -1,0 +1,150 @@
+.dateImageCard {
+  display: flex;
+  flex-direction: row; /* default desktop layout */
+  align-items: stretch;
+  background: var(--blurwhite);
+  box-shadow: var(--box-shadow);
+  border-radius: 1rem;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 2rem auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dateImageCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================
+   IMAGE SECTION
+========================= */
+.dateImageCard__image {
+  flex: 1;
+  min-width: 300px;
+  height: auto;
+  overflow: hidden;
+}
+
+.dateImageCard__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.4s ease;
+}
+
+.dateImageCard__image img:hover {
+  scale: 1.05;
+}
+
+/* =========================
+   CONTENT SECTION
+========================= */
+.dateImageCard__content {
+  flex: 1;
+  padding: 2rem;
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dateImageCard__eventName {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--brown);
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dateImageCard__tagline {
+  font-size: 0.91rem;
+  color: var(--lightBlack);
+  margin-bottom: 1.2rem;
+  font-style: italic;
+}
+
+/* =========================
+   DETAILS
+========================= */
+.dateImageCard__details {
+  margin-bottom: 1.2rem;
+}
+
+.dateImageCard__details p {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+  font-size: .9rem;
+  color: var(--black);
+  line-height: 1.5;
+}
+
+.dateImageCard__details strong {
+  color: var(--darkbrown);
+}
+
+.dateImageCard__details .icon {
+  color: var(--gold);
+  font-size: 1rem;
+}
+
+/* =========================
+   CTA BUTTON
+========================= */
+.dateImageCard__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--gold);
+  color: var(--white);
+  padding: 0.8rem 1.4rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  width: fit-content;
+}
+
+.dateImageCard__cta:hover {
+  background: var(--sharpgold);
+  color: var(--black);
+  transform: translateY(-2px);
+}
+
+.dateImageCard__cta .icon-right {
+  font-size: 1rem;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .dateImageCard {
+    flex-direction: column;
+    max-width: 95%;
+  }
+
+  .dateImageCard__image {
+    min-width: 100%;
+    height: 250px;
+  }
+
+  .dateImageCard__content {
+    padding: 1.5rem;
+  }
+
+  .dateImageCard__eventName {
+    font-size: 1.5rem;
+  }
+
+  .dateImageCard__tagline {
+    font-size: 1rem;
+  }
+}

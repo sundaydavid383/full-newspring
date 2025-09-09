@@ -1,0 +1,127 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(29, 29, 29, 0.8);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+  background-attachment: fixed;
+  min-height: auto;
+  /* padding: 2rem; */
+}
+
+.hero form {
+  background: var(--blurblack);
+  backdrop-filter: blur(25px);
+  border-radius: 0.8rem;
+  box-shadow: var(--box-shadow);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 650px;
+  margin: 2rem auto;
+  color: var(--white);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.hero form h2 {
+  font-size: 1.9rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 1.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* Grid Layout for Inputs */
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+.inputs input,
+.inputs select {
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  padding: 1rem 1.1rem;
+  font-size: 1rem;
+  background: var(--fadedWhite);
+  color: var(--black);
+  transition: all 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.inputs input:focus,
+.inputs select:focus {
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(105, 107, 240, 0.2); /* subtle glow */
+  outline: none;
+}
+
+.inputs select option {
+  background: var(--black);
+  color: var(--white);
+}
+
+
+.hero form p {
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--fadedWhite);
+}
+
+/* Error shake */
+#phone.alert,
+#email.alert,
+#firstname.alert,
+#lastname.alert,
+#age.alert,
+#school.alert,
+#occupation.alert,
+#hobbies.alert,
+#heardAboutUs.alert,
+#interest.alert {
+  animation: shake 0.5s forwards;
+  border: 1px solid red;
+}
+
+/* Animations */
+@keyframes shake {
+  0% { transform: translateX(-5px); }
+  25% { transform: translateX(5px); }
+  50% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero form {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .hero form h2 {
+    font-size: 1.5rem;
+  }
+
+  .hero form .btn-slide {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .inputs {
+    grid-template-columns: 1fr; /* stack on mobile */
+  }
+}

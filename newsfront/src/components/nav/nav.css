@@ -1,0 +1,228 @@
+/* === Fonts (keep your import) === */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;600;700;900&display=swap");
+
+/* === Base / Desktop-first layout === */
+.nav {
+  position: absolute; /* keep your flow - change to fixed if you always want it sticky */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 11;
+  height: 68px; /* consistent height */
+  padding: 0 clamp(1rem, 2.5vw, 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.navFixed{
+  position: fixed !important;
+  background: var(--white);
+  box-shadow: var(--box-shadow)
+}
+
+/* If you have a logo element, give it a stable flex basis */
+.nav .logo,
+.nav .brand,
+.nav .site-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+
+}
+
+/* Nav list - allow it to grow and align to the right so it won't collide with the logo */
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.2vw, 3.2rem); /* fluid gap */
+  flex: 1 1 auto;                /* take remaining space */
+  justify-content: center;     /* push links right */
+  min-width: 0;
+     
+}
+
+/* Each link */
+.nav ul li {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto; /* do not stretch list items */
+}
+
+.nav ul a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.9rem;
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 500;
+  font-size: clamp(0.9rem, 1.1vw, 1rem); /* fluid font */
+  white-space: nowrap; /* avoid line breaks inside link text */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .18s ease, background .18s ease, transform .12s;
+}
+
+/* small underline animation (positioned from bottom for stability) */
+.nav ul a span {
+  position: absolute;
+  top: 1.95rem;
+  left: 0.8rem;
+  width: 0%;
+  height: 0.2rem;
+  border-radius: 0.25rem;
+  background: var(--gold);
+  transition: width .2s;
+}
+.nav ul a:hover span,
+.nav ul .active span {
+  width: 70%;
+}
+.nav ul a:hover,
+.nav ul .active a {
+  color: var(--gold);
+}
+
+/* Button / contact (desktop) */
+.nav .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(.28rem, .9vw, .5rem) 1rem;
+  min-width: 68px;
+  border-radius: 6px;
+  height: 80%;
+  font-weight: 500;
+  transform: translateY(-2px); /* small visual lift */
+}
+
+/* === Fixes for previously hidden contact link ===
+   If somewhere you have `.contact-link { opacity:0 }` this will override it */
+.nav ul a.contact-link,
+.nav ul a.nav-contact-link {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem !important;
+  background: var(--gold) !important;
+  color: var(--brown) !important;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  opacity: 1 !important;
+  min-height: 36px;
+}
+
+/* If you had a hero overlay image applied to .contact-link, reset the odd height */
+.nav ul a.contact-link img,
+.nav ul a.contact-link .bg-img {
+  display: none; /* remove unexpected large background elements inside the link */
+}
+
+ .menu-icon { display: none; }
+
+/* === Progressive breakpoints - make everything scale down smoothly === */
+
+/* large desktop -> reduce gap slightly */
+@media (max-width: 1400px) {
+  .nav ul { gap: 2.6rem; }
+  .nav ul a { font-size: 0.99rem; }
+  .nav .btn { min-width: 80px; }
+}
+
+/* medium desktop / laptop */
+@media (max-width: 1200px) {
+  .nav { padding: 0 1rem; height: 60px; }
+  .nav ul { gap: 1.6rem; }
+  .nav ul a { font-size: 0.95rem; padding: 0.42rem 0.85rem; font-weight: 500; }
+  .nav .btn { padding: 0.34rem 0.9rem; min-width: 78px; }
+}
+
+/* smaller laptops / large tablets */
+@media (max-width: 1024px) {
+  .nav ul { gap: 1.2rem; }
+  .nav ul a { font-size: 0.92rem; font-weight: 480; }
+  .nav .btn { min-width: 74px; }
+}
+
+/* tight space - reduce weight and padding to avoid wrapping */
+@media (max-width: 900px) {
+  .nav ul { gap: 1rem; }
+  .nav ul a { font-size: 0.88rem; font-weight: 420; padding: 0.36rem 0.72rem; }
+  .nav .btn { padding: 0.32rem 0.7rem; min-width: 70px; }
+}
+
+/* critical widths where items often wrap — make text lighter and smaller */
+@media (max-width: 840px) {
+  .nav ul { gap: 0.9rem; }
+  .nav ul a { font-size: 0.86rem; font-weight: 400; }
+}
+
+/* last step before mobile collapse */
+@media (max-width: 780px) {
+  .nav ul { gap: 0.7rem; }
+  .nav ul a { font-size: 0.84rem; font-weight: 350; padding: 0.3rem 0.6rem; }
+  .nav .btn { padding: 0.28rem 0.6rem; }
+}
+
+/* === MOBILE: at 740px we switch to stacked menu === */
+@media (max-width: 740px) {
+
+  .menu-icon {
+     display: flex;
+     color: var(--black) !important
+    }
+
+
+  /* hide inline button (you may want it inside the mobile menu) */
+  .nav .btn { display: none; }
+
+  /* stacked menu bar */
+  .nav ul {
+    position: absolute;
+    top: calc(100%); /* appears under the nav */
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    background: var(--brown);
+    display: none; /* toggled with .active */
+    text-align: center;
+    box-shadow: var(--box-shadow);
+     z-index: 1111; 
+  }
+  .nav ul.active { display: flex; }
+
+  .nav ul li { width: 100%; }
+  .nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+    background: transparent;
+    border-radius: 0;
+  }
+  .nav ul li a span { display: none; } /* remove underline in mobile */
+
+  /* contact link inside mobile menu */
+  .nav ul li a.nav-contact-link,
+  .nav ul li a.contact-link {
+    display: block !important;
+    background: var(--gold) !important;
+    color: var(--brown) !important;
+    margin: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+  }
+
+  /* if logo is big, give it space */
+  .nav .logo { margin-right: 0.5rem; }
+}

@@ -1,0 +1,101 @@
+.category_holder{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+.category{
+    flex-wrap: wrap;
+    align-items: flex-end;
+    row-gap: 3rem;
+}
+.bloggrid_container{
+    display: flex;
+    flex-direction: column;
+    padding: .9rem;
+}
+.bloggrid_container .title{
+    color: var(--black);
+    width: fit-content;
+    border-bottom: 2px solid var(--brown);
+    font-size: 1.8rem;
+}
+.category .blog{
+    display: flex;
+    flex-direction: column;
+    padding: .5rem .8rem;
+    border-radius: .8rem;
+    position: relative;
+    width: 25rem;
+}
+.category .blog:hover{
+    box-shadow: 0px 0px 15px 10px rgba(126, 121, 121, 0.3);
+}
+.category .blog_image{
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+}
+.category .blog_image::before{
+  content: '';
+  transform: rotate(25deg);
+  position: absolute;
+  width: 2rem;
+  height: 150%;
+  top:-2rem;
+  left:-30%;
+  transition: .3s linear;
+  background: rgba(126, 121, 121, .3);;
+  box-shadow: 0px 0px 15px 10px rgba(126, 121, 121, 0.3);
+}
+.category .blog_image:hover::before{
+    left:100%;
+}
+.category .blog img{
+    width: 100%;
+    border-radius: .8rem;
+}
+.category .blog .blog_data{
+    display: flex;
+    gap:.5rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: .8rem .3rem;
+    border-bottom: 1px solid var(--gray);
+    
+}
+.category .blog .blog_data p{
+    color: var(--brown);
+    font-size: .99rem;
+}
+.category .blog .blog_data small{
+    width: .6rem;
+    height: .6rem;
+    border-radius: .2rem;
+    background: var(--brown);
+    margin-left: .9rem;
+}
+.category .blog .blog_data span{
+    color: var(--lightBlack);
+    font-size: .99rem;
+}
+.category .blog .blog_title{
+    font-size: 1.3rem;
+    color:var(--black);
+    font-weight: 500;
+    margin-block: 1rem;
+}
+.blog_text{
+    color: var(--lightBlack);
+    font-size: .9rem;
+    line-height: 1.8rem;
+    margin-bottom: .9rem;
+}
+
+  @media (max-width: 600px) {
+    .bloggrid_container{
+        align-items: center;
+        justify-content: center;
+    }
+  }
+  
+  
