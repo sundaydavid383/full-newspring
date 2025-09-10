@@ -64,25 +64,50 @@ const ContactForm = ({ contactFormData, formType }) => {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("An error occurred");
-
       const data = await response.json();
 
+      const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    address: "",
+    age: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
+
+  // ✅ Load user data from localStorage when component mounts
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
       setFormData({
-        firstname: "",
-        lastname: "",
-        address: "",
-        age: "",
-        phone: "",
-        email: "",
-        message: "",
+        firstname: user.firstname || "",
+        lastname: user.lastname || "",
+        address: user.address || "",
+        age: user.age || "",
+        phone: user.phone || "",
+        email: user.email || "",
+        message: "", // keep message empty so user can type a fresh one
       });
+    }
+  }, []);
 
       setEmailStatus(data.message || "Message sent successfully!");
       console.log(data)
 
-      setStatusType("success");
+      if(data.code === "EMAIL_NAME_MISMATCH") {
+        setStatusType("error"); 
+        setEmailStatus("❌ Please make sure the name matches the one linked to this email.");
+      } else if (data.success) {
+       setStatusType("success");
       setSeeEmailStatus(true);
+      } else {
+        setStatusType("error");
+      setSeeEmailStatus(true);
+      setEmailStatus(data.message || "Something went wrong.");
+      }
+      
     } catch (error) {
       setEmailStatus(error.message || "Something went wrong.");
       setStatusType("error");

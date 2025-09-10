@@ -200,10 +200,9 @@
 }
 
 .minarea_detail .ministry_form input {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--gray);
-  font-size: 1rem;
+  padding: 0.5rem .9rem;
+  border-bottom: 1px solid var(--brown);
+  font-size: .9rem;
   color: var(--black);
   background-color: var(--blurwhite);
   transition: border 0.3s ease, box-shadow 0.3s ease;

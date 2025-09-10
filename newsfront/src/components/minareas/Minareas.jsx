@@ -4,7 +4,24 @@ import FormMessage from "../FormMessage/FormMessage";
 
 const Minareas = ({ ministryAreas, title }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [formData, setFormData] = useState({ firstname: "", lastname:"", email: "" });
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+  });
+
+  // ✅ Load user from localStorage on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setFormData({
+        firstname: user.firstname || "",
+        lastname: user.lastname || "",
+        email: user.email || "",
+      });
+    }
+  }, []);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState(""); // success or error
@@ -49,13 +66,21 @@ const Minareas = ({ ministryAreas, title }) => {
         if (data.code === "USER_NOT_FOUND") {
         setType("error");
         setMessage("❌ User not found. Redirecting to signup...");
-        setTimeout(() => window.location.href = "/signup", 2000);
-      } else if (data.code === "REGISTERED") {
+        setTimeout(() => window.location.href = "/signup", 4000);
+      } else if(data.code === "EMAIL_NAME_MISMATCH") {
+        setType("error");
+        setMessage("❌ Please make sure the name matches the one linked to this email.");
+      }
+      else if (data.code === "REGISTERED") {
         setType("success");
         setMessage(`✅ You have been registered for ${ministry.title}`);
       } else if (data.code === "SERVER_ERROR") {
         setType("error");
         setMessage("⚠️ Server error. Please try again later.");
+      }
+      else if (data.code === "ALREADY_REGISTERED") {
+        setType("error");
+        setMessage("User already registered in this ministry.");
       } else {
         setType("error");
         setMessage(`⚠️ Unexpected response: ${data.message || "Unknown error"}`);
@@ -108,10 +133,16 @@ const Minareas = ({ ministryAreas, title }) => {
                   <p className="detail_description">{area.description}</p>
 
                   {/* Registration Form */}
+    <FormMessage
+        type={type}
+        message={message}
+        onClose={() => setMessage("")}
+      />
                   <form
                     className="ministry_form"
                     onSubmit={(e) => handleSubmit(e, area)}
                   >
+                                  
                     <input
                       type="text"
                       name="firstname"
@@ -148,11 +179,7 @@ const Minareas = ({ ministryAreas, title }) => {
                   </form>
 
                  
-      <FormMessage
-        type={type}
-        message={message}
-        onClose={() => setMessage("")}
-      />
+      
                 </div>
               ) : (
                 <div onClick={() => handleCardClick(index)}>

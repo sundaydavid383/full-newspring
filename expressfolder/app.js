@@ -16,6 +16,9 @@ const appPassword = "yvil cmib rtwc mfzl";
 const homeContent = require("./data/homeContent");
 const fetch = require('node-fetch');
 const contactRoute = require("./routes/contactRoutes");
+const {generateOtp, hashOtp, sendOtpEmail, getExpiryTime} = require("./utils/sendOtp");
+
+
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '30mb' }));
@@ -65,6 +68,12 @@ app.use(
 app.use(express.json());
 const contentFilePath = path.join(__dirname, "data", "homeContent.json");
 
+
+const OTP_SECRET = process.env.OTP_SECRET || "change_this_in_prod";
+const OTP_EXPIRY_MINUTES = Number(process.env.OTP_EXPIRY_MINUTES) || 10;
+const OTP_RESEND_LIMIT = Number(process.env.OTP_RESEND_LIMIT) || 5; // per window
+const OTP_RESEND_WINDOW_MINUTES = Number(process.env.OTP_RESEND_WINDOW_MINUTES) || 60;
+const OTP_RESEND_COOLDOWN_MS = Number(process.env.OTP_RESEND_COOLDOWN_MS) || 60 * 1000
 
 
 
@@ -181,12 +190,10 @@ app.get("/api/people", async (req, res) => {
   }
 });
 
-
 // ================== ADD A NEW PERSON ==================
 app.post("/api/people", async (req, res) => {
-  console.log("➡️ STEP 1: POST /api/people called");
-  console.log("➡️ STEP 2: Request body received:", req.body);
-
+  const OTP_EXPIRY_MINUTES = Number(process.env.OTP_EXPIRY_MINUTES) || 10;
+  console.log("➡️ POST /api/people");
   try {
     const {
       firstname,
@@ -199,42 +206,185 @@ app.post("/api/people", async (req, res) => {
       hobbies,
       heardAboutUs,
       interest,
-    } = req.body;
+      password,
+    } = req.body || {};
 
-    console.log("➡️ STEP 3: Validating required fields...");
-    if (!firstname || !lastname || !email || !phone) {
-      console.warn("⚠️ STEP 3.1: Missing required fields");
-      return res.status(400).json({ success: false, message: "Please provide all required fields." });
+    // Basic validation
+    if (!firstname || !lastname || !email || !phone || !password) {
+      return res.status(400).json({ success: false, message: "firstname, lastname, email, phone and password are required." });
     }
-    console.log("✅ STEP 3.2: Validation passed");
 
-    // 🔎 STEP 4: Check if user already exists
-    const existingUser = await User.findOne({ email: String(email) });
-    if (existingUser) {
-      console.warn("⚠️ STEP 4.1: User with this email already exists:", email);
+    const normalizedEmail = String(email).trim().toLowerCase();
+
+    // Check existing user
+    const existing = await User.findOne({ email: normalizedEmail });
+    if (existing) {
       return res.status(409).json({ success: false, message: "User already exists." });
     }
 
-    console.log("➡️ STEP 5: Creating user in database...");
+    // Hash password
+    const hashedPassword = await bcrypt.hash(String(password), 12);
+
+    // Generate OTP and hash it
+    const otp = generateOtp();
+    const otpHash = hashOtp(otp);
+    const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
+
+    // Create user
     const person = await User.create({
-      firstname: String(firstname),
-      lastname: String(lastname),
-      email: String(email),
-      phone: String(phone),
-      age: age ? Number(age) : null,
-      school: school ? String(school) : "",
-      occupation: occupation ? String(occupation) : "",
-      hobbies: hobbies ? String(hobbies) : "",
-      heardAboutUs: heardAboutUs ? String(heardAboutUs) : "",
-      interest: interest ? String(interest) : "",
+      firstname: String(firstname).trim(),
+      lastname: String(lastname).trim(),
+      email: normalizedEmail,
+      phone: String(phone).trim(),
+      age: age ? Number(age) : undefined,
+      school: school ? String(school).trim() : "",
+      occupation: occupation ? String(occupation).trim() : "",
+      hobbies: hobbies ? String(hobbies).trim() : "",
+      heardAboutUs: heardAboutUs ? String(heardAboutUs).trim() : "",
+      interest: interest ? String(interest).trim() : "",
+      password: hashedPassword,
+      otpHash,
+      otpExpiry,
+      otpResendCount: 0,
+      otpLastSentAt: new Date(),
+      isVerified: false,
     });
 
-    console.log("✅ STEP 6: User created successfully with ID:", person._id);
-    return res.status(201).json({ success: true, data: person });
+    // Send OTP (best-effort; registration succeeds even if sending fails)
+    const mailSent = await sendOtpEmail(normalizedEmail, otp);
+    if (!mailSent) {
+      console.warn("OTP email failed to send for:", normalizedEmail);
+      // don't fail the whole request just because email failed; inform client
+      return res.status(201).json({
+        success: true,
+        message: "User created. OTP generation succeeded but email sending failed (check server logs).",
+        data: { id: person._id, email: person.email }
+      });
+    }
 
-  } catch (error) {
-    console.error("❌ ERROR: Failed to add person:", error.message);
-    return res.status(500).json({ success: false, message: "Internal server error" });
+    // In non-production it's okay to log OTP for debugging:
+    if (process.env.NODE_ENV !== "production") {
+      console.log("DEBUG OTP for", normalizedEmail, ":", otp);
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: "User created. OTP sent to email.",
+      data: { id: person._id, email: person.email }
+    });
+  } catch (err) {
+    console.error("Error in /api/people:", err);
+    // handle duplicate key race condition in case unique index exists
+    if (err.code === 11000) {
+      return res.status(409).json({ success: false, message: "User already exists." });
+    }
+    return res.status(500).json({ success: false, message: "Internal server error." });
+  }
+});
+
+
+
+//=================== SEND OTP ========================
+app.post("/api/auth/verify-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body || {};
+    if (!email || !otp) {
+      return res.status(400).json({ success: false, message: "Email and OTP are required." });
+    }
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) return res.status(404).json({ success: false, message: "User not found." });
+
+    if (user.isVerified) return res.status(400).json({ success: false, message: "User already verified." });
+    if (!user.otpHash || !user.otpExpiry) return res.status(400).json({ success: false, message: "No OTP found. Please request a new code." });
+
+    if (new Date() > user.otpExpiry) {
+      return res.status(400).json({ success: false, message: "OTP expired. Please request a new code." });
+    }
+
+    const incomingHash = hashOtp(String(otp).trim());
+    if (incomingHash !== user.otpHash) {
+      return res.status(400).json({ success: false, message: "Invalid OTP." });
+    }
+
+    // Mark verified and clear OTP-related fields
+    user.isVerified = true;
+    user.otpHash = null;
+    user.otpExpiry = null;
+    user.otpResendCount = 0;
+    user.otpLastSentAt = null;
+    await user.save();
+
+    // Optionally issue a JWT here (if you use JWT)
+    // const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    return res.json({ success: true, message: "Account verified successfully." /*, token */ });
+  } catch (err) {
+    console.error("Error in /api/auth/verify-otp:", err);
+    return res.status(500).json({ success: false, message: "Internal server error." });
+  }
+});
+
+
+
+
+//=================== RESEND OTP ====================
+app.post("/api/auth/resend-otp", async (req, res) => {
+  try {
+    const { email } = req.body || {};
+    if (!email) return res.status(400).json({ success: false, message: "Email required." });
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) return res.status(404).json({ success: false, message: "User not found." });
+
+    if (user.isVerified) return res.status(400).json({ success: false, message: "User already verified." });
+
+    // Cooldown: prevent too-frequent presses (e.g. spam clicks)
+    const now = Date.now();
+    if (user.otpLastSentAt) {
+      const msSinceLast = now - new Date(user.otpLastSentAt).getTime();
+      if (msSinceLast < OTP_RESEND_COOLDOWN_MS) {
+        return res.status(429).json({ success: false, message: `Please wait ${Math.ceil((OTP_RESEND_COOLDOWN_MS - msSinceLast)/1000)}s before requesting again.` });
+      }
+    }
+
+    // Windowed limit (e.g. max N resends per window)
+    const windowMs = OTP_RESEND_WINDOW_MINUTES * 60 * 1000;
+    if (user.otpLastSentAt && (now - new Date(user.otpLastSentAt).getTime()) <= windowMs) {
+      // still inside window
+      user.otpResendCount = (user.otpResendCount || 0);
+      if (user.otpResendCount >= OTP_RESEND_LIMIT) {
+        return res.status(429).json({ success: false, message: "Resend limit reached. Please try again later." });
+      }
+    } else {
+      // window expired -> reset counter
+      user.otpResendCount = 0;
+    }
+
+    // Generate new OTP, hash & save
+    const otp = generateOtp();
+    user.otpHash = hashOtp(otp);
+    user.otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
+    user.otpResendCount = (user.otpResendCount || 0) + 1;
+    user.otpLastSentAt = new Date();
+
+    await user.save();
+
+    const mailSent = await sendOtpEmail(user.email, otp);
+    if (!mailSent) {
+      console.warn("Resend OTP email failed for:", user.email);
+      return res.status(200).json({ success: true, message: "OTP regenerated but sending failed (check server logs)." });
+    }
+
+    if (process.env.NODE_ENV !== "production") {
+      console.log("DEBUG Resent OTP for", user.email, ":", otp);
+    }
+
+    return res.json({ success: true, message: "OTP resent successfully." });
+  } catch (err) {
+    console.error("Error in /api/auth/resend-otp:", err);
+    return res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
 
@@ -398,21 +548,33 @@ app.post("/sendmessage/oncreated", async (req, res) => {
 });
 
 app.post("/api/ministry-register", async (req, res) => {
-  const { name, email, ministry } = req.body;
-  console.log("📥 Incoming registration request:", { name, email, ministry });
+  const { firstname, lastname, email, ministry } = req.body;
+  console.log("📥 Incoming registration request:", { firstname, lastname, email, ministry });
 
   try {
     // Check if user exists
-    const user = await User.findOne({ name, email });
-    console.log("🔍 User lookup result:", user ? "FOUND" : "NOT FOUND");
-
+    const user = await User.findOne({ email });
     if (!user) {
-      console.log("❌ No user found with that name + email. Redirect needed.");
+      console.log("❌ No user found with that email.");
       return res.status(200).json({
         code: "USER_NOT_FOUND",
         message: "User not found. Please signup first.",
       });
     }
+
+    // Debug log
+    console.log("👤 Full user object from DB:", user.toObject ? user.toObject() : user);
+
+    // Check name mismatch
+    if (user.firstname !== firstname && user.lastname !== lastname) {
+      console.log("❌ Name mismatch for the provided email.");
+      return res.status(200).json({
+        code: "EMAIL_NAME_MISMATCH",
+        message: "The name you entered does not match the email in our records.",
+      });
+    }
+
+    console.log("🔍 User lookup result: FOUND");
 
     // Make sure ministries array exists
     user.ministries = user.ministries || [];
@@ -425,6 +587,10 @@ app.post("/api/ministry-register", async (req, res) => {
       console.log(`✅ Added ministry "${ministry}" to user:`, user._id);
     } else {
       console.log(`⚠️ User already registered in "${ministry}"`);
+      return res.status(200).json({
+        code: "ALREADY_REGISTERED",
+        message: "User already registered in this ministry.",
+      });
     }
 
     return res.status(200).json({

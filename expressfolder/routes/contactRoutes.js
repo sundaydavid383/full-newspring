@@ -28,16 +28,17 @@ router.post("/oncontact", async (req, res) => {
 
     if (formType === "retreat") {
       console.log("🔍 Checking RetreatContact model for existing user...");
-      const existingUser = await RetreatContact.findOne({ firstname, lastname, email });
+      const existingUser = await RetreatContact.findOne({ email });
 
-      if (existingUser) {
-        console.log("🚫 Retreat user already exists:", existingUser._id);
-        return res.status(409).json({
+      if(existingUser && (existingUser.firstname !== firstname || existingUser.lastname !== lastname)) {
+        console.log("❌ Name mismatch for the provided email in retreat registration.");
+        return res.status(200).json({
           success: false,
-          message: "User already registered for the retreat",
-          code: "ALREADY_REGISTERED"
+          message: "Please make sure the name matches the one linked to this email.",
+          code: "EMAIL_NAME_MISMATCH"
         });
       }
+
 
       console.log("✅ No existing user found. Creating new retreat registration...");
       const newRetreat = new RetreatContact({ firstname, lastname, email, message, age, address, phone });

@@ -10,12 +10,14 @@
   padding: 0.9rem 1rem;
   border-radius: 0.6rem;
   text-align: center;
+  align-items: center;
   transform: translateX(-50%);
   background: var(--white);
   font-size: 0.9rem;
   font-weight: 500;
   width: 15rem;
   box-shadow: var(--box-shadow);
+   z-index: 1112; 
   animation: fadeIn 0.3s ease-in;
 }
 
