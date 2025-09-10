@@ -125,6 +125,57 @@
 
  .menu-icon { display: none; }
 
+ .user-icon {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--white);
+  font-size: 1.8rem;
+}
+
+.user-icon:hover {
+  color: var(--gold);
+  transition: color 0.3s ease-in-out;
+}
+
+.user-details-dropdown {
+  position: absolute;
+  right: 0;
+  top: 120%;
+  background: var(--blurwhite);
+  box-shadow: var(--box-shadow);
+  border-radius: 0.5rem;
+  list-style: none;
+  padding: 1rem;
+  margin: 0;
+  min-width: 220px;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+
+.user-details-dropdown li {
+  padding: 0.4rem 0;
+  font-size: 0.95rem;
+  color: var(--black);
+  border-bottom: 1px solid var(--fadedWhite);
+}
+
+.user-details-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.user-details-dropdown strong {
+  color: var(--brown);
+}
+
+.profile-image {
+  margin-top: 0.5rem;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: var(--box-shadow);
+  border: 2px solid var(--lightbrown);
+}
 /* === Progressive breakpoints - make everything scale down smoothly === */
 
 /* large desktop -> reduce gap slightly */

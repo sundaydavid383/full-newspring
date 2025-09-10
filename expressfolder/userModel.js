@@ -44,6 +44,19 @@ const UserSchema = mongoose.Schema(
     education: {
       type: String, // Education level input
     },
+      ministries: {
+      type: [String], // array of ministry names
+      default: []
+    },  
+    isVerified: { type: Boolean, default: false },
+
+  // We store a hashed version of the OTP, not the OTP itself:
+  otpHash: { type: String, default: null },
+  otpExpiry: { type: Date, default: null },
+
+  // Resend/rate limiting metadata
+  otpResendCount: { type: Number, default: 0 }, // number of resends within window
+  otpLastSentAt: { type: Date, default: null }, // last time OTP was sent
   },
   {
     timestamps: true,
