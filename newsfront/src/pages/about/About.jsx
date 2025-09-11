@@ -253,7 +253,7 @@ const About = ({setActive, setDataBase}) => {
  
           ];
       setActive("about")
-      const title = "Discover Our Ministry Areas"
+      const title = "Our Various Departments"
      
   return (
     <>

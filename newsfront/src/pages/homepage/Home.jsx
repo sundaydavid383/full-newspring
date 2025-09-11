@@ -362,7 +362,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
   const leadersTitle = "Our Ministry Leaders";
   const leadersTitleSmall = " Meet the dedicated individuals leading our youth ministry, committed to nurturing spiritual growth.";
 
-  const title = "Diverse Ministry Areas";
+  const title = "Our Various Departments";
   useEffect(() => {
     setActive("home");
     window.scrollTo({ top: 0 });
@@ -393,7 +393,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
       <Upcommingevent eventData={eventData}/>
       <Leaders leadersTitle={leadersTitle} leadersTitleSmall={leadersTitleSmall} leaders={leaders}/>
       <Articles articles={articles} />
-      <Gallery galleryItems={galleryItems} />
+      {/* <Gallery galleryItems={galleryItems} /> */}
     </div>
   );
 };

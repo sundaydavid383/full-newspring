@@ -8,7 +8,7 @@ import { UserContext } from "../../context/UserContext"; // ✅ import context
 const Nav = ({ active }) => {
   const [fixed, setFixed] = useState(false);
   const [seeNav, setSeeNav] = useState(false);
-  const { user, setUser } = useContext(UserContext); // ✅ use context
+  const { user, setUser } = useContext(UserContext);
   const [seeUserDetails, setSeeUserDetails] = useState(false);
 
   // Fix nav on scroll
@@ -47,6 +47,7 @@ const Nav = ({ active }) => {
             to="/"
           >
             Home
+            <span></span>
           </Link>
         </li>
         <li>
@@ -56,6 +57,7 @@ const Nav = ({ active }) => {
             to="/about"
           >
             About Us
+            <span></span>
           </Link>
         </li>
         <li>
@@ -65,6 +67,7 @@ const Nav = ({ active }) => {
             to="/services"
           >
             Services
+            <span></span>
           </Link>
         </li>
         <li>
@@ -74,29 +77,35 @@ const Nav = ({ active }) => {
             to="/bloggrid/1"
           >
             Blogs
+            <span></span>
           </Link>
         </li>
-        <li>
-          <Link
+            <li>
+  <Link
+    onClick={() => setSeeNav(false)}
+    className={active === "contact" ? "active" : ""}
+    to="/contact"
+  >
+    Contact
+    <span></span>
+  </Link>
+</li>
+        {/*<li>
+           <Link
             onClick={() => setSeeNav(false)}
             className={active === "database" ? "active" : ""}
             to="/dataBase"
           >
             DataBase
-          </Link>
-        </li>
-        <li>
-          <Link
-            onClick={() => setSeeNav(false)}
-            className={`${active === "contact" ? "active" : ""} nav-contact-link`}
-            to="/contact"
-          >
-            Contact Us
-          </Link>
-        </li>
+            <span></span>
+          </Link> 
+        </li>*/}
+
+        {/* Contact logic */}
+    
       </ul>
 
-      {/* Right-side: User or Contact */}
+      {/* Right-side: User or Contact Button */}
       {user ? (
         <div className="user-icon">
           <FaUser onClick={() => setSeeUserDetails((prev) => !prev)} />
@@ -168,6 +177,7 @@ const Nav = ({ active }) => {
           )}
         </div>
       ) : (
+        // ✅ Show button only if NO user
         <Link
           to="/contact"
           className={`btn desktop-contact ${

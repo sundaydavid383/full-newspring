@@ -1,68 +1,46 @@
 const mongoose = require("mongoose");
 
-const UserSchema = mongoose.Schema(
-  {
-    firstname: {
-      type: String,
-    },
-    lastname: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    password: {
-      type: String,
-    },
-    phone: {
-      type: String,
-    },
-    age: {
-      type: Number,
-    },
-    school: {
-      type: String,
-    },
-    occupation: {
-      type: String,
-    },
-    hobbies: {
-      type: String,
-    },
-    heardAboutUs: {
-      type: String,
-    },
-    interest: {
-      type: String,
-    },
-    image: {
-      type: String, // For profile or any uploaded image
-    },
-    department: {
-      type: String, // Example: "ushering", "media", "music", or "none"
-    },
-    education: {
-      type: String, // Education level input
-    },
-      ministries: {
-      type: [String], // array of ministry names
-      default: []
-    },  
-    isVerified: { type: Boolean, default: false },
+const MinistryResponseSchema = new mongoose.Schema({
+  question: { type: String, required: true },
+  answer: { type: mongoose.Schema.Types.Mixed } // text, array, object etc.
+}, { _id: false });
 
-  // We store a hashed version of the OTP, not the OTP itself:
+const MinistryEntrySchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  joinedAt: { type: Date, default: Date.now },
+  responses: { type: [MinistryResponseSchema], default: [] }
+}, { _id: false });
+
+const UserSchema = new mongoose.Schema({
+  firstname: { type: String, trim: true },
+  lastname: { type: String, trim: true },
+  email: { type: String, trim: true, lowercase: true, index: true },
+  password: { type: String },
+  phone: { type: String },
+  age: { type: Number },
+  school: { type: String },
+  occupation: { type: String },
+  hobbies: { type: String },
+  heardAboutUs: { type: String },
+  interest: { type: String },
+  image: { type: String },
+  department: { type: String },
+  education: { type: String },
+
+  ministries: { type: [MinistryEntrySchema], default: [] },
+
+  isVerified: { type: Boolean, default: false },
+
   otpHash: { type: String, default: null },
   otpExpiry: { type: Date, default: null },
+  otpResendCount: { type: Number, default: 0 },
+  otpLastSentAt: { type: Date, default: null }
+}, {
+  timestamps: true
+});
 
-  // Resend/rate limiting metadata
-  otpResendCount: { type: Number, default: 0 }, // number of resends within window
-  otpLastSentAt: { type: Date, default: null }, // last time OTP was sent
-  },
-  {
-    timestamps: true,
-  }
-);
+// add index on embedded ministry name for faster lookup
+UserSchema.index({ 'ministries.name': 1 });
 
 const User = mongoose.model("User", UserSchema);
-
 module.exports = User;

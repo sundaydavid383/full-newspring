@@ -238,7 +238,7 @@ const journeyData = [
  <ScrollImage scrollingImages={scrollingImages}/>
      <Videodata videoData={videoData} />
      <Features features={features} featuresTitle={featuresTitle} featuresTitleSmall={featuresTitleSmall}/>
-     <Testimonial testimonials={testimonials} />
+     {/* <Testimonial testimonials={testimonials} /> */}
      <ContactForm contactFormData={contactFormData} formType="retreat" />
      
     </div>

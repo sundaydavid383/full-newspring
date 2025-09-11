@@ -8,24 +8,26 @@ const Minareas = ({ ministryAreas, title }) => {
     firstname: "",
     lastname: "",
     email: "",
+    answers: {} // ✅ store dynamic answers
   });
 
-    // ✅ Load user from localStorage on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
-      setFormData({
+      setFormData((prev) => ({
+        ...prev,
         firstname: user?.firstname || "",
         lastname: user?.lastname || "",
-        email: user?.email || "",
-      });
+        email: user?.email || ""
+      }));
     }
   }, []);
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [type, setType] = useState(""); // success or error
-    const base_Url = "http://localhost:5001/";
+  const [type, setType] = useState(""); 
+  const base_Url = "http://localhost:5001/";
 
   const handleCardClick = (index) => {
     setSelectedIndex(selectedIndex === index ? null : index);
@@ -36,60 +38,65 @@ const Minareas = ({ ministryAreas, title }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ Handle dynamic ministry question answers
+  const handleAnswerChange = (question, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      answers: {
+        ...prev.answers,
+        [question]: value
+      }
+    }));
+  };
+
   const handleSubmit = async (e, ministry) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    console.log("🚀 Submitting form with data:", {
-      name: formData.firstname,
+    const payload = {
+      firstname: formData.firstname,
       lastname: formData.lastname,
       email: formData.email,
       ministry: ministry.title,
-    });
+      answers: formData.answers // ✅ send dynamic answers
+    };
+
+    console.log("🚀 Submitting form:", payload);
 
     try {
       const res = await fetch(`${base_Url}api/ministry-register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstname: formData.firstname,
-          lastname: formData.lastname,
-          email: formData.email,
-          ministry: ministry.title,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
       console.log("📩 Backend response:", data);
 
       if (data.code === "USER_NOT_FOUND") {
-  setType("error");
-  setMessage(`❌ ${formData.firstname || "Friend"}, no account found for ${formData.email}. Redirecting to register...`);
-  setTimeout(() => window.location.href = "/register", 4000);
-
-} else if (data.code === "EMAIL_NAME_MISMATCH") {
-  setType("error");
-  setMessage(`❌ ${formData.firstname || "User"}, your name doesn’t match the email on record.`);
-
-} else if (data.code === "REGISTERED") {
-  setType("success");
-  setMessage(`✅ ${formData.firstname || "User"}, you’re now registered for ${ministry.title}!`);
-
-} else if (data.code === "SERVER_ERROR") {
-  setType("error");
-  setMessage(`⚠️ Sorry ${formData.firstname || "User"}, a server error occurred. Try again later.`);
-
-} else if (data.code === "ALREADY_REGISTERED") {
-  setType("error");
-  setMessage(`ℹ️ ${formData.firstname || "User"}, you’re already registered in ${ministry.title}.`);
-
-} else {
-  setType("error");
-  setMessage(`⚠️ ${formData.firstname || "User"}, unexpected response: ${data.message || "Unknown error"}.`);
-}} catch (error) {
+        setType("error");
+        setMessage(`❌ No account found for ${formData.email}. Redirecting...`);
+        setTimeout(() => (window.location.href = "/register"), 4000);
+      } else if (data.code === "EMAIL_NAME_MISMATCH") {
+        setType("error");
+        setMessage("❌ Your name doesn’t match the email on record.");
+      } else if (data.code === "REGISTERED") {
+        setType("success");
+        setMessage(`✅ You’re now registered for ${ministry.title}!`);
+      } else if (data.code === "SERVER_ERROR") {
+        setType("error");
+        setMessage("⚠️ A server error occurred. Try again later.");
+      } else if (data.code === "ALREADY_REGISTERED") {
+        setType("error");
+        setMessage(`ℹ️ You’re already registered in ${ministry.title}.`);
+      } else {
+        setType("error");
+        setMessage(`⚠️ Unexpected response: ${data.message || "Unknown error"}`);
+      }
+    } catch (error) {
       console.error("💥 Frontend fetch error:", error);
-      setMessage("⚠️ Network or server error please try again.");
+      setMessage("⚠️ Network or server error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -99,9 +106,7 @@ const Minareas = ({ ministryAreas, title }) => {
     <div className="Minareas">
       <h2 className="title">{title}</h2>
       <p className="title_small">
-        Discover the unique ways we serve God and build His kingdom. Each
-        ministry area is designed to nurture faith, foster love, and empower
-        lives.
+        Discover the unique ways we serve God and build His kingdom.
       </p>
 
       <div className="minareas_container container_flex_around">
@@ -112,11 +117,7 @@ const Minareas = ({ ministryAreas, title }) => {
             <div
               key={index}
               className={`minareas_card ${
-                isSelected
-                  ? "enlarged"
-                  : selectedIndex !== null
-                  ? "shrunk"
-                  : ""
+                isSelected ? "enlarged" : selectedIndex !== null ? "shrunk" : ""
               }`}
             >
               {isSelected ? (
@@ -134,17 +135,17 @@ const Minareas = ({ ministryAreas, title }) => {
                   </div>
                   <p className="detail_description">{area.description}</p>
 
-                  {/* Registration Form */}
-    <FormMessage
-        type={type}
-        message={message}
-        onClose={() => setMessage("")}
-      />
+                  <FormMessage
+                    type={type}
+                    message={message}
+                    onClose={() => setMessage("")}
+                  />
+
+                  {/* ✅ Dynamic Registration Form */}
                   <form
                     className="ministry_form"
                     onSubmit={(e) => handleSubmit(e, area)}
                   >
-                                  
                     <input
                       type="text"
                       name="firstname"
@@ -169,19 +170,51 @@ const Minareas = ({ ministryAreas, title }) => {
                       onChange={handleChange}
                       required
                     />
-                    <input
-                      type="text"
-                      name="ministry"
-                      value={area.title}
-                      readOnly
-                    />
+                    <input type="text" name="ministry" value={area.title} readOnly />
+
+                    {/* ✅ Loop through ministry-specific questions */}
+                    {area.formQuestions?.map((q, qIndex) => (
+                      <div key={qIndex} className="form-group">
+                        <label>{q.question}</label>
+                        {q.options ? (
+                          <select
+                            onChange={(e) =>
+                              handleAnswerChange(q.question, e.target.value)
+                            }
+                            required
+                          >
+                            <option value="">-- Select --</option>
+                            {q.options.map((opt, i) => (
+                              <option key={i} value={opt}>
+                                {opt}
+                              </option>
+                            ))}
+                          </select>
+                        ) : q.type === "textarea" ? (
+                          <textarea
+                            onChange={(e) =>
+                              handleAnswerChange(q.question, e.target.value)
+                            }
+                            placeholder="Your response"
+                            required
+                          />
+                        ) : (
+                          <input
+                            type={q.type || "text"}
+                            onChange={(e) =>
+                              handleAnswerChange(q.question, e.target.value)
+                            }
+                            placeholder="Your answer"
+                            required
+                          />
+                        )}
+                      </div>
+                    ))}
+
                     <button type="submit" className="btn" disabled={loading}>
                       <p>{loading ? "Submitting..." : "Register"}</p>
                     </button>
                   </form>
-
-                 
-      
                 </div>
               ) : (
                 <div onClick={() => handleCardClick(index)}>

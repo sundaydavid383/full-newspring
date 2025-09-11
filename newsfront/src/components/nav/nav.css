@@ -71,16 +71,16 @@
 /* small underline animation (positioned from bottom for stability) */
 .nav ul a span {
   position: absolute;
-  top: 1.95rem;
-  left: 0.8rem;
+  bottom: 0;          /* instead of top */
+  left: 13%;
   width: 0%;
-  height: 0.2rem;
-  border-radius: 0.25rem;
+  height: 4px;        /* slimmer underline */
+  border-radius: 2px;
   background: var(--gold);
-  transition: width .2s;
+  transition: width .25s ease-in-out;
 }
 .nav ul a:hover span,
-.nav ul .active span {
+.nav ul a.active span {
   width: 70%;
 }
 .nav ul a:hover,
@@ -129,7 +129,7 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
-  color: var(--white);
+  color: var(--brown);
   font-size: 1.8rem;
 }
 

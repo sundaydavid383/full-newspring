@@ -548,11 +548,11 @@ app.post("/sendmessage/oncreated", async (req, res) => {
 });
 
 app.post("/api/ministry-register", async (req, res) => {
-  const { firstname, lastname, email, ministry } = req.body;
-  console.log("📥 Incoming registration request:", { firstname, lastname, email, ministry });
+  const { firstname, lastname, email, ministry, answers } = req.body;
+  console.log("📥 Incoming registration request:", { firstname, lastname, email, ministry, answers });
 
   try {
-    // Check if user exists
+    // ✅ Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       console.log("❌ No user found with that email.");
@@ -565,7 +565,7 @@ app.post("/api/ministry-register", async (req, res) => {
     // Debug log
     console.log("👤 Full user object from DB:", user.toObject ? user.toObject() : user);
 
-    // Check name mismatch
+    // ✅ Check name mismatch (either first OR last name must match)
     if (user.firstname !== firstname && user.lastname !== lastname) {
       console.log("❌ Name mismatch for the provided email.");
       return res.status(200).json({
@@ -576,22 +576,33 @@ app.post("/api/ministry-register", async (req, res) => {
 
     console.log("🔍 User lookup result: FOUND");
 
-    // Make sure ministries array exists
+    // ✅ Make sure ministries array exists
     user.ministries = user.ministries || [];
+
     console.log("📂 Current ministries before update:", user.ministries);
 
-    // Register user for ministry if not already
-    if (!user.ministries.includes(ministry)) {
-      user.ministries.push(ministry);
-      await user.save();
-      console.log(`✅ Added ministry "${ministry}" to user:`, user._id);
-    } else {
+    // ✅ Register user for ministry with answers
+    const existingMinistry = user.ministries.find(
+      (m) => m.name === ministry
+    );
+
+    if (existingMinistry) {
       console.log(`⚠️ User already registered in "${ministry}"`);
       return res.status(200).json({
         code: "ALREADY_REGISTERED",
         message: "User already registered in this ministry.",
       });
     }
+
+    // Push new ministry object with answers
+    user.ministries.push({
+      name: ministry,
+      joinedAt: new Date(),
+      responses: answers || [],
+    });
+
+    await user.save();
+    console.log(`✅ Added ministry "${ministry}" to user:`, user._id);
 
     return res.status(200).json({
       code: "REGISTERED",
