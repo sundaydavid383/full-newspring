@@ -615,25 +615,38 @@ app.post("/api/ministry-register", async (req, res) => {
 
 app.use("/sendmessage", contactRoute)
 
-//harshed password
 const harsFirstPassword = async () => {
   try {
-    const envConfig = dotenv.parse(fs.readFileSync(".env", "utf8"));
-    console.log(envConfig);
-    const harshedpassword = await bcrypt.hash(envConfig.ADMINPASSWORD, 10);
-    envConfig.HARSHEDADMINPASSWORD = harshedpassword;
-    const newFile = Object.entries(envConfig)
-      .map(([key, value]) => `${key}=${value}`)
-      .join("\n");
+    // Load current .env
+    const envPath = path.join(__dirname, ".env");
+    const envConfig = dotenv.parse(fs.readFileSync(envPath, "utf8"));
 
-    fs.writeFileSync(".env", newFile, "utf8");
+    // Check if ADMINPASSWORD exists
+    if (!envConfig.ADMINPASSWORD) {
+      throw new Error("ADMINPASSWORD not found in .env");
+    }
 
-    dotenv.config();
-    console.log(envConfig.HARSHEDADMINPASSWORD);
+    // Only hash if HARSHEDADMINPASSWORD is not set yet
+    if (!envConfig.HARSHEDADMINPASSWORD) {
+      const hashedPassword = await bcrypt.hash(envConfig.ADMINPASSWORD, 10);
+      envConfig.HARSHEDADMINPASSWORD = hashedPassword;
+
+      // Write back both ADMINPASSWORD and HARSHEDADMINPASSWORD
+      const newFile = Object.entries(envConfig)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("\n");
+
+      fs.writeFileSync(envPath, newFile, "utf8");
+      console.log("Hashed password saved to .env");
+    } else {
+      console.log("HARSHEDADMINPASSWORD already exists in .env");
+    }
+
   } catch (error) {
     console.log("unable to relate with harshed user:", error.message);
   }
 };
+
 harsFirstPassword();
 
 
