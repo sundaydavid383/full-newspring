@@ -63,7 +63,7 @@ const App = () => {
       try {
         const data = await getSection();
         setHomeData(data);
-        setMinistryAreas(homedata.ministryAreas);
+        setMinistryAreas(data.ministryAreas || []);
         console.log(data);
       } catch (error) {
         console.error("Failed to fetch sections:", error);

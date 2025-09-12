@@ -47,103 +47,100 @@ const About = ({setActive, setDataBase, ministryAreas}) => {
         }
       }, [])
        const sectionType = ""
-    const sections = [
-        {
-          id:4,
-          title: "Who We Are",
-          paragraphs: [
-            "At RCCG NewSpring Teens, we are a vibrant community of believers dedicated to nurturing the spiritual growth of teenagers. Rooted in faith, love, and the Word of God, we aim to inspire and equip the next generation to live purposefully and shine as lights in the world.",
-            "We believe that every teen is uniquely created by God and has a role to play in His divine plan. Through worship, fellowship, and impactful programs, we strive to help them discover their identity in Christ and grow in their faith.",
-            "Our church is more than a place of worship—it’s a home where young hearts are transformed, friendships are built, and lives are empowered for God's glory.",
-          ],
-        },
-        {
-            id:6,
-          title: "Our Mission and Vision",
-          paragraphs: [
-            "Our mission is to guide teenagers toward a deeper relationship with Christ by teaching biblical truths, fostering meaningful relationships, and encouraging a life of service.",
-            "We envision a generation of God-centered youths, bold in their faith, equipped to influence their peers and communities with love, integrity, and godliness.",
-            "Together, we are creating an environment where teenagers can grow spiritually, emotionally, and socially, while developing a heart for Christ and His Kingdom.",
-          ],
-        },
-        {
-            id:7,
-          title: "What We Do",
-          paragraphs: [
-            "We organize dynamic worship services, engaging Bible study sessions, and interactive programs tailored to meet the needs of teens. These experiences are designed to ignite their passion for God and deepen their knowledge of His Word.",
-            "Through outreach initiatives, mentorship programs, and community events, we encourage our teens to reflect Christ’s love and make a positive impact in their world.",
-            "Our activities go beyond the church walls, providing opportunities for teenagers to discover their talents, serve others, and grow as leaders in their faith journeys.",
-          ],
-        },
-        {
-            id:8,
-          title: "Join the Journey",
-          paragraphs: [
-            "Whether you’re a teen seeking a closer relationship with God or a parent looking for a nurturing community for your child, RCCG NewSpring Teens is here for you.",
-            "We invite you to be part of a welcoming and supportive family where every teen is encouraged to grow in faith, find their purpose, and live out the Gospel with confidence.",
-            "Join us in building a generation of spiritually strong, Christ-centered leaders who are ready to impact the world for His glory.",
-          ],
-        },
-      ];
-      const journeyData = [
-        {
-          
-          title: "Our Journey of Faith and Fellowship",
-          paragraphs: [
-            "Welcome to RCCG NewSpring Teens, a vibrant and faith-centered community dedicated to inspiring and empowering young believers to live out their faith boldly. With a rich history rooted in God’s love and grace, our mission is to nurture spiritual growth, foster meaningful connections, and create a supportive environment for individuals and families.",
-            "Our Mission: We are committed to guiding young people on their spiritual journey through worship, teaching, and service. At RCCG NewSpring Teens, we focus on building a Christ-centered foundation that enables individuals to grow spiritually, embrace God’s purpose for their lives, and make a positive impact in their communities.",
-            "Through engaging programs, uplifting worship, and a welcoming atmosphere, we aim to create an environment where every teenager can experience the fullness of God’s love. Our story is one of faith, fellowship, and a shared commitment to raising the next generation of spiritual leaders who will transform the world for Christ.",
-          ],
-          images: [
-            { src: rccg1, alt: "Teens Ministry Gathering", className: "image3" },
-          ],
-        
-        },
-      ];
-      const ministerTeaching = [
-        {
-          id: "minister teaching",
-          title: "Equipping Youth for a Christ-Centered Life",
-          seniorPastor: "breakthrough nathaniel",
-          paragraphs: [
-            "At RCCG NewSpring Youth Church, our teaching ministry is dedicated to nurturing young believers in their walk with Christ. We aim to equip them with biblical truths, practical wisdom, and the tools needed to live a Christ-centered life in today’s world.",
-            "Inspired by God’s Word, our mission is to raise a generation of youth who boldly represent Christ in their speech, conduct, love, faith, and purity. Through dynamic and interactive teaching sessions, we provide guidance on navigating life’s challenges while staying rooted in their faith.",
-            "Whether through Bible studies, mentorship programs, or practical workshops, RCCG NewSpring Youth Church offers a supportive environment where young people can grow spiritually, discover their purpose, and make a lasting impact in their communities."
-          ],
-          images: [
-            { src: rccg5, alt: "Youth Engaged in Learning at NewSpring", className: "image4" },
-          ],
-        },
-      ];
-      const aboutBreakData = [
-        {
-          title: "Our Mission: Transforming Lives Through Christ",
-          paragraphs: [
-            "At RCCG NewSpring Teens, our mission is to inspire and empower teenagers to embrace a life of purpose through the love of Christ. We are dedicated to building a strong spiritual foundation for young believers, helping them to grow in faith and discover their God-given potential.",
-            "Our goal is to cultivate a generation of Christ-centered leaders by providing an environment that encourages spiritual growth, personal development, and active participation in the work of God’s kingdom.",
-            "Through discipleship, service, and fellowship, we aim to nurture faith, ignite passion for Christ, and empower teenagers to become agents of transformation in their communities and beyond.",
-          ],
-          images: { src: rccg4, alt: "Teens Engaging in Fellowship", className: "image3" },
-        },
-        {
-          title: "Our Vision: Shaping Tomorrow’s Spiritual Leaders",
-          paragraphs: [
-            "RCCG NewSpring Teens envisions a generation of spiritually grounded young people who live boldly for Christ and make a lasting impact on the world. Our vision is to be a community that fosters spiritual maturity, godly relationships, and a passion for evangelism.",
-            "We see our teens as tomorrow’s leaders—equipped with wisdom, faith, and integrity to bring hope and transformation to a broken world. By instilling Christ-centered values and encouraging personal growth, we seek to prepare them for life’s challenges and opportunities.",
-            "Our vision is to be a light in the world, where young believers shine brightly in their schools, homes, and communities, radiating the love and power of Christ in all they do.",
-          ],
-          images: { src: rccg2, alt: "Worship Session with Teens", className: "image3" },
-        },
-        {
-          title: "Our Approach: Guiding with Love, Faith, and Service",
-          paragraphs: [
-            "At RCCG NewSpring Teens, our approach is rooted in love, guided by faith, and strengthened through service. We believe that spiritual growth happens in a nurturing environment where young people feel valued, supported, and empowered.",
-            "We combine dynamic teaching, meaningful worship, and hands-on ministry opportunities to engage teens in their spiritual journey. By connecting them with mentors, peers, and experiences that inspire, we foster a sense of belonging and purpose.",
-            "Our approach is holistic, addressing the spiritual, emotional, and social needs of teenagers. We aim to equip them with the tools to live a victorious Christian life, boldly proclaiming their faith while making a difference in their communities.",
-          ],
-          images: { src: rccg3, alt: "Group of Teens Participating in Outreach", className: "image3" },
-        },
-      ];
+const sections = [
+  {
+    id: 4,
+    title: "Who We Are",
+    paragraphs: [
+      "TIM412 is a vibrant family helping teens grow in faith, love, and God’s Word.",
+      "Through worship, fellowship, and programs, we guide them to know Christ and live boldly.",
+      "Here, lives are transformed, friendships built, and faith strengthened."
+    ],
+  },
+  {
+    id: 6,
+    title: "Our Mission and Vision",
+    paragraphs: [
+      "Our mission is to lead teens into a deeper walk with Christ through teaching, service, and friendships.",
+      "We envision Christ-centered youths who influence their world with love and integrity.",
+      "Together, we nurture spiritual, emotional, and social growth for God’s Kingdom."
+    ],
+  },
+  {
+    id: 7,
+    title: "What We Do",
+    paragraphs: [
+      "We host worship, Bible studies, and programs that stir passion for God.",
+      "Through outreach and mentorship, teens reflect Christ’s love and impact lives.",
+      "We help them discover talents, serve others, and grow as leaders in faith."
+    ],
+  },
+  {
+    id: 8,
+    title: "Join the Journey",
+    paragraphs: [
+      "Whether you’re a teen seeking God or a parent looking for support, TIM412 welcomes you.",
+      "Every teen can grow in faith, discover purpose, and live the Gospel with confidence.",
+      "Join us in raising Christ-centered leaders to impact the world for His glory."
+    ],
+  },
+];
+
+const journeyData = [
+  {
+    title: "Our Journey of Faith",
+    paragraphs: [
+      "Welcome to TIM412, a faith-driven family inspiring teens to live boldly for Christ.",
+      "We guide youth through worship, teaching, and service, building strong foundations in Christ.",
+      "Together we raise leaders who reflect God’s love and transform their world."
+    ],
+    images: [{ src: rccg1, alt: "Teens Ministry Gathering", className: "image3" }],
+  },
+];
+
+const ministerTeaching = [
+  {
+    id: "minister teaching",
+    title: "Equipping Youth for Christ",
+    seniorPastor: "breakthrough nathaniel",
+    paragraphs: [
+      "Our teaching equips youth with truth and wisdom to live for Christ today.",
+      "We raise a generation bold in speech, conduct, love, faith, and purity.",
+      "Bible studies, mentorship, and workshops create space for growth and impact."
+    ],
+    images: [{ src: rccg5, alt: "Youth Engaged in Learning at TIM412", className: "image4" }],
+  },
+];
+
+const aboutBreakData = [
+  {
+    title: "Our Mission: Transforming Lives",
+    paragraphs: [
+      "We empower teens to live with purpose in Christ’s love.",
+      "We nurture growth and God-given potential through discipleship and fellowship.",
+      "Together we ignite passion and raise agents of change."
+    ],
+    images: { src: rccg4, alt: "Teens Engaging in Fellowship", className: "image3" },
+  },
+  {
+    title: "Our Vision: Shaping Leaders",
+    paragraphs: [
+      "We envision Christ-centered leaders making lasting impact worldwide.",
+      "We equip teens with wisdom, faith, and integrity to shine for Christ.",
+      "Our vision is a generation transforming lives with His love."
+    ],
+    images: { src: rccg2, alt: "Worship Session with Teens", className: "image3" },
+  },
+  {
+    title: "Our Approach: Love, Faith, Service",
+    paragraphs: [
+      "We build on love, faith, and service in a supportive family.",
+      "Through worship and ministry opportunities, teens grow and belong.",
+      "We equip them to live and lead in Christ with confidence."
+    ],
+    images: { src: rccg3, alt: "Group of Teens Participating in Outreach", className: "image3" },
+  },
+];
 
       const articles = [
           {

@@ -31,101 +31,77 @@ const ServiceTalk = () => {
   
   
   return (
-    <div className='serviceTalk container_flex_between'>
-        <div className="serviceWord">
+  <div className='serviceTalk container_flex_between'>
+    <div className="serviceWord">
       <img className='serviceWordImage aniOnView' src={img1} alt="" />
-       <div className="service_text_container">
-  <h2>Mission and Aid Efforts</h2>
-  <p className='2 aniOnView' >
-    At RCCG NewSpring Youth, our mission is to positively impact lives through faith-driven initiatives and compassionate service. We strive to bring hope to those in need, whether by providing essential support, organizing outreach programs, or addressing the unique needs of our community.
-  </p>
-  <p className=' aniOnView' >
-    Through collective efforts, we aim to strengthen spiritual growth, encourage acts of kindness, and uplift individuals to create lasting change. Join us in making a difference as we work together to extend God’s love to every corner of our community.
-  </p>
-</div>
-<div className="service_card_container">
-  <div className="service_card aniOnView">
-    <i className="fas fa-praying-hands"></i> {/* Worship Services Icon */}
-    <h2>Worship Services</h2>
-    <p>
-      Be a part of our vibrant and uplifting worship services, where you can connect deeply with God and experience the joy of fellowship. From soul-stirring praise sessions to inspiring sermons, our gatherings are designed to nurture your spiritual growth and empower you for the week ahead.
-    </p>
-  </div>
-  <div className="service_card aniOnView">
-    <i className="fas fa-hands-helping"></i> {/* Community Contributions Icon */}
-    <h2>Community Contributions</h2>
-    <p>
-      At RCCG NewSpring Youth, we actively contribute to our community by organizing outreach events, providing support for the less privileged, and creating opportunities to make a tangible difference. Together, we aim to reflect Christ’s love through our actions and partnerships.
-    </p>
-  </div>
-  <div className="service_card aniOnView">
-    <i className="fas fa-book"></i> {/* Education and Events Icon */}
-    <h2>Education and Events</h2>
-    <p>
-      We believe in equipping individuals with knowledge and opportunities to grow. Our events include empowering seminars, engaging workshops, and educational initiatives aimed at fostering both spiritual and personal development for a better future for the church and as individuals.
-    </p>
-  </div>
-  <div className="service_card aniOnView">
-    <i className="fas fa-church"></i> {/* Church Building Icon */}
-    <h2>Church Building</h2>
-    <p>
-      Our church building serves as a sanctuary of hope, prayer, and community. It is a space where everyone is welcome to gather, worship, and connect. We are constantly improving our facilities to better serve the needs of our congregation and support the work of the ministry.
-    </p>
-  </div>
-</div>
+      <div className="service_text_container">
+        <h2>Mission and Aid Efforts</h2>
+        <p className='aniOnView'>
+          At TIM412, we strive to impact lives through faith-driven initiatives and compassionate service. We aim to bring hope, support those in need, and create meaningful opportunities for growth.
+        </p>
+        <p className='aniOnView'>
+          By working together, we encourage spiritual growth, acts of kindness, and community transformation. Join us in extending God’s love to everyone around us.
+        </p>
+      </div>
 
-        </div>
-  <div className="serviceLink">
- 
-  <ul className="list-link aniOnView ">
-  <h2>Ministries</h2>
-  <li>Youth Worship Team</li>
-  <li>Bible Study and Discipleship</li>
-  <li>Evangelism and Outreach</li>
-  <li>Community Service Projects</li>
-  <li>Prayer and Intercession Team</li>
-  <li>Media and Creative Arts</li>
-  <li>Sports and Recreational Activities</li>
-  <li>Drama and Dance Ministry</li>
-  <li>Entrepreneurship and Skills Development</li>
-  <li>Leadership and Mentorship Programs</li>
-  <li>Teenage Counseling and Guidance</li>
-  <li>Academic and Career Development</li>
-</ul>
-  <div   className="contact-link aniOnView">
-    <h2>Reach Out Anytime – We’d Love to Hear from You!</h2>
-    <Link to="/contact" className="btn">
-      <p>Contact us</p>
-    </Link>
-  </div>
-
-   <div className="socials-Link aniOnView">
-            <h2>FOLLOW US ON</h2>
-          <div className="socials">
-          <Link target="_blank" to="https://www.facebook.com/RCCGNewSprings">
-            <i className="fa-brands fa-facebook-f"></i>
-          </Link>
-          <Link target="_blank" to="https://www.instagram.com/rccgnewsprings/">
-            <i className="fa-brands fa-instagram"></i>
-          </Link>
-          <Link target="_blank" to="https://www.youtube.com/@RCCGNewSprings">
-            <i className="fa-brands fa-youtube"></i>
-          </Link>
-        </div>
+      <div className="service_card_container">
+        {[
+          { icon: "fas fa-praying-hands", title: "Worship Services", text: "Join our vibrant worship sessions with uplifting music and inspiring sermons to grow in faith and fellowship." },
+          { icon: "fas fa-hands-helping", title: "Community Contributions", text: "Participate in outreach events, support the less privileged, and help make a tangible difference in the community." },
+          { icon: "fas fa-book", title: "Education and Events", text: "Attend seminars, workshops, and learning initiatives designed to promote spiritual and personal growth." },
+          { icon: "fas fa-church", title: "Church Building", text: "Our church is a welcoming sanctuary for worship, prayer, and connection, constantly improved to serve our members and ministry." }
+        ].map((card, i) => (
+          <div key={i} className="service_card aniOnView">
+            <i className={card.icon}></i>
+            <h2>{card.title}</h2>
+            <p>{card.text}</p>
           </div>
-          <div className="serviceData">
-          <h2>Service shedules</h2>
-          <div className="service_details">
-          <p><strong>Sunday First Service:</strong> 8:00 AM - 10:30 AM</p>
-    <p><strong>Sunday Second Service:</strong> 10:30 AM - 1:00 PM</p>
-    <p><strong>Tuesday Bible Study:</strong> 6:00 PM - 7:30 PM</p>
-    <p><strong>Thursday Prayer Meeting:</strong> 6:00 PM - 7:30 PM</p>
-    <p><strong>Monthly Night Vigil:</strong> Last Friday of the Month, 10:00 PM - 4:00 AM</p>
-          </div>
-          </div>
-        </div>
+        ))}
+      </div>
     </div>
-  )
+
+    <div className="serviceLink">
+      <ul className="list-link aniOnView">
+        <h2>Ministries</h2>
+        {[
+          "Youth Worship Team", "Bible Study & Discipleship", "Evangelism & Outreach", 
+          "Community Service Projects", "Prayer & Intercession", "Media & Creative Arts",
+          "Sports & Recreation", "Drama & Dance Ministry", "Entrepreneurship & Skills Development",
+          "Leadership & Mentorship", "Teen Counseling & Guidance", "Academic & Career Development"
+        ].map((item, i) => <li key={i}>{item}</li>)}
+      </ul>
+
+      <div className="contact-link aniOnView">
+        <h2>Reach Out Anytime – We’d Love to Hear from You!</h2>
+        <Link to="/contact" className="btn"><p>Contact us</p></Link>
+      </div>
+
+      <div className="socials-Link aniOnView">
+        <h2>FOLLOW US ON</h2>
+        <div className="footer_socials">
+          <Link target="_blank" to="https://www.facebook.com/RCCGNewSprings"><i className="fa-brands fa-facebook-f"></i></Link>
+          <Link target="_blank" to="https://www.instagram.com/rccgnewsprings/"><i className="fa-brands fa-instagram"></i></Link>
+          <Link target="_blank" to="https://www.youtube.com/@RCCGNewSprings"><i className="fa-brands fa-youtube"></i></Link>
+        </div>
+      </div>
+
+      <div className="serviceData">
+        <h2>Service Schedules</h2>
+        <div className="service_details">
+          {[
+            ["Sunday First Service", "8:00 AM - 10:30 AM"],
+            ["Sunday Second Service", "10:30 AM - 1:00 PM"],
+            ["Tuesday Bible Study", "6:00 PM - 7:30 PM"],
+            ["Throne Time", "6:00 PM - 7:30 PM"],
+            ["Monthly Mini Vigil", "Last Friday, 7:00 PM - 10:00 pm"]
+          ].map(([title, time], i) => (
+            <p key={i}><strong>{title}:</strong> <span>{time}</span></p>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+)
 }
 
 export default ServiceTalk

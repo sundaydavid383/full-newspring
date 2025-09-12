@@ -12,7 +12,7 @@ const Minareas = ({ ministryAreas, title }) => {
   });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("TIM412user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
       setFormData((prev) => ({

@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
 
   // Load user from localStorage once on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("TIM412user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -19,9 +19,9 @@ export const UserProvider = ({ children }) => {
   // Save user to localStorage when it changes
   useEffect(() => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("TIM412user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem("TIM412user");
     }
   }, [user]);
 

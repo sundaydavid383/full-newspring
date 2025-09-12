@@ -118,7 +118,7 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
         return;
       }
 
-      localStorage.setItem("user", JSON.stringify(data.data));
+      localStorage.setItem("TIM412user", JSON.stringify(data.data));
 
       // ✅ Move to OTP step
       setStep("otp");
