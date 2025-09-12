@@ -43,7 +43,7 @@ import Articles from "../../components/articles/Articles";
 import Videodata from "../../components/videodata/Videodata";
 
 
-const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
+const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata, ministryAreas}) => {
 
 
   const videoData = homedata.videoData
@@ -99,7 +99,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
   //     animationClass: "event_ani3"
   //   }
   // ]
-  const ministryAreas = homedata.ministryAreas;
+
    
   // [
   //   {
@@ -250,8 +250,8 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
   // ];
   const leaders = [
     {
-      name: "Mr. Samuel Adeyemi",
-      position: "Youth Pastor",
+      name: "Mr. Folarin Adeyemi",
+      position: "Youth President",
       posIcon: "fa-solid fa-book-bible",
       image: tu1,
       socials: {
@@ -261,8 +261,8 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
       },
     },
     {
-      name: "Ms. Grace Oladipo",
-      position: "Choir Coordinator",
+      name: "Ms. Grace Guafar",
+      position: "Head of welcome",
       image: tu2,
       posIcon: "fa-solid fa-guitar",
       socials: {
@@ -272,8 +272,8 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
       },
     },
     {
-      name: "Mr. David Okoro",
-      position: "Prayer Band Leader",
+      name: "Mr. Titilola Guafar",
+      position: "Head of prayer and Spiritual Team",
       image: tu3,
       posIcon: "fa-solid fa-hands-praying",
       socials: {
@@ -283,8 +283,8 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata}) => {
       },
     },
     {
-      name: "Mrs. Esther Adebayo",
-      position: "Ushering Department Head",
+      name: "Mrs. Chuba Mbeme",
+      position: "Deputy head of creative department",
       image: tu4,
       posIcon: "fa-solid fa-user-tag",
       socials: {

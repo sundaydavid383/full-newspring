@@ -8,6 +8,10 @@
   column-gap: 2rem;
 }
 
+.leaders .title{
+  color: var(--brown);
+   border-bottom-color: var(--brown);
+}
 /* Individual leader card */
 .leader_card {
   flex: 1 1 250px; /* min width 250px, grows if space allows */

@@ -38,7 +38,7 @@ import Articles from "../../components/articles/Articles"
 import Gallery from '../../components/gallery/Gallery'
 
 
-const About = ({setActive, setDataBase}) => {
+const About = ({setActive, setDataBase, ministryAreas}) => {
       useEffect(() => {
         window.scrollTo({top:0})
       
@@ -144,36 +144,7 @@ const About = ({setActive, setDataBase}) => {
           images: { src: rccg3, alt: "Group of Teens Participating in Outreach", className: "image3" },
         },
       ];
-      const ministryAreas = [
-        {
-          img: discipleship,
-          icon: "fa-solid fa-bible",
-          title: "Discipleship",
-          description: "Our discipleship ministry focuses on helping youth grow in their personal relationship with God, equipping them with biblical knowledge and practical tools to live out their faith daily.",
-          linkText: "Get Discipled",
-        },
-        {
-          img: outreach,
-          icon: "fa-solid fa-share-alt",
-          title: "Evangelism & Outreach",
-          description: "Be part of our youth-led evangelism efforts, reaching out to our local community and beyond with the gospel of Christ, and showing love through various outreach programs.",
-          linkText: "Get Involved ",
-        },
-        {
-          img: worship,
-          icon: "fa-solid fa-guitar",
-          title: "Worship & Arts",
-          description: "Experience the power of worship through music, drama, and the arts. Our ministry offers opportunities for youth to serve in worship and creative arts, bringing glory to God through their talents.",
-          linkText: "Join Team",
-        },
-        {
-          img: fellowship,
-          icon: "fa-solid fa-users",
-          title: "Youth Fellowship",
-          description: "A space for youth to connect, share, and support each other in faith. Our fellowship ministry fosters strong relationships and provides a safe community to grow in Christ together.",
-          linkText: " Fellowship",
-        },
-      ];
+
       const articles = [
           {
             id: 1,

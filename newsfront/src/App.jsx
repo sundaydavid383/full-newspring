@@ -28,6 +28,8 @@ const App = () => {
   const [homedata, setHomeData] = useState({});
   const [showScrollTop, setShowScrollTop] = useState(false); // 👈 controls button visibility
   const base_Url = "https://full-newspring.onrender.com/";
+  const [ministryAreas, setMinistryAreas] = useState([])
+  
 
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -61,6 +63,7 @@ const App = () => {
       try {
         const data = await getSection();
         setHomeData(data);
+        setMinistryAreas(homedata.ministryAreas);
         console.log(data);
       } catch (error) {
         console.error("Failed to fetch sections:", error);
@@ -128,10 +131,11 @@ const App = () => {
               setDataBase={setDataBase}
               onLoad={onLoad}
               homedata={homedata}
+              ministryAreas={ministryAreas}
             />
           }
         />
-        <Route path="/about" element={<About setActive={setActive} />} />
+        <Route path="/about" element={<About  setActive={setActive} ministryAreas={ministryAreas}/>} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/services" element={<Service setActive={setActive} />} />
         <Route
