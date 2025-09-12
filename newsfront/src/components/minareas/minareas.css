@@ -1,348 +1,285 @@
-/* ========= MINAREAS LIST VIEW ========= */
-.Minareas .title {
+/* Container & Layout */
+.Minareas {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+  font-family: "Inter", sans-serif;
   color: var(--black);
-  width: 29rem;
-  border-bottom-color: var(--brown);
-  font-size: 2rem;
+}
+.title {
+  text-align: center;
+  font-size: 2.2rem;
   margin-bottom: 0.5rem;
-  font-weight: bold;
-  text-align: center;
+  color: var(--brown);
 }
-
-.Minareas .title_small {
+.title_small {
+  text-align: center;
   font-size: 1rem;
-  max-width: 650px;
-  margin: 0 auto 3rem auto;
   color: var(--lightBlack);
+  margin-bottom: 2.5rem;
   line-height: 1.6;
-  text-align: center;
 }
 
+/* Flex Container */
 .minareas_container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: stretch;   /* 🔑 keep equal heights */
-  flex-wrap: nowrap;      /* 🔑 prevent line breaks */
-  gap: .62rem;
-  padding-inline: 0rem;
-  padding-block: 2.8rem;
-  overflow-x: auto;       /* 🔑 allows scrolling if needed */
+  gap: 1.5rem;
 }
 
+/* Cards */
 .minareas_card {
-  flex: 1 1 20%;          /* 🔑 responsive base size */
-  min-width: 200px;       /* don’t collapse too much */
-  height: 100%;           /* align with siblings */
+  background: var(--white);
+  border-radius: 1rem;
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem;
+  flex: 1 1 300px;
+  max-width: 350px;
+  transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.minareas_card h3 {
+  margin: 1rem 0 0.5rem 0;
+  color: var(--brown);
+}
+
+.minareas_card div p.minareas_text {
+  color: var(--lightBlack);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+.minareas_card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px var(--blurblack);
+}
+.minareas_card.shrunk {
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+.minareas_card.enlarged {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+/* Card Image & Icon */
+.minareas_image {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.minareas_image img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.minareas_image:hover img {
+  transform: scale(1.05);
+}
+.minareas_image span {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: var(--brown);
+  color: var(--white);
+  padding: 0.6rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Detail View */
+.minarea_detail {
+  animation: fadeIn 0.3s ease-in-out;
+  text-align: center;
+}
+.detail_header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  position: relative;
-  border-radius: .7rem;
-  padding: .5rem;
-  border-bottom: 2px solid var(--brown);
-  box-shadow: 0px 0px 10px rgba(49, 49, 49,.2);
-  background: var(--lightbrown);
-  transition: all 0.35s ease;
-  overflow: hidden;
+  margin-bottom: 1.5rem;
 }
-
-/* hover effect only when card is not in enlarged/shrunk state */
-.minareas_card:not(.enlarged):not(.shrunk):hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
-
-.minareas_card h3 {
-  color: var(--black);
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-block: .6rem;
-  margin-top: 3rem;
-}
-
-.minareas_card p {
-  color: var(--lightBlack);
-  margin-bottom: .78rem;
-  font-size: .95rem;
-  line-height: 1.5;
-}
-
-.minareas_image {
-  position: relative;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
-.minareas_card img {
-  width: 100%;
-  border-radius: 1rem;
-  object-fit: cover;
-  display: block;
-}
-
-.minareas_card span {
-  background: var(--white);
-  border-radius: 50%;
-  height: 5.5rem;
-  width: 5.5rem;
-  text-align: center;
-  line-height: 5.5rem;
-  color: var(--brown);
-  font-size: 2.8rem;
-  position: absolute;
-  left:50%;
-  transform: translateX(-50%);
-  bottom: .1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.minareas_card .btn {
-  position: relative;
-  bottom: -.6rem;
-  margin: auto;
-  background: var(--brown);
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.minareas_card .btn p {
-  color: var(--white);
-  margin: auto;
-  cursor: pointer;
-}
-
-.minareas_card .btn:hover {
-  background: #574fcf;
-}
-
-.minareas_card .btn:hover p {
-  color: var(--black);
-}
-
-/* ========= DETAIL VIEW ========= */
-.minarea_detail {
-  flex: 1;                /* 🔑 fill parent card */
-  width: 100%;
-  text-align: left;
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  animation: fadeIn 0.4s ease-in-out;
-  overflow-y: auto;       /* 🔑 scroll instead of breaking layout */
-}
-
-.minarea_detail .back_btn {
-  background: none;
-  border: none;
-  color: var(--brown);
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.minarea_detail .back_btn:hover {
-  text-decoration: underline;
-}
-
-.detail_header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
 .detail_header img {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   object-fit: cover;
+  margin-bottom: 0.5rem;
+  border: 3px solid var(--brown);
 }
-
 .detail_header h2 {
-  font-size: 1.5rem;
-  margin: 0;
-  font-weight: bold;
-  color: var(--black);
-}
-
-.detail_header i {
-  font-size: 1.6rem;
+  margin: 0.3rem 0;
   color: var(--brown);
+  font-size: 1.5rem;
 }
-
 .detail_description {
+  color: var(--lightBlack);
   font-size: 1rem;
   margin-bottom: 1.5rem;
-  color: var(--lightBlack);
   line-height: 1.6;
 }
 
-.detail_content p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  color: var(--lightBlack);
-  line-height: 1.6;
-}
-
-
-/* ========= MINISTRY FORM STYLING ========= */
-/* ========= MINISTRY FORM STYLING ========= */
-.minarea_detail .ministry_form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* ✅ two columns */
-  gap: 0.8rem 1rem; 
-  margin-top: 1.2rem;
-}
-
-.minarea_detail .ministry_form input,
-.minarea_detail .ministry_form select,
-.minarea_detail .ministry_form textarea {
-  padding: 0.5rem 0.7rem;
-  border-bottom: 2px solid var(--brown);
-  font-size: 0.8rem;
-  color: var(--black);
-  background-color: var(--blurwhite);
-  border-radius: 0;
-  width: 100%;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-}
-
-.minarea_detail .ministry_form input:focus,
-.minarea_detail .ministry_form select:focus,
-.minarea_detail .ministry_form textarea:focus {
-  outline: none;
-  border-color: var(--brown);
-  box-shadow: 0 0 5px rgba(19, 97, 26, 0.3);
-  background-color: var(--white);
-}
-
-/* ✅ Only force full-width where needed */
-.minarea_detail .ministry_form textarea,
-.minarea_detail .ministry_form input[readonly],
-.minarea_detail .ministry_form .form-group.full {
-  grid-column: span 2; /* textarea, readonly, or when you add class="form-group full" */
-}
-
-.minarea_detail .form-group label {
-  font-size: 0.85rem;
-  color: var(--lightBlack)
-}
-
-.minarea_detail .ministry_form button.btn {
-  grid-column: span 2;
-  padding: 0.65rem;
+/* Back Button */
+.back_btn {
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  background-color: var(--brown);
-  color: var(--white);
-  font-size: 0.95rem;
+  font-size: 1rem;
+  color: var(--brown);
+  margin-bottom: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: color 0.2s ease;
+}
+.back_btn:hover {
+  color: var(--darkbrown);
 }
 
-.minarea_detail .ministry_form button.btn:hover {
-  background-color: #574fcf;
-  transform: translateY(-2px);
+/* Optimized Form Layout */
+.ministry_form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* reduced space between fields */
+  text-align: left;
 }
 
-.minarea_detail .ministry_form button.btn:disabled {
-  background-color: var(--gray);
-  cursor: not-allowed;
-  transform: none;
+/* Inputs, selects, textarea */
+.ministry_form input,
+.ministry_form select,
+.ministry_form textarea {
+  flex: 0 0 48%; /* fixed ~half width for neat left/right alignment */
+  max-width: 48%;
+  padding: 0.55rem 0.75rem; /* smaller padding */
+  border-bottom: 1px solid var(--brown);
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--black);
+  background: var(--white);
+  box-sizing: border-box;
+}
+.ministry_form .btn{
+  width: 100%;
 }
 
-/* ========= ANIMATIONS ========= */
+/* Textarea spans full width always */
+.ministry_form textarea {
+  flex: 0 0 100%;
+  max-width: 100%;
+  min-height: 80px;
+}
+/* Ministry Form Styling */
+.ministry_form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  animation: fadeSlideIn 0.8s ease forwards;
+}
+
+/* Two per row on large screens, one per row on small screens */
+.ministry_form input,
+.ministry_form select,
+.ministry_form textarea {
+  flex: 1 1 calc(50% - 1rem);
+  min-width: 220px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--gray);
+  border-radius: 6px;
+  background: var(--blurwhite);
+  color: var(--black);
+  outline: none;
+  box-shadow: var(--box-shadow);
+  transition: all 0.25s ease-in-out;
+}
+
+/* Single column on smaller screens */
+@media (max-width: 768px) {
+  .ministry_form input,
+  .ministry_form select,
+  .ministry_form textarea {
+    flex: 1 1 100%;
+  }
+}
+
+/* Input focus effect */
+.ministry_form input:focus,
+.ministry_form select:focus,
+.ministry_form textarea:focus {
+  border-color: var(--gold);
+  transform: scale(1.02);
+  background: var(--white);
+}
+
+/* Textarea fix */
+.ministry_form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Labels */
+.form-group {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: var(--darkbrown);
+  margin-top: 0.3rem;
+}
+
+/* Submit Button */
+.ministry_form .btn-slide {
+  flex: 1 1 100%;
+  background: var(--gold);
+}
+
+/* "Google-shocking" entry animation */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* Optional: subtle placeholder color */
+.ministry_form input::placeholder,
+.ministry_form select::placeholder,
+.ministry_form textarea::placeholder {
+  color: var(--gray);
+  font-weight: 500;
+}
+/* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ========= ENLARGED & SHRUNK STATES ========= */
-.minareas_card.enlarged {
-  flex: 2 1 60%;          /* 🔑 expand horizontally */
-  transform: scale(1.02);
-  z-index: 3;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-}
-
-.minareas_card.shrunk {
-  flex: 0.5 1 10%;        /* 🔑 shrink horizontally */
-  opacity: 0.6;
-  transform: scale(0.96);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-}
-
-.minareas_card.enlarged:hover,
-.minareas_card.shrunk:hover {
-  transform: none;        /* prevent hover lift */
-}
-
-/* ========= RESPONSIVE ========= */
-@media (max-width: 1180px) {
-  .minareas_container {
-    flex-wrap: wrap;      /* allow wrapping only on smaller screens */
-    gap:2rem;
-    padding-inline: 1rem;
-  }
-  .minareas_card {
-    flex: 1 1 44%;
-  }
+/* Responsive */
+@media (max-width: 768px) {
   .minareas_card.enlarged {
-    flex: 1 1 100%;
-  }
-  .minareas_card.shrunk {
-    flex: 1 1 44%;
-  }
-}
-
-@media (max-width: 780px) {
-  .minareas_card {
-    flex: 1 1 80%;
-  }
-  .minareas_card.enlarged {
-    flex: 1 1 97%;
-    transform: none;
-  }
-  .minareas_card.shrunk {
-    flex: 1 1 80%;
-    transform: none;
-    opacity: 0.9;
-  }
-   .minarea_detail .ministry_form {
-    grid-template-columns: 1fr;   /* ✅ stack vertically on small screens */
-  }
-}
-
-@media (max-width:600px) {
-  .Minareas .title {
-    width: 80%;
-  }
-  .minareas_card {
-    flex: 1 1 97%;
-  }
-  .detail_header {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 1rem;
   }
   .detail_header img {
-    width: 100%;
-    height: 150px;
+    width: 90px;
+    height: 90px;
   }
-    .minarea_detail .ministry_form {
-    gap: 0.75rem;
+   .ministry_form input,
+  .ministry_form select,
+  .ministry_form textarea {
+    flex: 1 1 100%;
   }
-  .minarea_detail .ministry_form input {
-    font-size: 0.95rem;
-    padding: 0.65rem 0.9rem;
-  }
-  .minarea_detail .ministry_form button.btn {
-    font-size: 0.95rem;
-    padding: 0.65rem;
-  }
+}
+@media (max-width: 480px) {
+  .title { font-size: 1.5rem; }
+  .minareas_card { padding: 1rem; }
+  .minareas_image img { height: 160px; }
 }

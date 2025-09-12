@@ -8,7 +8,7 @@ const ContactForm = ({ contactFormData, formType }) => {
   const [loading, setLoading] = useState(false);
   const [seeEmailStatus, setSeeEmailStatus] = useState(false);
 
-  const baseUrl = "http://localhost:5001/";
+  const baseUrl = "https://full-newspring.onrender.com/";
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -78,7 +78,7 @@ const ContactForm = ({ contactFormData, formType }) => {
 
   // ✅ Load user data from localStorage when component mounts
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("TIM412user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
       setFormData({

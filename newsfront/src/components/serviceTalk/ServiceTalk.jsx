@@ -92,7 +92,7 @@ const ServiceTalk = () => {
             ["Sunday First Service", "8:00 AM - 10:30 AM"],
             ["Sunday Second Service", "10:30 AM - 1:00 PM"],
             ["Tuesday Bible Study", "6:00 PM - 7:30 PM"],
-            ["Throne Time", "6:00 PM - 7:30 PM"],
+            ["Friday Throne Time", "6:00 PM - 7:30 PM"],
             ["Monthly Mini Vigil", "Last Friday, 7:00 PM - 10:00 pm"]
           ].map(([title, time], i) => (
             <p key={i}><strong>{title}:</strong> <span>{time}</span></p>

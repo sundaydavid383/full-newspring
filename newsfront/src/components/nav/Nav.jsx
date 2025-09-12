@@ -4,6 +4,7 @@ import logo from "../../assets/logo2.jpg";
 import { FaBars, FaTimes, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext"; // ✅ import context
+//https://res.cloudinary.com/dr0pxpbnj/image/upload/v1757701119/logo2_mnya0k.jpg
 
 const Nav = ({ active }) => {
   const [fixed, setFixed] = useState(false);
@@ -20,7 +21,7 @@ const Nav = ({ active }) => {
 
   // Load user from localStorage once
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("TIM412user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }

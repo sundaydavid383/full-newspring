@@ -238,20 +238,19 @@ const onSubmitPass = async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-      // Prefer backend message if available
-      const errorMessage = data?.message || `Error: ${response.statusText}`;
-      setEmailStatus(errorMessage);
-      setSeeEmailStatus(true);
-      return;
-    }
+  const errorMessage = data?.message || `Error: ${response.statusText}`;
+  setEmailStatus(data?.message || `Error: ${response.statusText}`);
+  setSeeEmailStatus(true);
+  return;
+}
 
-    if (response.status === 400) {
-      setEmailStatus(data.message || "Invalid password.");
-      setSeeEmailStatus(true);
-    } else {
-      setSeeData(true);
-      setSeeEmailStatus(false);
-    }
+if (response.status === 400) {
+  setEmailStatus(data.message || "Invalid password.");
+  setSeeEmailStatus(true);
+} else {
+  setSeeData(true);
+  setSeeEmailStatus(false);
+}
   } catch (error) {
     setEmailStatus(error.message || "Network error.");
     setSeeEmailStatus(true);

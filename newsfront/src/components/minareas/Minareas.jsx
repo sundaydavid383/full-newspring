@@ -27,7 +27,7 @@ const Minareas = ({ ministryAreas, title }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState(""); 
-  const base_Url = "http://localhost:5001/";
+  const base_Url = "https://full-newspring.onrender.com/";
 
   const handleCardClick = (index) => {
     setSelectedIndex(selectedIndex === index ? null : index);
@@ -177,19 +177,19 @@ const Minareas = ({ ministryAreas, title }) => {
                       <div key={qIndex} className="form-group">
                         <label>{q.question}</label>
                         {q.options ? (
-                          <select
-                            onChange={(e) =>
-                              handleAnswerChange(q.question, e.target.value)
-                            }
-                            required
-                          >
-                            <option value="">-- Select --</option>
-                            {q.options.map((opt, i) => (
-                              <option key={i} value={opt}>
-                                {opt}
-                              </option>
-                            ))}
-                          </select>
+                         <select
+                          onChange={(e) => handleAnswerChange(q.question, e.target.value)}
+                          required
+                        >
+                          <option value="">
+                           Please select your {q.question.toLowerCase()} --
+                          </option>
+                          {q.options.map((opt, i) => (
+                            <option key={i} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
                         ) : q.type === "textarea" ? (
                           <textarea
                             onChange={(e) =>
@@ -211,7 +211,7 @@ const Minareas = ({ ministryAreas, title }) => {
                       </div>
                     ))}
 
-                    <button type="submit" className="btn" disabled={loading}>
+                    <button type="submit" className="btn-slide" disabled={loading}>
                       <p>{loading ? "Submitting..." : "Register"}</p>
                     </button>
                   </form>
@@ -225,7 +225,7 @@ const Minareas = ({ ministryAreas, title }) => {
                     </span>
                   </div>
                   <h3>{area.title}</h3>
-                  <p>{area.description}</p>
+                  <p className='minareas_text'>{area.description}</p>
                   <button className="btn">
                     <p>{area.linkText}</p>
                   </button>

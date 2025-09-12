@@ -32,61 +32,56 @@ const Footer = () => {
 
   
 const onSubmit = async (e) => {
+  console.log("📩 Submit button clicked"); // ✅ Debug log
+  e.preventDefault();
+
   const updateReciever = document.querySelector(".updateReciever");
   const emailLb = document.getElementById("emailLb");
   const regEmail = /^[A-Za-z0-9%._+-]{2,}@[A-Za-z0-9\-]{2,}\.[A-Za-z]{2,}$/;
 
-  e.preventDefault();
+  console.log("✉️ Current email value:", email);
 
   if (email === "") {
+    console.warn("⚠️ No email entered");
     emailLb.classList.add("alert");
     emailLb.textContent = "enter your email";
-    setTimeout(() => {
-      emailLb.classList.remove("alert");
-    }, 200);
+    setTimeout(() => emailLb.classList.remove("alert"), 200);
     return;
   } else if (!regEmail.test(email)) {
+    console.warn("⚠️ Invalid email format");
     emailLb.classList.add("alert");
     emailLb.textContent = "enter a valid email address";
-    setTimeout(() => {
-      emailLb.classList.remove("alert");
-    }, 2000);
+    setTimeout(() => emailLb.classList.remove("alert"), 2000);
     return;
   }
 
   try {
+    console.log("🌐 Sending request to backend...");
     const res = await fetch(`${base_Url}api/subscribe`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
 
+    console.log("📡 Response status:", res.status);
     const data = await res.json();
+    console.log("📦 Response data:", data);
 
     if (res.ok) {
       updateReciever.classList.add("active");
-      setTimeout(() => {
-        updateReciever.classList.remove("active");
-      }, 7000);
-
+      setTimeout(() => updateReciever.classList.remove("active"), 7000);
       emailLb.textContent = "";
       setEmail("");
     } else {
       emailLb.classList.add("alert");
       emailLb.textContent = data.message || "Subscription failed";
-      setTimeout(() => {
-        emailLb.classList.remove("alert");
-      }, 2000);
+      setTimeout(() => emailLb.classList.remove("alert"), 2000);
     }
   } catch (error) {
+    console.error("💥 Network or fetch error:", error);
     emailLb.classList.add("alert");
     emailLb.textContent = "Network error";
-    setTimeout(() => {
-      emailLb.classList.remove("alert");
-    }, 2000);
-    console.error("Error submitting email:", error);
+    setTimeout(() => emailLb.classList.remove("alert"), 2000);
   }
 };
 
@@ -167,12 +162,14 @@ const onSubmit = async (e) => {
           </li>
         </ul>
         <div className="footer_details futup">
-          <p>
-            <small>
-              <i className="fa-solid fa-phone"></i>
-            </small>{" "}
-            09014886877
-          </p>
+            <p>
+              <small>
+                <i className="fa-solid fa-phone"></i>
+              </small>{" "}
+              <a href="tel:+2349014886877" style={{ textDecoration: "none", color: "inherit" }}>
+                09014886877
+              </a>
+            </p>
           <a target="_blank" href="https://wa.me/09014886853">
             <p>
               <small>
@@ -205,8 +202,8 @@ const onSubmit = async (e) => {
         </div>
       </div>
       <div className="copyright">
-        @2024 All Rights Copyright <span>Tim 412</span>. Design & Developed By
-        DavidFoster.
+        ©{new Date().getFullYear()} All Rights Copyright <span>Tim 412</span>. Design & Developed By
+         <strong> DavidFoster</strong>.
       </div>
     </footer>
   );

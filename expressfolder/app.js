@@ -282,8 +282,6 @@ app.post("/api/people", async (req, res) => {
   }
 });
 
-
-
 //=================== SEND OTP ========================
 app.post("/api/auth/verify-otp", async (req, res) => {
   try {
@@ -324,9 +322,6 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     return res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
-
-
-
 
 //=================== RESEND OTP ====================
 app.post("/api/auth/resend-otp", async (req, res) => {
@@ -706,26 +701,94 @@ const speakAfterRegistration = require("./service/afterRegistration")
 app.use("/speak", speakAfterRegistration);
 
 app.post("/password", async (req, res) => {
-  try {
-    const { userType } = req.body;
-    console.log(req.body);
-    let envConfig;
-    if (fs.existsSync(".env")) {
-      envConfig = dotenv.parse(fs.readFileSync(".env", "utf8"));
-    }
-    console.log("usertype", userType);
-    console.log("password", envConfig.ADMINPASSWORD);
+  console.log("🔹 /password endpoint hit");
 
-    if (await bcrypt.compare(userType, envConfig.HARSHEDADMINPASSWORD)) {
-      return res
-        .status(200)
-        .json({ success: true, message: "Successfully logged in" });
+  try {
+    // Step 1: log the incoming body
+    console.log("📩 Request body:", req.body);
+
+    const { userType } = req.body;
+    if (!userType) {
+      console.error("❌ No password provided in request body");
+      return res.status(400).json({
+        success: false,
+        message: "Password is required",
+      });
     }
-    return res
-      .status(400)
-      .json({ success: false, message: "wrong and invlaid password" });
+
+    // Step 2: check for .env file
+    console.log("🔍 Checking if .env file exists...");
+    if (!fs.existsSync(".env")) {
+      console.error("❌ .env file is missing");
+      return res.status(500).json({
+        success: false,
+        message: "Server configuration missing (.env not found)",
+      });
+    }
+
+    // Step 3: parse .env
+    let envConfig;
+    try {
+      const envContent = fs.readFileSync(".env", "utf8");
+      envConfig = dotenv.parse(envContent);
+      console.log("✅ .env file loaded successfully");
+    } catch (err) {
+      console.error("❌ Failed to read/parse .env file:", err);
+      return res.status(500).json({
+        success: false,
+        message: "Error reading configuration file",
+        error: err.message,
+      });
+    }
+
+    // Step 4: validate required values
+    console.log("🔍 Checking if HARSHEDADMINPASSWORD exists in .env...");
+    if (!envConfig.HARSHEDADMINPASSWORD) {
+      console.error("❌ HARSHEDADMINPASSWORD not found in .env");
+      return res.status(500).json({
+        success: false,
+        message: "Admin password hash missing in server configuration",
+      });
+    }
+
+    console.log("🔑 Input password:", userType);
+    console.log("🔒 Stored hash:", envConfig.HARSHEDADMINPASSWORD);
+
+    // Step 5: bcrypt comparison
+    let isMatch = false;
+    try {
+      isMatch = await bcrypt.compare(userType, envConfig.HARSHEDADMINPASSWORD);
+      console.log("🔍 bcrypt.compare result:", isMatch);
+    } catch (err) {
+      console.error("❌ bcrypt.compare failed:", err);
+      return res.status(500).json({
+        success: false,
+        message: "Password verification failed",
+        error: err.message,
+      });
+    }
+
+    // Step 6: send result
+    if (isMatch) {
+      console.log("✅ Password correct, login successful");
+      return res.status(200).json({
+        success: true,
+        message: "Successfully logged in",
+      });
+    } else {
+      console.warn("⚠️ Wrong password provided");
+      return res.status(400).json({
+        success: false,
+        message: "Wrong or invalid password",
+      });
+    }
   } catch (error) {
-    console.log("an unexpected error occured:", error.message);
+    console.error("🔥 Unexpected error in /password route:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 });
 app.put("/password", async (req, res) => {

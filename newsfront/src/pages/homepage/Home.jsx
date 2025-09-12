@@ -248,52 +248,52 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata, ministryArea
   //             ]
   //           }  
   // ];
-  const leaders = [
-    {
-      name: "Mr. Folarin Adeyemi",
-      position: "Youth President",
-      posIcon: "fa-solid fa-book-bible",
-      image: tu1,
-      socials: {
-        twitter: "https://twitter.com/samuel_adeyemi",
-        facebook: "https://facebook.com/samuel.adeyemi",
-        instagram: "https://instagram.com/samuel_adeyemi",
-      },
+ const leaders = [
+  {
+    name: "Folarin Adeyemi",
+    position: "Youth President",
+    posIcon: "fa-solid fa-users", // represents leadership & youth group
+    image: tu1,
+    socials: {
+      twitter: "https://twitter.com/folarin_adeyemi",
+      facebook: "https://facebook.com/folarin.adeyemi",
+      instagram: "https://instagram.com/folarin_adeyemi",
     },
-    {
-      name: "Ms. Grace Guafar",
-      position: "Head of welcome",
-      image: tu2,
-      posIcon: "fa-solid fa-guitar",
-      socials: {
-        twitter: "https://twitter.com/grace_oladipo",
-        facebook: "https://facebook.com/grace.oladipo",
-        instagram: "https://instagram.com/grace_oladipo",
-      },
+  },
+  {
+    name: "Grace Guafar",
+    position: "Head of Welcome",
+    posIcon: "fa-solid fa-handshake", // welcoming role
+    image: tu2,
+    socials: {
+      twitter: "https://twitter.com/grace_guafar",
+      facebook: "https://facebook.com/grace.guafar",
+      instagram: "https://instagram.com/grace_guafar",
     },
-    {
-      name: "Mr. Titilola Guafar",
-      position: "Head of prayer and Spiritual Team",
-      image: tu3,
-      posIcon: "fa-solid fa-hands-praying",
-      socials: {
-        twitter: "https://twitter.com/david_okoro",
-        facebook: "https://facebook.com/david.okoro",
-        instagram: "https://instagram.com/david_okoro",
-      },
+  },
+  {
+    name: "Titilola Guafar",
+    position: "Head of Prayer and Spiritual Team",
+    posIcon: "fa-solid fa-hands-praying", // prayer/spiritual
+    image: tu3,
+    socials: {
+      twitter: "https://twitter.com/titilola_guafar",
+      facebook: "https://facebook.com/titilola.guafar",
+      instagram: "https://instagram.com/titilola_guafar",
     },
-    {
-      name: "Mrs. Chuba Mbeme",
-      position: "Deputy head of creative department",
-      image: tu4,
-      posIcon: "fa-solid fa-user-tag",
-      socials: {
-        twitter: "https://twitter.com/esther_adebayo",
-        facebook: "https://facebook.com/esther.adebayo",
-        instagram: "https://instagram.com/esther_adebayo",
-      },
+  },
+  {
+    name: "Chuba Mbeme",
+    position: "Deputy Head of Creative Department",
+    posIcon: "fa-solid fa-paintbrush", // creativity/design
+    image: tu4,
+    socials: {
+      twitter: "https://twitter.com/chuba_mbeme",
+      facebook: "https://facebook.com/chuba.mbeme",
+      instagram: "https://instagram.com/chuba_mbeme",
     },
-  ];
+  },
+];
   const galleryItems = [
     { id: "img1", src: im1, link: "#" },
     { id: "img2", src: im2, link: "#" },
