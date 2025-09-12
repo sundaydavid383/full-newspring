@@ -67,11 +67,11 @@ const Journey = ({ journeyData }) => {
               </p>
             ))}
             {item.link && (
-              <Link className="btn" to={item.link.href}>
+                        <Link className="btn" to={item.link.href}>
                 <p>{item.link.text}</p>
               </Link>
             )}
-          </div>
+    </div>  
           {/* <div className="journey_image observe">*/}
             <div className={item.images.className}> 
               <img src={item.images.src} alt={item.images.alt} />
