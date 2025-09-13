@@ -15,45 +15,44 @@ const Contact = () => {
         }
       }, [])
     
-    const sections = [{
-        id: 9,
-        title: "Get in Touch",
-        paragraphs: [
-          "We’d love to hear from you! Whether you have questions, need more information, or simply want to connect with us, RCCG NewSpring Youth is here to assist you.",
-          "Feel free to reach out to us, and we’ll ensure your concerns or inquiries are addressed promptly. Your feedback and engagement mean a lot to us.",
-          "Let’s grow together in faith and community. Contact us today!"
-        ],
-      },
-      {
-        id: 10,
-        title: "Our Location",
-        paragraphs: [
-          "RCCG NewSpring Youth is located at Capital Building, 332 Ikorodu Road, Lagos, Nigeria 100211. We are conveniently situated to welcome young people and their families from near and far.",
-          "Join us for any of our programs, services, or events—we’d be delighted to meet you in person!",
-          "Need directions? Feel free to call or send us a message, and we’ll guide you to our church."
-        ],
-      },
-      {
-        id: 11,
-        title: "Contact Information",
-        paragraphs: [
-          "Phone: +234 905 674 5655",
-          "Email: [rccgnewspring@gmail.com]",
-          "Social Media: Connect with us on  Youtube, Instagram, Facebook to stay updated on our events and programs."
-        ],
-      },
-      {
-        id: 12,
-        title: "Office Hours",
-        paragraphs: [
-          "Our office is open during the following hours to assist you:",
-          "- Tuesday and Thursday: 06:00pm - 07:00pm",
-          "- Sunday first-service: [08:00am- 10:30am]",
-          "- Sunday second-service: [10:80am- 01:00am]",
-          "We are committed to making it easy for you to reach us and get the help or information you need. Whether you're a parent seeking guidance, a youth with questions, or someone looking to get involved in our programs, our team is always ready to support you.",
-          "If you can’t visit during our office hours, don’t worry! You can still send us an email or reach out through our social media platforms, and we’ll get back to you as soon as possible. Your convenience and satisfaction are important to us, and we strive to create an open and welcoming space for everyone."
-        ],
-      }]
+    const sections = [
+  {
+    id: 9,
+    title: "Get in Touch",
+    paragraphs: [
+      "We’d love to hear from you! Whether you have questions or just want to connect, RCCG NewSpring Youth is here for you.",
+      "Reach out today—we’ll respond promptly. Your feedback matters!"
+    ],
+  },
+  {
+    id: 10,
+    title: "Our Location",
+    paragraphs: [
+      "You can find us at Capital Building, 332 Ikorodu Road, Lagos, Nigeria 100211.",
+      "Join us for our services and events—we’d be delighted to meet you!"
+    ],
+  },
+  {
+    id: 11,
+    title: "Contact Information",
+    paragraphs: [
+      "Phone: +234 905 674 5655",
+      "Email: rccgnewspring@gmail.com",
+      "Socials: YouTube, Instagram, Facebook"
+    ],
+  },
+  {
+    id: 12,
+    title: "Office Hours",
+    paragraphs: [
+      "We’re available at these times:",
+      "- Tue & Thu: 6:00pm – 7:00pm",
+      "- Sunday 1st: 8:00am – 10:30am",
+      "- Sunday 2nd: 10:30am – 1:00pm",
+      "Can’t visit? Send us an email or DM—we’ll get back quickly."
+    ],
+  },
+];
       const contactFeatures = {
         type: "contact",
         data: [
