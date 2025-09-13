@@ -4,7 +4,7 @@ import "./signup.css";
 import { useNavigate } from "react-router";
 
 // ⚡ Make sure FormMessage is imported
-import FormMessage from "../FormMessage/FormMessage";
+import FormMessage from "../../components/FormMessage/FormMessage";
 
 const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
   const base_Url = "https://full-newspring.onrender.com/";
