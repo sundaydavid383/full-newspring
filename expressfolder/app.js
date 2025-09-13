@@ -190,13 +190,12 @@ app.get("/api/people", async (req, res) => {
   }
 });
 
-// ================== ADD A NEW PERSON ==================
+// ================== ADD A NEW PERSON (REGISTER) ==================
 app.post("/api/people", async (req, res) => {
   const OTP_EXPIRY_MINUTES = Number(process.env.OTP_EXPIRY_MINUTES) || 10;
   console.log("➡️ [START] Received request at /api/people");
 
   try {
-    console.log("🔎 Step 1: Extracting request body...");
     const {
       firstname,
       lastname,
@@ -211,8 +210,7 @@ app.post("/api/people", async (req, res) => {
       password,
     } = req.body || {};
 
-    // Basic validation
-    console.log("✅ Step 2: Validating required fields...");
+    console.log("🔎 Step 1: Validating required fields...");
     if (!firstname || !lastname || !email || !phone || !password) {
       console.warn("⚠️ Validation failed: Missing required fields");
       return res.status(400).json({
@@ -222,11 +220,10 @@ app.post("/api/people", async (req, res) => {
       });
     }
 
-    console.log("✉️ Step 3: Normalizing email...");
+    console.log("✉️ Step 2: Normalizing email...");
     const normalizedEmail = String(email).trim().toLowerCase();
 
-    // Check if user already exists
-    console.log("🔎 Step 4: Checking for existing user in database...");
+    console.log("🔎 Step 3: Checking for existing user...");
     const existing = await User.findOne({ email: normalizedEmail });
     if (existing) {
       console.warn("⚠️ User already exists:", normalizedEmail);
@@ -237,19 +234,16 @@ app.post("/api/people", async (req, res) => {
       });
     }
 
-    // Hash password
-    console.log("🔐 Step 5: Hashing password...");
+    console.log("🔐 Step 4: Hashing password...");
     const hashedPassword = await bcrypt.hash(String(password), 12);
 
-    // Generate OTP
-    console.log("🔑 Step 6: Generating OTP...");
-    const otp = generateOtp();
-    const otpHash = hashOtp(otp);
+    console.log("🔑 Step 5: Generating OTP...");
+    const otp = generateOtp(); // you already have this
+    const otpHash = hashOtp(otp); // you already have this
     const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-    // Create user
-    console.log("📝 Step 7: Creating new user in database...");
-    const person = await User.create({
+    console.log("📝 Step 6: Creating user (unverified)...");
+    await User.create({
       firstname: String(firstname).trim(),
       lastname: String(lastname).trim(),
       email: normalizedEmail,
@@ -268,29 +262,16 @@ app.post("/api/people", async (req, res) => {
       isVerified: false,
     });
 
-    // Try to send OTP
-    console.log("📧 Step 8: Sending OTP email...");
+    console.log("📧 Step 7: Sending OTP email...");
     const mailSent = await sendOtpEmail(normalizedEmail, otp);
-    if (!mailSent) {
-      console.warn("⚠️ OTP email failed to send for:", normalizedEmail);
-      return res.status(201).json({
-        success: true,
-        message:
-          "Your account has been created. We tried to send you a code, but it did not go through. Please check again later.",
-        data: { id: person._id, email: person.email },
-      });
-    }
 
-    // Debug OTP log in dev
-    if (process.env.NODE_ENV !== "production") {
-      console.log("🐞 DEBUG: OTP for", normalizedEmail, "is:", otp);
-    }
-
-    console.log("🎉 Step 9: User created successfully:", normalizedEmail);
+    // IMPORTANT: do NOT return user data here (intentional)
+    console.log("🎉 Step 8: Registration completed for", normalizedEmail, "mailSent:", !!mailSent);
     return res.status(201).json({
       success: true,
-      message: `Welcome, ${firstname}! Your account has been created. A one-time code has been sent to your email. Please check your inbox and enter the code within ${OTP_EXPIRY_MINUTES} minutes.`,
-      data: { id: person._id, email: person.email },
+      message: mailSent
+        ? "✅ Account created. Please check your email for the OTP."
+        : "⚠️ Account created, but OTP email could not be sent. Try resending later.",
     });
   } catch (err) {
     console.error("❌ [ERROR] in /api/people:", err);
@@ -313,7 +294,7 @@ app.post("/api/people", async (req, res) => {
   }
 });
 
-//=================== SEND OTP ========================
+//=================== VERIFY OTP ========================
 app.post("/api/auth/verify-otp", async (req, res) => {
   try {
     const { email, otp } = req.body || {};
@@ -321,6 +302,8 @@ app.post("/api/auth/verify-otp", async (req, res) => {
       return res.status(400).json({ success: false, message: "Email and OTP are required." });
     }
     const normalizedEmail = String(email).trim().toLowerCase();
+
+    console.log("➡️ VERIFY OTP: Looking up user", normalizedEmail);
     const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(404).json({ success: false, message: "User not found." });
 
@@ -344,10 +327,42 @@ app.post("/api/auth/verify-otp", async (req, res) => {
     user.otpLastSentAt = null;
     await user.save();
 
-    // Optionally issue a JWT here (if you use JWT)
-    // const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    // prepare safe user data (everything except password & OTP fields)
+    const safeData = {
+      id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      phone: user.phone,
+      age: user.age,
+      school: user.school,
+      occupation: user.occupation,
+      hobbies: user.hobbies,
+      heardAboutUs: user.heardAboutUs,
+      interest: user.interest,
+      department: user.department,
+      education: user.education,
+      image: user.image,
+      isVerified: user.isVerified,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
 
-    return res.json({ success: true, message: "Account verified successfully." /*, token */ });
+    // Optionally issue a JWT so frontend can auto-login after verification
+    let token = null;
+    if (process.env.JWT_SECRET) {
+      token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+    }
+
+    console.log("✅ OTP verified for", user.email);
+    return res.json({
+      success: true,
+      message: "Account verified successfully.",
+      data: safeData,
+      token, // may be null if JWT_SECRET not set; frontend should handle it
+    });
   } catch (err) {
     console.error("Error in /api/auth/verify-otp:", err);
     return res.status(500).json({ success: false, message: "Internal server error." });
@@ -759,9 +774,6 @@ app.post("/password", async (req, res) => {
   console.log("🔹 /password endpoint hit");
 
   try {
-    // Step 1: log the incoming body
-    console.log("📩 Request body:", req.body);
-
     const { userType } = req.body;
     if (!userType) {
       console.error("❌ No password provided in request body");
@@ -771,35 +783,34 @@ app.post("/password", async (req, res) => {
       });
     }
 
-    // Step 2: check for .env file
-    console.log("🔍 Checking if .env file exists...");
-    if (!fs.existsSync(".env")) {
-      console.error("❌ .env file is missing");
-      return res.status(500).json({
-        success: false,
-        message: "Server configuration missing (.env not found)",
-      });
+    // ================== STEP 1: Try to get from process.env first ==================
+    let storedHash = process.env.HARSHEDADMINPASSWORD;
+    console.log("🔍 Checking process.env for HARSHEDADMINPASSWORD...");
+
+    // ================== STEP 2: If not found, fallback to .env file ==================
+    if (!storedHash) {
+      console.warn("⚠️ HARSHEDADMINPASSWORD not in process.env, checking .env file...");
+
+      if (fs.existsSync(".env")) {
+        try {
+          const envContent = fs.readFileSync(".env", "utf8");
+          const envConfig = dotenv.parse(envContent);
+          storedHash = envConfig.HARSHEDADMINPASSWORD;
+          console.log("✅ Loaded HARSHEDADMINPASSWORD from .env file");
+        } catch (err) {
+          console.error("❌ Failed to parse .env file:", err);
+          return res.status(500).json({
+            success: false,
+            message: "Error reading configuration file",
+            error: err.message,
+          });
+        }
+      }
     }
 
-    // Step 3: parse .env
-    let envConfig;
-    try {
-      const envContent = fs.readFileSync(".env", "utf8");
-      envConfig = dotenv.parse(envContent);
-      console.log("✅ .env file loaded successfully");
-    } catch (err) {
-      console.error("❌ Failed to read/parse .env file:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Error reading configuration file",
-        error: err.message,
-      });
-    }
-
-    // Step 4: validate required values
-    console.log("🔍 Checking if HARSHEDADMINPASSWORD exists in .env...");
-    if (!envConfig.HARSHEDADMINPASSWORD) {
-      console.error("❌ HARSHEDADMINPASSWORD not found in .env");
+    // ================== STEP 3: Validate hash availability ==================
+    if (!storedHash) {
+      console.error("❌ HARSHEDADMINPASSWORD not found anywhere");
       return res.status(500).json({
         success: false,
         message: "Admin password hash missing in server configuration",
@@ -807,12 +818,12 @@ app.post("/password", async (req, res) => {
     }
 
     console.log("🔑 Input password:", userType);
-    console.log("🔒 Stored hash:", envConfig.HARSHEDADMINPASSWORD);
+    console.log("🔒 Stored hash:", storedHash);
 
-    // Step 5: bcrypt comparison
+    // ================== STEP 4: Compare with bcrypt ==================
     let isMatch = false;
     try {
-      isMatch = await bcrypt.compare(userType, envConfig.HARSHEDADMINPASSWORD);
+      isMatch = await bcrypt.compare(userType, storedHash);
       console.log("🔍 bcrypt.compare result:", isMatch);
     } catch (err) {
       console.error("❌ bcrypt.compare failed:", err);
@@ -823,7 +834,7 @@ app.post("/password", async (req, res) => {
       });
     }
 
-    // Step 6: send result
+    // ================== STEP 5: Send result ==================
     if (isMatch) {
       console.log("✅ Password correct, login successful");
       return res.status(200).json({

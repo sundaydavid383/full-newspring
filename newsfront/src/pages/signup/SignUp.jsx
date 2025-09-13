@@ -106,80 +106,97 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
 };
 
   // ================= Submit =================
-  const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${base_Url}api/people`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
+const handleSubmit = async () => {
+  try {
+    setLoading(true);
+    const response = await fetch(`${base_Url}api/people`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    const data = await response.json();
 
-      if (!response.ok) {
-        // Handle email already registered
-        if (data?.message?.includes("already registered")) {
-          setType("info");
-          setMessage("⚠️ Email already registered. Please verify OTP.");
-          setStep(4); // show OTP form
-          setLoading(false);
-          return;
-        }
-
-        setType("error");
-        setMessage(data?.message || "⚠️ Submission failed.");
+    if (!response.ok) {
+      // Handle email already registered (409) or other errors
+      if (data?.message?.toLowerCase().includes("already registered")) {
+        setType("info");
+        setMessage("⚠️ Email already registered. Please verify OTP or login.");
+        setStep(4); // show OTP form (you were doing this)
         setLoading(false);
         return;
       }
 
-      localStorage.setItem("TIM412user", JSON.stringify(data.data));
-      setType("success");
-      setMessage("✅ Registration successful! Please verify OTP.");
-      setDataBase?.(data.data);
-      onSuccess?.();
-      setStep(4); // show OTP form
-      setLoading(false);
-    } catch (err) {
       setType("error");
-      setMessage("⚠️ Could not connect. Try again.");
+      setMessage(data?.message || "⚠️ Submission failed.");
       setLoading(false);
-    }
-  };
-
-  // ================= OTP Handlers =================
-  const handleVerifyOtp = async () => {
-    if (!otp) {
-      setType("error");
-      setMessage("⚠️ Enter OTP to verify.");
       return;
     }
 
-    try {
-      setLoading(true);
-      const response = await fetch(`${base_Url}api/auth/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otp }),
-      });
-      const data = await response.json();
+    // success: registration created (but unverified).
+    setType("success");
+    setMessage(data?.message || "✅ Registration successful. Check your email for the OTP.");
+    // DO NOT store user data here. Only move to step for OTP input.
+    onSuccess?.();
+    setStep(4); // show OTP form
+    setLoading(false);
+  } catch (err) {
+    setType("error");
+    setMessage("⚠️ Could not connect. Try again.");
+    setLoading(false);
+  }
+};
 
-      if (!response.ok) {
-        setType("error");
-        setMessage(data?.message || "⚠️ OTP verification failed.");
-        setLoading(false);
-        return;
-      }
+// ================= OTP Handlers =================
+const handleVerifyOtp = async () => {
+  if (!otp) {
+    setType("error");
+    setMessage("⚠️ Enter OTP to verify.");
+    return;
+  }
 
-      setType("success");
-      setMessage("✅ OTP verified! Registration complete.");
-      setLoading(false);
-      navigate("/dashboard"); // or wherever
-    } catch (err) {
+  try {
+    setLoading(true);
+    const response = await fetch(`${base_Url}api/auth/verify-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: formData.email, otp }),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
       setType("error");
-      setMessage("⚠️ Could not verify OTP. Try again.");
+      setMessage(data?.message || "⚠️ OTP verification failed.");
       setLoading(false);
+      return;
     }
-  };
+
+    // data.data should be the safe user object (no password) - this is what you wanted
+    const userObj = data?.data ?? null;
+    const token = data?.token ?? null;
+
+    if (!userObj) {
+      // defensive: server should send userObj, but handle gracefully
+      setType("error");
+      setMessage("⚠️ Verification returned no user data. Try logging in.");
+      setLoading(false);
+      return;
+    }
+
+    // store user and token securely in localStorage (you were already using TIM412user)
+    localStorage.setItem("TIM412user", JSON.stringify(userObj));
+    if (token) localStorage.setItem("TIM412token", token);
+
+    setDataBase?.(userObj); // preserve your earlier usage if used elsewhere
+    setType("success");
+    setMessage("✅ OTP verified! Registration complete.");
+    setLoading(false);
+    navigate("/"); // or wherever
+  } catch (err) {
+    setType("error");
+    setMessage("⚠️ Could not verify OTP. Try again.");
+    setLoading(false);
+  }
+};
 
   const handleResendOtp = async () => {
     try {
