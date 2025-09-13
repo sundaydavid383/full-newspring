@@ -128,13 +128,14 @@ const Minareas = ({ ministryAreas, title }) => {
                   >
                     ← Back
                   </button>
+                  <div className="details_text_image">
                   <div className="detail_header">
                     <img src={area.img} alt={area.title} />
                     <h2>{area.title}</h2>
                     <i className={area.icon}></i>
                   </div>
                   <p className="detail_description">{area.description}</p>
-
+                  </div>
                   <FormMessage
                     type={type}
                     message={message}

@@ -26,6 +26,16 @@
   border-radius: 8px;
   padding-right: 1rem;
 }
+.box_form input{
+  flex: 1;
+  border: none;
+  padding: .5rem 1rem;
+  font-size: .9rem;
+  border-radius: 8px;
+  color: var(--black) !important;
+  background: var(--white) !important;
+  outline: none;
+}
 .box_form button{
   color: var(--brown);
   cursor: pointer;

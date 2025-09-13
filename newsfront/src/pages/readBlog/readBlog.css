@@ -360,7 +360,11 @@
   width: 9rem;
   margin-top: 0.5rem;
 }
-
+.article p {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  box-sizing: border-box;
+}
 /* ---------- Breakpoints ---------- */
 
 /* Tablet / small laptops */
@@ -439,19 +443,11 @@
 
 /* Small phones */
 @media (max-width: 480px) {
-  .readBlog_holder {
-    padding: 1rem;
-    gap: 1rem;
-  }
-
   .article h2 {
     font-size: 1.6rem;
   }
 
-  .gist1 {
-    font-size: 0.97rem;
-    line-height: 1.6rem;
-  }
+ 
 
   .related_card {
     flex-direction: column;
@@ -475,17 +471,42 @@
   .know_us {
     padding: 2.5rem 1rem;
   }
+  .readBlog_holder {
+    padding: 1rem 1.2rem; /* give left/right more space */
+    gap: 1.2rem;
+  }
+
+  .article {
+    padding: 0 0.5rem; /* inner padding for paragraphs */
+  }
+
+  .gist1 {
+    font-size: 0.97rem;
+    line-height: 1.6rem;
+  }
 }
 
 /* Micro screens */
 @media (max-width: 360px) {
+  .readBlog_holder {
+    padding: 1rem; /* don’t go below 1rem */
+  }
+
+  .article {
+    padding: 0 0.5rem;
+  }
+
   .article h2 {
     font-size: 1.45rem;
-  }
-  .readBlog_holder {
-    padding: 0.8rem;
   }
   .related_card_image {
     height: 6.5rem;
   }
+
+
 }
+/* Small phones */
+@media (max-width: 480px) {
+  
+}
+

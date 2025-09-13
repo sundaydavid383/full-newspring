@@ -1327,23 +1327,147 @@ const moodVerseMap = {
     setFilteredMoods(filtered);
   };
 
-  const handleSelect = (mood) => {
+const handleSelect = (mood) => {
+  // Defensive: ensure moodVerseMap exists
+  if (!moodVerseMap || Object.keys(moodVerseMap).length === 0) {
+    console.warn("handleSelect: moodVerseMap is empty or missing");
+    setVerse("No verse found.");
+    return;
+  }
 
-    setInputMood(mood);
-    setFilteredMoods([]);
-   const entry = moodVerseMap[mood];
-if (entry && entry.verses && entry.verses.length > 0) {
-  const verses = entry.verses.join("\n");
-  const fullText = `${verses}\n\n${entry.explanation}`;
-  setVerse(fullText);
+  // Helper: normalize strings for reliable comparison
+  const normalize = (s) =>
+    String(s || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^\w\s]/g, "") // remove punctuation
+      .replace(/\s+/g, " "); // collapse whitespace
 
-  const utterance = new SpeechSynthesisUtterance(verses);
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(utterance);
-} else {
-  setVerse('No verse found.');
-}
+  // Small, efficient Levenshtein (used as last resort for typos)
+  const levenshtein = (a, b) => {
+    a = String(a);
+    b = String(b);
+    if (a === b) return 0;
+    const m = a.length,
+      n = b.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+    let v0 = new Array(n + 1);
+    let v1 = new Array(n + 1);
+    for (let j = 0; j <= n; j++) v0[j] = j;
+    for (let i = 0; i < m; i++) {
+      v1[0] = i + 1;
+      for (let j = 0; j < n; j++) {
+        const cost = a[i] === b[j] ? 0 : 1;
+        v1[j + 1] = Math.min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+      }
+      [v0, v1] = [v1, v0];
+    }
+    return v0[n];
   };
+
+  // Start
+  console.debug("handleSelect called with:", mood);
+  const rawInput = String(mood || "");
+  const input = normalize(rawInput);
+
+  if (!input) {
+    console.warn("handleSelect: empty input");
+    setVerse("No verse found.");
+    return;
+  }
+
+  // Build normalized index of keys
+  const keys = Object.keys(moodVerseMap);
+  const index = keys.map((k) => ({ key: k, norm: normalize(k) }));
+
+  // 1) Exact normalized match
+  let found = index.find((it) => it.norm === input);
+
+  // 2) If input contains commas, try each part separately
+  if (!found && input.includes(",")) {
+    const parts = input.split(",").map((p) => p.trim()).filter(Boolean);
+    for (const p of parts) {
+      found = index.find((it) => it.norm === p);
+      if (found) break;
+    }
+  }
+
+  // 3) startsWith (user typed beginning of mood)
+  if (!found) {
+    found = index.find((it) => it.norm.startsWith(input));
+  }
+
+  // 4) includes (user typed substring)
+  if (!found) {
+    found = index.find((it) => it.norm.includes(input));
+  }
+
+  // 5) all-words match (input has multiple words, all must appear in key)
+  if (!found) {
+    const words = input.split(" ").filter(Boolean);
+    if (words.length > 0) {
+      found = index.find((it) => words.every((w) => it.norm.includes(w)));
+    }
+  }
+
+  // 6) Levenshtein fallback (typo tolerance)
+  if (!found) {
+    let best = { item: null, dist: Infinity };
+    for (const it of index) {
+      const d = levenshtein(input, it.norm);
+      if (d < best.dist) best = { item: it, dist: d };
+    }
+    // threshold: allow small typos (30% of longer length, min 1)
+    const threshold = Math.max(1, Math.floor(Math.max(input.length, (best.item?.norm || "").length) * 0.3));
+    if (best.item && best.dist <= threshold) {
+      console.debug("handleSelect: fuzzy match via levenshtein", best);
+      found = best.item;
+    } else {
+      console.debug("handleSelect: no fuzzy match (best)", best);
+    }
+  }
+
+  // If still nothing, provide suggestions (if any) and bail out
+  if (!found) {
+    const suggestions = index
+      .filter((it) => it.norm.includes(input))
+      .slice(0, 6)
+      .map((it) => it.key);
+    console.info("handleSelect: no exact match; suggestions:", suggestions);
+    setFilteredMoods(suggestions); // show dropdown suggestions for user
+    setVerse("No verse found.");
+    return;
+  }
+
+  // Use the matched key
+  const matchedKey = found.key;
+  console.debug("handleSelect: matchedKey ->", matchedKey);
+
+  // Update UI state exactly as before
+  setInputMood(matchedKey);
+  setFilteredMoods([]);
+
+  // Fetch entry and present it
+  const entry = moodVerseMap[matchedKey];
+  if (entry && Array.isArray(entry.verses) && entry.verses.length > 0) {
+    const verses = entry.verses.join("\n");
+    const fullText = `${verses}${entry.explanation ? `\n\n${entry.explanation}` : ""}`;
+    setVerse(fullText);
+
+    try {
+      // speak only the verses (keep your original TTS behaviour)
+      const utterance = new SpeechSynthesisUtterance(verses);
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.error("handleSelect: speech error", err);
+    }
+  } else {
+    console.warn("handleSelect: matched entry had no verses", matchedKey);
+    setVerse("No verse found.");
+  }
+};
 
    if(!seen) return <div onClick={()=>setSeen(true)} className="woman" onMouseEnter={handleHover}>
     <div className="woman_text">hello how are you feeling today</div>

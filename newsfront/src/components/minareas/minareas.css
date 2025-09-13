@@ -97,12 +97,21 @@
   animation: fadeIn 0.3s ease-in-out;
   text-align: center;
 }
+.details_text_image {
+  display: flex;
+  flex: 1 1 100%;
+  gap: 1.5rem; /* spacing between header and description */
+  align-items: flex-start; /* align items at the top */
+}
+
 .detail_header {
+  flex: 0 0 30%; /* take 30% width */
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1.5rem;
+  text-align: center; /* center text under the image */
 }
+
 .detail_header img {
   width: 120px;
   height: 120px;
@@ -111,15 +120,18 @@
   margin-bottom: 0.5rem;
   border: 3px solid var(--brown);
 }
+
 .detail_header h2 {
   margin: 0.3rem 0;
   color: var(--brown);
   font-size: 1.5rem;
 }
+
 .detail_description {
+  flex: 1; /* take remaining space */
   color: var(--lightBlack);
   font-size: 1rem;
-  margin-bottom: 1.5rem;
+  margin: 0; /* remove bottom margin since it's side by side */
   line-height: 1.6;
 }
 
@@ -153,7 +165,6 @@
   max-width: 48%;
   padding: 0.55rem 0.75rem; /* smaller padding */
   border-bottom: 1px solid var(--brown);
-  border-radius: 0.4rem;
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -188,7 +199,7 @@
   min-width: 220px;
   padding: 0.5rem 0.6rem;
   font-size: 0.9rem;
-  border-bottom: 3px solid var(--gray);
+  border-bottom: 3px solid var(--brown);
   background: var(--blurwhite);
   color: var(--black);
   outline: none;
@@ -201,6 +212,16 @@
   .ministry_form select,
   .ministry_form textarea {
     flex: 1 1 100%;
+  }
+    .details_text_image {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .detail_header, 
+  .detail_description {
+    flex: 1 1 100%;
+    text-align: center;
   }
 }
 
