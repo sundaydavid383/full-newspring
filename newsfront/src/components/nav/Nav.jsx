@@ -2,30 +2,43 @@ import React, { useEffect, useState, useContext } from "react";
 import "./nav.css";
 import logo from "../../assets/logo2.jpg";
 import { FaBars, FaTimes, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { UserContext } from "../../context/UserContext"; // ✅ import context
-//https://res.cloudinary.com/dr0pxpbnj/image/upload/v1757701119/logo2_mnya0k.jpg
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const Nav = ({ active }) => {
   const [fixed, setFixed] = useState(false);
   const [seeNav, setSeeNav] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const [seeUserDetails, setSeeUserDetails] = useState(false);
+  const navigate = useNavigate();
 
   // Fix nav on scroll
   useEffect(() => {
-    const determineFixed = () => setFixed(window.scrollY > 60);
-    window.addEventListener("scroll", determineFixed);
-    return () => window.removeEventListener("scroll", determineFixed);
+    const handleScroll = () => setFixed(window.scrollY > 60);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Load user from localStorage once
   useEffect(() => {
     const storedUser = localStorage.getItem("TIM412user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (err) {
+        console.error("Failed to parse user:", err);
+        localStorage.removeItem("TIM412user");
+        setUser(null);
+      }
     }
   }, [setUser]);
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem("TIM412user");
+    setUser(null);
+    navigate("/"); // redirect to homepage
+  };
 
   return (
     <div className={`nav ${fixed ? "navFixed" : ""}`}>
@@ -41,149 +54,66 @@ const Nav = ({ active }) => {
 
       {/* Nav Links */}
       <ul className={`${seeNav ? "active" : ""}`}>
-        <li>
-          <Link
-            onClick={() => setSeeNav(false)}
-            className={active === "home" ? "active" : ""}
-            to="/"
-          >
-            Home
-            <span></span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            onClick={() => setSeeNav(false)}
-            className={active === "about" ? "active" : ""}
-            to="/about"
-          >
-            About Us
-            <span></span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            onClick={() => setSeeNav(false)}
-            className={active === "service" ? "active" : ""}
-            to="/services"
-          >
-            Services
-            <span></span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            onClick={() => setSeeNav(false)}
-            className={active === "blog" ? "active" : ""}
-            to="/bloggrid/1"
-          >
-            Blogs
-            <span></span>
-          </Link>
-        </li>
-            <li>
-  <Link
-    onClick={() => setSeeNav(false)}
-    className={active === "contact" ? "active" : ""}
-    to="/contact"
-  >
-    Contact
-    <span></span>
-  </Link>
-</li>
-        {/*<li>
-           <Link
-            onClick={() => setSeeNav(false)}
-            className={active === "database" ? "active" : ""}
-            to="/dataBase"
-          >
-            DataBase
-            <span></span>
-          </Link> 
-        </li>*/}
-
-        {/* Contact logic */}
-    
+        {["home", "about", "service", "blog", "contact"].map((item) => (
+          <li key={item}>
+            <Link
+              onClick={() => setSeeNav(false)}
+              className={active === item ? "active" : ""}
+              to={item === "home" ? "/" : `/${item}`}
+            >
+              {item.charAt(0).toUpperCase() + item.slice(1)}
+              <span></span>
+            </Link>
+          </li>
+        ))}
       </ul>
 
-      {/* Right-side: User or Contact Button */}
+      {/* User / Contact logic */}
       {user ? (
         <div className="user-icon">
           <FaUser onClick={() => setSeeUserDetails((prev) => !prev)} />
           {seeUserDetails && (
             <ul className="user-details-dropdown">
-              <li>
-                <strong>Name:</strong> {user.firstname} {user.lastname}
-              </li>
-              <li>
-                <strong>Email:</strong> {user.email}
-              </li>
-              {user.phone && (
-                <li>
-                  <strong>Phone:</strong> {user.phone}
-                </li>
-              )}
-              {user.age && (
-                <li>
-                  <strong>Age:</strong> {user.age}
-                </li>
-              )}
-              {user.school && (
-                <li>
-                  <strong>School:</strong> {user.school}
-                </li>
-              )}
-              {user.occupation && (
-                <li>
-                  <strong>Occupation:</strong> {user.occupation}
-                </li>
-              )}
-              {user.hobbies && (
-                <li>
-                  <strong>Hobbies:</strong> {user.hobbies}
-                </li>
-              )}
-              {user.heardAboutUs && (
-                <li>
-                  <strong>Heard About Us:</strong> {user.heardAboutUs}
-                </li>
-              )}
-              {user.interest && (
-                <li>
-                  <strong>Interest:</strong> {user.interest}
-                </li>
-              )}
-              {user.department && (
-                <li>
-                  <strong>Department:</strong> {user.department}
-                </li>
-              )}
-              {user.education && (
-                <li>
-                  <strong>Education:</strong> {user.education}
-                </li>
-              )}
+              <li><strong>Name:</strong> {user.firstname} {user.lastname}</li>
+              <li><strong>Email:</strong> {user.email}</li>
+              {user.phone && <li><strong>Phone:</strong> {user.phone}</li>}
+              {user.age && <li><strong>Age:</strong> {user.age}</li>}
+              {user.school && <li><strong>School:</strong> {user.school}</li>}
+              {user.occupation && <li><strong>Occupation:</strong> {user.occupation}</li>}
+              {user.hobbies && <li><strong>Hobbies:</strong> {user.hobbies}</li>}
+              {user.heardAboutUs && <li><strong>Heard About Us:</strong> {user.heardAboutUs}</li>}
+              {user.interest && <li><strong>Interest:</strong> {user.interest}</li>}
+              {user.department && <li><strong>Department:</strong> {user.department}</li>}
+              {user.education && <li><strong>Education:</strong> {user.education}</li>}
               {user.image && (
                 <li>
-                  <strong>Image:</strong>
-                  <br />
-                  <img
-                    src={user.image}
-                    alt="Profile"
-                    className="profile-image"
-                  />
+                  <strong>Image:</strong><br />
+                  <img src={user.image} alt="Profile" className="profile-image" />
                 </li>
               )}
+              <li>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    marginTop: "0.5rem",
+                    padding: "0.4rem 0.8rem",
+                    background: "var(--gold)",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontWeight: "600"
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
             </ul>
           )}
         </div>
       ) : (
-        // ✅ Show button only if NO user
         <Link
           to="/contact"
-          className={`btn desktop-contact ${
-            active === "contact" ? "deactive" : ""
-          }`}
+          className={`btn desktop-contact ${active === "contact" ? "deactive" : ""}`}
         >
           <p>Contact Us</p>
         </Link>

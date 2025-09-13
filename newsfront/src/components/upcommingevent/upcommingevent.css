@@ -27,7 +27,7 @@
   gap: 1rem;
   padding-block: 1rem;
   background-color: var(--white);
-  height: 23.3rem;
+  min-height: 23.3rem;
 }
 .upcomming_details h3 {
   font-weight: 600;

@@ -14,6 +14,7 @@
   transform: translateX(-50%);
   background: var(--white);
   font-size: 0.9rem;
+  color:var(--brown) !important;
   font-weight: 500;
   width: 15rem;
   box-shadow: var(--box-shadow);
@@ -32,7 +33,7 @@
 .form-message.error {
   background: #fde2e1;
   border: 1px solid red;
-  color: #842029;
+  color: #842029 !important;
 }
 
 /* Button inside the message */

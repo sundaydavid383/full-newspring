@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import backgroundImage from "../../assets/hero.jpg";
 import "./signup.css";
 import { useNavigate } from "react-router";
-
-// ⚡ Make sure FormMessage is imported
 import FormMessage from "../../components/FormMessage/FormMessage";
+import Loading from "../../components/loading/Loading";
 
 const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
   const base_Url = "https://full-newspring.onrender.com/";
   const navigate = useNavigate();
 
-  // Step control: "form" -> "otp"
-  const [step, setStep] = useState("form");
-
+  const [step, setStep] = useState(1); // step 1,2,3,4 (OTP)
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -27,11 +24,8 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
     password: "",
     confirmPassword: "",
   });
-
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(""); // <-- Added OTP state
   const [loading, setLoading] = useState(false);
-  const [seeEmailStatus, setSeeEmailStatus] = useState(false);
-  const [emailStatus, setEmailStatus] = useState("");
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
 
@@ -41,285 +35,262 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ================= Register (Step 1) =================
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const nextStep = () => {
+    if (validateStep(step)) setStep((prev) => prev + 1);
+  };
 
-    const {
-      firstname,
-      lastname,
-      email,
-      phone,
-      age,
-      school,
-      occupation,
-      hobbies,
-      heardAboutUs,
-      interest,
-      password,
-      confirmPassword,
-    } = formData;
+  const prevStep = () => setStep((prev) => prev - 1);
 
-    // Regex checks
-    const phoneRegx = /^\+?[1-9]\d{6,14}$/;
-    const emailRegx =
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
+  // ================= Validation =================
+ const validateStep = (currentStep) => {
+  setType("");
+  setMessage("");
 
-    // Validation
-    if (
-      !firstname ||
-      !lastname ||
-      !email ||
-      !phone ||
-      !age ||
-      !school ||
-      !occupation ||
-      !hobbies ||
-      !heardAboutUs ||
-      !interest ||
-      !password ||
-      !confirmPassword
-    ) {
+  if (currentStep === 1) {
+    const { firstname, lastname, email, phone, age } = formData;
+    const phoneRegx = /^\+?[1-9]\d{6,14}$/; // accepts +2348012345678
+    const emailRegx = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
+
+    if (!firstname || !lastname || !email || !phone || !age) {
       setType("error");
-      setMessage("⚠️ Please fill in all the spaces. None should be left empty.");
-      return;
+      setMessage("⚠️ Please fill all personal info fields.");
+      return false;
     }
 
     if (!emailRegx.test(email)) {
       setType("error");
-      setMessage("⚠️ The email you typed is not valid. Example: name@gmail.com");
-      return;
+      setMessage("⚠️ Invalid email. Example: user@example.com");
+      return false;
     }
 
     if (!phoneRegx.test(phone)) {
       setType("error");
-      setMessage("⚠️ Your phone number looks wrong. Example: +2348012345678");
-      return;
+      setMessage("⚠️ Invalid phone. Use format like: +23480########");
+      return false;
     }
 
     if (isNaN(age) || age < 16 || age > 24) {
       setType("error");
-      setMessage("⚠️ Age must be between 16 and 24 to join.");
-      return;
+      setMessage("⚠️ Age must be between 16-24 years.");
+      return false;
+    }
+  } else if (currentStep === 2) {
+    const { school, occupation, hobbies } = formData;
+    if (!school || !occupation || !hobbies) {
+      setType("error");
+      setMessage("⚠️ Fill all education and occupation fields.");
+      return false;
+    }
+  } else if (currentStep === 3) {
+    const { heardAboutUs, interest, password, confirmPassword } = formData;
+    if (!heardAboutUs || !interest || !password || !confirmPassword) {
+      setType("error");
+      setMessage("⚠️ Complete all interests and password fields.");
+      return false;
     }
 
     if (password.length < 6) {
       setType("error");
-      setMessage("⚠️ Password must have at least 6 letters or numbers.");
-      return;
+      setMessage("⚠️ Password too short. Minimum 6 characters.");
+      return false;
     }
 
     if (password !== confirmPassword) {
       setType("error");
-      setMessage("⚠️ The two passwords you typed do not match.");
-      return;
+      setMessage("⚠️ Passwords do not match. Check carefully.");
+      return false;
     }
+  }
 
+  return true;
+};
+
+  // ================= Submit =================
+  const handleSubmit = async () => {
     try {
       setLoading(true);
-
       const response = await fetch(`${base_Url}api/people`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
 
       if (!response.ok) {
+        // Handle email already registered
+        if (data?.message?.includes("already registered")) {
+          setType("info");
+          setMessage("⚠️ Email already registered. Please verify OTP.");
+          setStep(4); // show OTP form
+          setLoading(false);
+          return;
+        }
+
         setType("error");
-        setMessage(data?.message || "⚠️ We could not save your form. Try again.");
+        setMessage(data?.message || "⚠️ Submission failed.");
         setLoading(false);
         return;
       }
 
-      // Save user locally
       localStorage.setItem("TIM412user", JSON.stringify(data.data));
-
-      // ✅ Move to OTP step
-      setStep("otp");
       setType("success");
-      setMessage("✅ Your form is saved. We sent a code to your email. Please check it and type the code here.");
-      setLoading(false);
-
-      onLoad?.();
+      setMessage("✅ Registration successful! Please verify OTP.");
       setDataBase?.(data.data);
       onSuccess?.();
+      setStep(4); // show OTP form
+      setLoading(false);
     } catch (err) {
-      console.error("💥 Error submitting form:", err.message);
       setType("error");
-      setMessage("⚠️ Could not connect. Please check your internet and try again.");
+      setMessage("⚠️ Could not connect. Try again.");
       setLoading(false);
     }
   };
 
-  // ================= Verify OTP (Step 2) =================
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-
+  // ================= OTP Handlers =================
+  const handleVerifyOtp = async () => {
     if (!otp) {
-      alert("Please enter the OTP.");
+      setType("error");
+      setMessage("⚠️ Enter OTP to verify.");
       return;
     }
 
     try {
       setLoading(true);
-
       const response = await fetch(`${base_Url}api/auth/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, otp }),
       });
-
       const data = await response.json();
 
       if (!response.ok) {
-        setEmailStatus(data?.message || "Invalid or expired OTP.");
-        setSeeEmailStatus(true);
+        setType("error");
+        setMessage(data?.message || "⚠️ OTP verification failed.");
         setLoading(false);
         return;
       }
 
+      setType("success");
+      setMessage("✅ OTP verified! Registration complete.");
       setLoading(false);
-      setEmailStatus("🎉 Account verified successfully!");
-      setSeeEmailStatus(true);
-
-      setTimeout(() => navigate("/"), 2000);
+      navigate("/dashboard"); // or wherever
     } catch (err) {
-      console.error("💥 Error verifying OTP:", err.message);
+      setType("error");
+      setMessage("⚠️ Could not verify OTP. Try again.");
       setLoading(false);
-      setEmailStatus("Invalid or expired OTP.");
-      setSeeEmailStatus(true);
     }
   };
 
-  // ================= Resend OTP =================
   const handleResendOtp = async () => {
     try {
       setLoading(true);
-
       const response = await fetch(`${base_Url}api/auth/resend-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email }),
       });
-
       const data = await response.json();
 
       if (!response.ok) {
-        setEmailStatus(data?.message || "Failed to resend OTP.");
-        setSeeEmailStatus(true);
+        setType("error");
+        setMessage(data?.message || "⚠️ Could not resend OTP.");
         setLoading(false);
         return;
       }
 
+      setType("success");
+      setMessage("✅ OTP resent successfully.");
       setLoading(false);
-      setEmailStatus("✅ OTP resent! Check your email/spam folder.");
-      setSeeEmailStatus(true);
     } catch (err) {
-      console.error("💥 Error resending OTP:", err.message);
+      setType("error");
+      setMessage("⚠️ Could not resend OTP.");
       setLoading(false);
-      setEmailStatus("Failed to resend OTP.");
-      setSeeEmailStatus(true);
     }
   };
 
   return (
-    <>
-      {loading && (
-        <div className="loading">
-          <div className="bar bar1"></div>
-          <div className="bar bar2"></div>
-          <div className="bar bar3"></div>
-        </div>
-      )}
+    <div
+      className="hero"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {loading && <Loading message="Processing..." />}
+      <FormMessage type={type} message={message} onClose={() => setMessage("")} />
 
-      {seeEmailStatus && (
-        <div className="email_status">
-          <p>{emailStatus}</p>
-          <div className="btn" onClick={() => setSeeEmailStatus(false)}>
-            Got it
+      <form onSubmit={(e) => e.preventDefault()}>
+        <h2>Register as a member</h2>
+
+        {step === 1 && (
+          <div className="inputs">
+            <input type="text" name="firstname" placeholder="First Name" value={formData.firstname} onChange={handleChange} />
+            <input type="text" name="lastname" placeholder="Last Name" value={formData.lastname} onChange={handleChange} />
+            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+            <input type="tel" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
+            <input type="number" name="age" placeholder="Age" value={formData.age} onChange={handleChange} />
           </div>
-        </div>
-      )}
-
-      <FormMessage
-        type={type}
-        message={message}
-        onClose={() => setMessage("")}
-      />
-
-      <div
-        className="hero"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundBlendMode: "multiply",
-        }}
-      >
-        {step === "form" && (
-          <form onSubmit={handleSubmit}>
-            <h2>Register as a member</h2>
-            <div className="inputs">
-              {/* User Details */}
-              <input type="text" name="firstname" placeholder="First Name" onChange={handleChange} value={formData.firstname} />
-              <input type="text" name="lastname" placeholder="Last Name" onChange={handleChange} value={formData.lastname} />
-              <input type="email" name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
-              <input type="tel" name="phone" placeholder="Phone" onChange={handleChange} value={formData.phone} />
-              <input type="number" name="age" placeholder="Age" onChange={handleChange} value={formData.age} />
-              <input type="text" name="school" placeholder="School" onChange={handleChange} value={formData.school} />
-              <input type="text" name="occupation" placeholder="Occupation" onChange={handleChange} value={formData.occupation} />
-              <input type="text" name="hobbies" placeholder="Hobbies" onChange={handleChange} value={formData.hobbies} />
-
-              {/* Dropdowns */}
-              <select name="heardAboutUs" onChange={handleChange} value={formData.heardAboutUs}>
-                <option value="">How did you hear about us?</option>
-                <option value="Instagram">Instagram</option>
-                <option value="Friend">A friend invited me</option>
-                <option value="Church">Church service</option>
-                <option value="Online">Randomly found you online</option>
-                <option value="Other">Other</option>
-              </select>
-
-              <select name="interest" onChange={handleChange} value={formData.interest}>
-                <option value="">What would you love to be part of?</option>
-                <option value="Music team / Choir">Music team / Choir</option>
-                <option value="Media / Tech / Content">Media / Tech / Content</option>
-                <option value="Bible study">Bible study</option>
-                <option value="Outreach / Volunteering">Outreach / Volunteering</option>
-                <option value="Games & social hangouts">Games & social hangouts</option>
-                <option value="Not sure yet">Not sure yet</option>
-              </select>
-
-              {/* Password Fields */}
-              <input type="password" name="password" placeholder="Password" onChange={handleChange} value={formData.password} />
-              <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} value={formData.confirmPassword} />
-
-              <button className="btn-slide" type="submit">
-                <p>Register</p>
-              </button>
-            </div>
-          </form>
         )}
 
-        {step === "otp" && (
-          <form onSubmit={handleVerifyOtp}>
+        {step === 2 && (
+          <div className="inputs">
+            <input type="text" name="school" placeholder="School" value={formData.school} onChange={handleChange} />
+            <input type="text" name="occupation" placeholder="Occupation" value={formData.occupation} onChange={handleChange} />
+            <input type="text" name="hobbies" placeholder="Hobbies" value={formData.hobbies} onChange={handleChange} />
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="inputs">
+            <select name="heardAboutUs" value={formData.heardAboutUs} onChange={handleChange}>
+              <option value="">How did you hear about us?</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Friend">Friend</option>
+              <option value="Church">Church</option>
+              <option value="Online">Online</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <select name="interest" value={formData.interest} onChange={handleChange}>
+              <option value="">What would you love to be part of?</option>
+              <option value="Music team / Choir">Music team / Choir</option>
+              <option value="Media / Tech / Content">Media / Tech / Content</option>
+              <option value="Bible study">Bible study</option>
+              <option value="Outreach / Volunteering">Outreach / Volunteering</option>
+              <option value="Games & social hangouts">Games & social hangouts</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+
+            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} />
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="inputs">
             <h2>Verify your Email</h2>
-            <div className="inputs">
-              <input type="text" name="otp" placeholder="Enter OTP" onChange={(e) => setOtp(e.target.value)} value={otp} />
-              <button className="btn-slide" type="submit">
-                <p>Verify OTP</p>
-              </button>
-              <button className="btn-slide" type="button" onClick={handleResendOtp}>
-                <p>Resend Code</p>
-              </button>
+            <input
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            <div className="btn-group">
+              <button type="button" onClick={handleVerifyOtp}>Verify OTP</button>
+              <button type="button" onClick={handleResendOtp}>Resend OTP</button>
             </div>
-          </form>
+          </div>
         )}
-      </div>
-    </>
+
+        <div className="btn-group">
+          {step > 1 && step < 4 && <button type="button" onClick={prevStep}>Back</button>}
+          {step < 3 && <button type="button" onClick={nextStep}>Next</button>}
+          {step === 3 && <button type="button" onClick={handleSubmit}>Submit</button>}
+        </div>
+      </form>
+    </div>
   );
 };
 

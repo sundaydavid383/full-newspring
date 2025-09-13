@@ -16,6 +16,7 @@ const appPassword = "yvil cmib rtwc mfzl";
 const homeContent = require("./data/homeContent");
 const fetch = require('node-fetch');
 const contactRoute = require("./routes/contactRoutes");
+const authRoutes = require("./routes/loginRoutes");
 const {generateOtp, hashOtp, sendOtpEmail, getExpiryTime} = require("./utils/sendOtp");
 
 
@@ -451,6 +452,28 @@ app.put("/api/people/:id", async (req, res) => {
 });
 
 
+//========================== DELETE ALL USERS ============//
+app.delete("/api/people", async (req, res) => {
+  console.log("➡️ STEP 1: DELETE /api/people ");
+
+  try {
+    console.log("➡️ STEP 2: Attempting to delete all users from DB...");
+    const result = await User.deleteMany({});
+
+    if (result.deletedCount === 0) {
+      console.warn("⚠️ STEP 3: No users found to delete");
+      return res.status(400).json({ success: false, message: "No users found to delete" });
+    }
+
+    console.log("✅ STEP 3: All users deleted successfully");
+    return res.status(200).json({ success: true, message: "All users deleted successfully" });
+
+  } catch (err) {
+    console.log("❌ ERROR: Failed to delete all users:", err.message);
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
 // ================== DELETE A PERSON ==================
 app.delete("/api/people/:id", async (req, res) => {
   console.log("➡️ STEP 1: DELETE /api/people called with ID:", req.params.id);
@@ -648,6 +671,8 @@ app.post("/api/ministry-register", async (req, res) => {
  
 
 
+
+app.use("/api/auth", authRoutes);
 
 app.use("/sendmessage", contactRoute)
 

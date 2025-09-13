@@ -101,7 +101,7 @@
   animation: riseUp 4s forwards;
 }
 
-.hero p {
+.hero .para {
   font-size: 1.2rem;
   line-height: 1.6rem;
   color: var(--white);
@@ -109,6 +109,7 @@
 
 .hero_button {
   margin-top: 2rem;
+  margin: auto;
 }
 
 .hero_button p {
@@ -117,7 +118,7 @@
 
 .hero_button .btn {
   width: 12rem;
-  margin-top: -1rem;
+  margin: auto;
 }
 
 .hero_button .btn:hover::after {

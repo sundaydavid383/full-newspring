@@ -20,6 +20,8 @@ import ContentEditing from "./pages/contentEditing/ContentEditing";
 import Test from "./Test";
 import Test2 from "./Test2";
 import { getSection } from "../src/dependencies/homecontentSection";
+import LoginForm from "./pages/login/LoginForm";
+import Loading from "./components/loading/Loading";
 
 const App = () => {
   const [active, setActive] = useState("");
@@ -109,11 +111,8 @@ const App = () => {
 
   if (loading)
     return (
-      <div className="loading">
-        <div className="bar bar1"></div>
-        <div className="bar bar2"></div>
-        <div className="bar bar3"></div>
-      </div>
+       <Loading message={"Preparing your experience..."}/>
+      
     );
 
   return (
@@ -141,6 +140,10 @@ const App = () => {
         <Route
           path="/register"
           element={<SignupForm setDataBase={setDataBase} onLoad={onLoad} />}
+        />
+        <Route
+          path="/login"
+          element={<LoginForm />}
         />
         <Route path="/worshipnight" element={<WorshipNight />} />
         <Route path="/biblestudy" element={<BibleStudy />} />

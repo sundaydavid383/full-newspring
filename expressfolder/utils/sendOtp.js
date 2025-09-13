@@ -33,12 +33,28 @@ exports.sendOtpEmail = async (toEmail, otp) => {
 
     const from = process.env.SMTP_FROM || `"No Reply" <${process.env.EMAIL_USER}>`;
     const mailOptions = {
-      from,
-      to: toEmail,
-      subject: "Your verification code",
-      text: `Your verification code is ${otp}. It expires in ${OTP_EXPIRY_MINUTES} minutes.`,
-      html: `<p>Your verification code is <b>${otp}</b>. It expires in ${OTP_EXPIRY_MINUTES} minutes.</p>`,
-    };
+    from: `"Newspring Church" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: "Your Verification Code",
+    text: `Your verification code is ${otp}. It expires in ${OTP_EXPIRY_MINUTES} minutes.`,
+    html: `
+      <div style="font-family: Arial, sans-serif; color: #333;">
+        <div style="text-align:center; margin-bottom: 20px;">
+          <img src="https://res.cloudinary.com/dr0pxpbnj/image/upload/v1757701119/logo2_mnya0k.jpg" alt="Newspring Logo" width="120" style="border-radius:10px;"/>
+        </div>
+        <h2 style="color: #1c1c1c; text-align:center;">Your OTP Code</h2>
+        <p style="font-size:16px; text-align:center;">
+          Your verification code is: <b style="font-size:18px; color:#1f7a8c;">${otp}</b>
+        </p>
+        <p style="text-align:center; font-size:14px; color:#555;">
+          This code will expire in <b>${OTP_EXPIRY_MINUTES} minutes</b>.
+        </p>
+        <p style="text-align:center; font-size:12px; color:#888;">
+          If you did not request this, please ignore this email.
+        </p>
+      </div>
+    `,
+  };
 
     try {
       const info = await transporter.sendMail(mailOptions);
