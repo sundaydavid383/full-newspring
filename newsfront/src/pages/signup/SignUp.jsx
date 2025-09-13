@@ -3,6 +3,9 @@ import backgroundImage from "../../assets/hero.jpg";
 import "./signup.css";
 import { useNavigate } from "react-router";
 
+// ⚡ Make sure FormMessage is imported
+import FormMessage from "../FormMessage/FormMessage";
+
 const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
   const base_Url = "https://full-newspring.onrender.com/";
   const navigate = useNavigate();
@@ -29,9 +32,10 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
   const [loading, setLoading] = useState(false);
   const [seeEmailStatus, setSeeEmailStatus] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
-  const [sentEmail, setSentEmail] = useState(false);
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState("");
 
-  // Handlers
+  // ================= Handlers =================
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -56,12 +60,12 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
       confirmPassword,
     } = formData;
 
-    // Regex
-    const phoneRegx = /^\+?[0-9]\d{10,13}$/;
+    // Regex checks
+    const phoneRegx = /^\+?[1-9]\d{6,14}$/;
     const emailRegx =
-      /^[A-Za-z0-9%._+-]+@[A-Za-z0-9._\-]+\.[A-Za-z-0-9-.]{2,6}$/;
+      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
 
-    // Validations
+    // Validation
     if (
       !firstname ||
       !lastname ||
@@ -76,27 +80,38 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
       !password ||
       !confirmPassword
     ) {
-      alert("Please fill out all fields correctly.");
+      setType("error");
+      setMessage("⚠️ Please fill in all the spaces. None should be left empty.");
       return;
     }
+
     if (!emailRegx.test(email)) {
-      alert("Invalid email format");
+      setType("error");
+      setMessage("⚠️ The email you typed is not valid. Example: name@gmail.com");
       return;
     }
+
     if (!phoneRegx.test(phone)) {
-      alert("Invalid phone number");
+      setType("error");
+      setMessage("⚠️ Your phone number looks wrong. Example: +2348012345678");
       return;
     }
+
     if (isNaN(age) || age < 16 || age > 24) {
-      alert("Age must be between 16 and 24");
+      setType("error");
+      setMessage("⚠️ Age must be between 16 and 24 to join.");
       return;
     }
+
     if (password.length < 6) {
-      alert("Password must be at least 6 characters");
+      setType("error");
+      setMessage("⚠️ Password must have at least 6 letters or numbers.");
       return;
     }
+
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setType("error");
+      setMessage("⚠️ The two passwords you typed do not match.");
       return;
     }
 
@@ -112,27 +127,29 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        setEmailStatus(data?.message || "Failed to submit form.");
-        setSeeEmailStatus(true);
+        setType("error");
+        setMessage(data?.message || "⚠️ We could not save your form. Try again.");
         setLoading(false);
         return;
       }
 
+      // Save user locally
       localStorage.setItem("TIM412user", JSON.stringify(data.data));
 
       // ✅ Move to OTP step
       setStep("otp");
+      setType("success");
+      setMessage("✅ Your form is saved. We sent a code to your email. Please check it and type the code here.");
       setLoading(false);
-      setEmailStatus("We’ve sent an OTP to your email. Enter it below.");
-      setSeeEmailStatus(true);
 
-      onLoad();
-      setDataBase(data.data);
+      onLoad?.();
+      setDataBase?.(data.data);
       onSuccess?.();
     } catch (err) {
+      console.error("💥 Error submitting form:", err.message);
+      setType("error");
+      setMessage("⚠️ Could not connect. Please check your internet and try again.");
       setLoading(false);
-      setEmailStatus(err.message || "Something went wrong.");
-      setSeeEmailStatus(true);
     }
   };
 
@@ -167,10 +184,9 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
       setEmailStatus("🎉 Account verified successfully!");
       setSeeEmailStatus(true);
 
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      setTimeout(() => navigate("/"), 2000);
     } catch (err) {
+      console.error("💥 Error verifying OTP:", err.message);
       setLoading(false);
       setEmailStatus("Invalid or expired OTP.");
       setSeeEmailStatus(true);
@@ -198,9 +214,10 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
       }
 
       setLoading(false);
-      setEmailStatus("OTP resent! Check your email/spam folder.");
+      setEmailStatus("✅ OTP resent! Check your email/spam folder.");
       setSeeEmailStatus(true);
     } catch (err) {
+      console.error("💥 Error resending OTP:", err.message);
       setLoading(false);
       setEmailStatus("Failed to resend OTP.");
       setSeeEmailStatus(true);
@@ -216,6 +233,7 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
           <div className="bar bar3"></div>
         </div>
       )}
+
       {seeEmailStatus && (
         <div className="email_status">
           <p>{emailStatus}</p>
@@ -224,6 +242,12 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
           </div>
         </div>
       )}
+
+      <FormMessage
+        type={type}
+        message={message}
+        onClose={() => setMessage("")}
+      />
 
       <div
         className="hero"
@@ -240,14 +264,14 @@ const SignupForm = ({ onSuccess, setDataBase, onLoad }) => {
             <h2>Register as a member</h2>
             <div className="inputs">
               {/* User Details */}
-              <input name="firstname" placeholder="First Name" onChange={handleChange} value={formData.firstname} />
-              <input name="lastname" placeholder="Last Name" onChange={handleChange} value={formData.lastname} />
-              <input name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
-              <input name="phone" placeholder="Phone" onChange={handleChange} value={formData.phone} />
-              <input name="age" type="number" placeholder="Age" onChange={handleChange} value={formData.age} />
-              <input name="school" placeholder="School" onChange={handleChange} value={formData.school} />
-              <input name="occupation" placeholder="Occupation" onChange={handleChange} value={formData.occupation} />
-              <input name="hobbies" placeholder="Hobbies" onChange={handleChange} value={formData.hobbies} />
+              <input type="text" name="firstname" placeholder="First Name" onChange={handleChange} value={formData.firstname} />
+              <input type="text" name="lastname" placeholder="Last Name" onChange={handleChange} value={formData.lastname} />
+              <input type="email" name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
+              <input type="tel" name="phone" placeholder="Phone" onChange={handleChange} value={formData.phone} />
+              <input type="number" name="age" placeholder="Age" onChange={handleChange} value={formData.age} />
+              <input type="text" name="school" placeholder="School" onChange={handleChange} value={formData.school} />
+              <input type="text" name="occupation" placeholder="Occupation" onChange={handleChange} value={formData.occupation} />
+              <input type="text" name="hobbies" placeholder="Hobbies" onChange={handleChange} value={formData.hobbies} />
 
               {/* Dropdowns */}
               <select name="heardAboutUs" onChange={handleChange} value={formData.heardAboutUs}>

@@ -192,8 +192,10 @@ app.get("/api/people", async (req, res) => {
 // ================== ADD A NEW PERSON ==================
 app.post("/api/people", async (req, res) => {
   const OTP_EXPIRY_MINUTES = Number(process.env.OTP_EXPIRY_MINUTES) || 10;
-  console.log("➡️ POST /api/people");
+  console.log("➡️ [START] Received request at /api/people");
+
   try {
+    console.log("🔎 Step 1: Extracting request body...");
     const {
       firstname,
       lastname,
@@ -209,27 +211,43 @@ app.post("/api/people", async (req, res) => {
     } = req.body || {};
 
     // Basic validation
+    console.log("✅ Step 2: Validating required fields...");
     if (!firstname || !lastname || !email || !phone || !password) {
-      return res.status(400).json({ success: false, message: "firstname, lastname, email, phone and password are required." });
+      console.warn("⚠️ Validation failed: Missing required fields");
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please fill in your first name, last name, email, phone number, and password. These are required to continue.",
+      });
     }
 
+    console.log("✉️ Step 3: Normalizing email...");
     const normalizedEmail = String(email).trim().toLowerCase();
 
-    // Check existing user
+    // Check if user already exists
+    console.log("🔎 Step 4: Checking for existing user in database...");
     const existing = await User.findOne({ email: normalizedEmail });
     if (existing) {
-      return res.status(409).json({ success: false, message: "User already exists." });
+      console.warn("⚠️ User already exists:", normalizedEmail);
+      return res.status(409).json({
+        success: false,
+        message:
+          "This email is already registered. If it belongs to you, try logging in instead of signing up again.",
+      });
     }
 
     // Hash password
+    console.log("🔐 Step 5: Hashing password...");
     const hashedPassword = await bcrypt.hash(String(password), 12);
 
-    // Generate OTP and hash it
+    // Generate OTP
+    console.log("🔑 Step 6: Generating OTP...");
     const otp = generateOtp();
     const otpHash = hashOtp(otp);
     const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
     // Create user
+    console.log("📝 Step 7: Creating new user in database...");
     const person = await User.create({
       firstname: String(firstname).trim(),
       lastname: String(lastname).trim(),
@@ -249,35 +267,48 @@ app.post("/api/people", async (req, res) => {
       isVerified: false,
     });
 
-    // Send OTP (best-effort; registration succeeds even if sending fails)
+    // Try to send OTP
+    console.log("📧 Step 8: Sending OTP email...");
     const mailSent = await sendOtpEmail(normalizedEmail, otp);
     if (!mailSent) {
-      console.warn("OTP email failed to send for:", normalizedEmail);
-      // don't fail the whole request just because email failed; inform client
+      console.warn("⚠️ OTP email failed to send for:", normalizedEmail);
       return res.status(201).json({
         success: true,
-        message: "User created. OTP generation succeeded but email sending failed (check server logs).",
-        data: { id: person._id, email: person.email }
+        message:
+          "Your account has been created. We tried to send you a code, but it did not go through. Please check again later.",
+        data: { id: person._id, email: person.email },
       });
     }
 
-    // In non-production it's okay to log OTP for debugging:
+    // Debug OTP log in dev
     if (process.env.NODE_ENV !== "production") {
-      console.log("DEBUG OTP for", normalizedEmail, ":", otp);
+      console.log("🐞 DEBUG: OTP for", normalizedEmail, "is:", otp);
     }
 
+    console.log("🎉 Step 9: User created successfully:", normalizedEmail);
     return res.status(201).json({
       success: true,
-      message: "User created. OTP sent to email.",
-      data: { id: person._id, email: person.email }
+      message: `Welcome, ${firstname}! Your account has been created. A one-time code has been sent to your email. Please check your inbox and enter the code within ${OTP_EXPIRY_MINUTES} minutes.`,
+      data: { id: person._id, email: person.email },
     });
   } catch (err) {
-    console.error("Error in /api/people:", err);
-    // handle duplicate key race condition in case unique index exists
+    console.error("❌ [ERROR] in /api/people:", err);
+
     if (err.code === 11000) {
-      return res.status(409).json({ success: false, message: "User already exists." });
+      console.warn("⚠️ Duplicate email error triggered");
+      return res.status(409).json({
+        success: false,
+        message:
+          "This email is already linked to an account. Please use a different one or log in if it’s yours.",
+      });
     }
-    return res.status(500).json({ success: false, message: "Internal server error." });
+
+    console.error("💥 Unexpected server error occurred");
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong on our side. Please try again later. If it continues, contact support.",
+    });
   }
 });
 

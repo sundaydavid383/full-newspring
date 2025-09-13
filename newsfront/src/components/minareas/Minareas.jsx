@@ -50,57 +50,87 @@ const Minareas = ({ ministryAreas, title }) => {
   };
 
   const handleSubmit = async (e, ministry) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
 
-    const payload = {
-      firstname: formData.firstname,
-      lastname: formData.lastname,
-      email: formData.email,
-      ministry: ministry.title,
-      answers: formData.answers // ✅ send dynamic answers
-    };
-
-    console.log("🚀 Submitting form:", payload);
-
-    try {
-      const res = await fetch(`${base_Url}api/ministry-register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      console.log("📩 Backend response:", data);
-
-      if (data.code === "USER_NOT_FOUND") {
-        setType("error");
-        setMessage(`❌ No account found for ${formData.email}. Redirecting...`);
-        setTimeout(() => (window.location.href = "/register"), 4000);
-      } else if (data.code === "EMAIL_NAME_MISMATCH") {
-        setType("error");
-        setMessage("❌ Your name doesn’t match the email on record.");
-      } else if (data.code === "REGISTERED") {
-        setType("success");
-        setMessage(`✅ You’re now registered for ${ministry.title}!`);
-      } else if (data.code === "SERVER_ERROR") {
-        setType("error");
-        setMessage("⚠️ A server error occurred. Try again later.");
-      } else if (data.code === "ALREADY_REGISTERED") {
-        setType("error");
-        setMessage(`ℹ️ You’re already registered in ${ministry.title}.`);
-      } else {
-        setType("error");
-        setMessage(`⚠️ Unexpected response: ${data.message || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("💥 Frontend fetch error:", error);
-      setMessage("⚠️ Network or server error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  const payload = {
+    firstname: formData.firstname,
+    lastname: formData.lastname,
+    email: formData.email,
+    ministry: ministry.title,
+    answers: formData.answers, // ✅ send dynamic answers
   };
+
+  console.log("🚀 Starting submission with data:", payload);
+
+  try {
+    const res = await fetch(`${base_Url}api/ministry-register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    console.log("📡 Request sent to server. Waiting for reply...");
+    const data = await res.json();
+    console.log("📩 Server replied:", data);
+
+    if (data.code === "USER_NOT_FOUND") {
+      setType("error");
+      setMessage(
+        `❌ We could not find any account with the email: ${formData.email}.
+        👉 If this is your first time, please create an account first.
+        You’ll be redirected shortly...`
+      );
+      setTimeout(() => (window.location.href = "/register"), 5000);
+
+    } else if (data.code === "EMAIL_NAME_MISMATCH") {
+      setType("error");
+      setMessage(
+        "❌ The name you entered does not match the one we have saved with this email. " +
+        "👉 Please check your spelling, or try the email you used during sign-up."
+      );
+
+    } else if (data.code === "REGISTERED") {
+      setType("success");
+      setMessage(
+        `✅ Success! You are now registered for ${ministry.title}.
+        👉 Please check your email for more details or next steps.`
+      );
+
+    } else if (data.code === "SERVER_ERROR") {
+      setType("error");
+      setMessage(
+        "⚠️ Something went wrong on our side. " +
+        "👉 Please wait a few minutes and try again. If it continues, kindly contact support."
+      );
+
+    } else if (data.code === "ALREADY_REGISTERED") {
+      setType("info");
+      setMessage(
+        `ℹ️ You are already registered in ${ministry.title}.
+        👉 If you think this is a mistake, please reach out to support.`
+      );
+
+    } else {
+      setType("error");
+      setMessage(
+        `⚠️ We got an unexpected reply: ${data.message || "Unknown error"}. 
+        👉 Please try again or ask for help.`
+      );
+    }
+  } catch (error) {
+    console.error("💥 Frontend fetch/network error:", error);
+    setType("error");
+    setMessage(
+      "⚠️ We could not connect to the server. " +
+      "👉 Please check your internet connection and try again."
+    );
+  } finally {
+    setLoading(false);
+    console.log("✅ Submission process finished.");
+  }
+};
 
   return (
     <div className="Minareas">

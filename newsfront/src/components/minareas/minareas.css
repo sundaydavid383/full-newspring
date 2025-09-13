@@ -199,7 +199,7 @@
   min-width: 220px;
   padding: 0.5rem 0.6rem;
   font-size: 0.9rem;
-  border-bottom: 3px solid var(--brown);
+  border-bottom: 2px solid var(--brown);
   background: var(--blurwhite);
   color: var(--black);
   outline: none;
