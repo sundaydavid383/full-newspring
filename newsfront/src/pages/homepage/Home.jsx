@@ -362,7 +362,7 @@ const Home = ({ setActive ,dataBase, setDataBase, onLoad, homedata, ministryArea
   const leadersTitle = "Our Ministry Leaders";
   const leadersTitleSmall = " Meet the dedicated individuals leading our youth ministry, committed to nurturing spiritual growth.";
 
-  const title = "Our Various Departments";
+  const title = "Want To Serve?";
   useEffect(() => {
     setActive("home");
     window.scrollTo({ top: 0 });
