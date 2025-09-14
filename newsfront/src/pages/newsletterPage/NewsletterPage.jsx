@@ -23,7 +23,7 @@ const NewsletterPage = () => {
       formData.append("message", message);
       files.forEach((file) => formData.append("attachments", file));
 
-      const res = await fetch(`${base_Url}api/sendNewsletter`, {
+      const res = await fetch(`${base_Url}api/sendRichNewsletter`, {
         method: "POST",
         body: formData,
       });
