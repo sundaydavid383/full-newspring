@@ -857,6 +857,8 @@ app.post("/password", async (req, res) => {
     });
   }
 });
+
+
 app.put("/password", async (req, res) => {
   console.log("body", req.body);
   const envConfig = dotenv.parse(fs.readFileSync(".env", "utf8"));
@@ -875,6 +877,8 @@ app.put("/password", async (req, res) => {
     oldPassword: envConfig.ADMINPASSWORD,
   });
 });
+
+
 const connectDB = async () => {
   try {
     //sundayudoh383

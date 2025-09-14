@@ -3,10 +3,14 @@ import "./footer.css";
 import logo from "../../assets/logo.png";
 import logo1 from "../../assets/logo2.jpg";
 import { Link } from "react-router";
+
 const Footer = () => {
   const [email, setEmail] = useState("");
-    const base_Url = 'https://full-newspring.onrender.com/'
+  const [loading, setLoading] = useState(false); // ✅ new state
+  const base_Url = "https://full-newspring.onrender.com/";
+
   const observer = useRef(null);
+
   useEffect(() => {
     observer.current = new IntersectionObserver(
       (entries) => {
@@ -30,85 +34,94 @@ const Footer = () => {
     };
   }, []);
 
-  
-const onSubmit = async (e) => {
-  console.log("📩 Submit button clicked"); // ✅ Debug log
-  e.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // ✅ start loading
 
-  const updateReciever = document.querySelector(".updateReciever");
-  const emailLb = document.getElementById("emailLb");
-  const regEmail = /^[A-Za-z0-9%._+-]{2,}@[A-Za-z0-9\-]{2,}\.[A-Za-z]{2,}$/;
+    const updateReciever = document.querySelector(".updateReciever");
+    const emailLb = document.getElementById("emailLb");
+    const regEmail = /^[A-Za-z0-9%._+-]{2,}@[A-Za-z0-9\-]{2,}\.[A-Za-z]{2,}$/;
 
-  console.log("✉️ Current email value:", email);
-
-  if (email === "") {
-    console.warn("⚠️ No email entered");
-    emailLb.classList.add("alert");
-    emailLb.textContent = "enter your email";
-    setTimeout(() => emailLb.classList.remove("alert"), 200);
-    return;
-  } else if (!regEmail.test(email)) {
-    console.warn("⚠️ Invalid email format");
-    emailLb.classList.add("alert");
-    emailLb.textContent = "enter a valid email address";
-    setTimeout(() => emailLb.classList.remove("alert"), 2000);
-    return;
-  }
-
-  try {
-    console.log("🌐 Sending request to backend...");
-    const res = await fetch(`${base_Url}api/subscribe`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    console.log("📡 Response status:", res.status);
-    const data = await res.json();
-    console.log("📦 Response data:", data);
-
-    if (res.ok) {
-      updateReciever.classList.add("active");
-      setTimeout(() => updateReciever.classList.remove("active"), 7000);
-      emailLb.textContent = "";
-      setEmail("");
-    } else {
+    if (email === "") {
       emailLb.classList.add("alert");
-      emailLb.textContent = data.message || "Subscription failed";
+      emailLb.textContent = "enter your email";
+      setTimeout(() => emailLb.classList.remove("alert"), 200);
+      setLoading(false); // stop loading
+      return;
+    } else if (!regEmail.test(email)) {
+      emailLb.classList.add("alert");
+      emailLb.textContent = "enter a valid email address";
       setTimeout(() => emailLb.classList.remove("alert"), 2000);
+      setLoading(false);
+      return;
     }
-  } catch (error) {
-    console.error("💥 Network or fetch error:", error);
-    emailLb.classList.add("alert");
-    emailLb.textContent = "Network error";
-    setTimeout(() => emailLb.classList.remove("alert"), 2000);
-  }
-};
+
+    try {
+      const res = await fetch(`${base_Url}api/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        updateReciever.classList.add("active");
+        setTimeout(() => updateReciever.classList.remove("active"), 7000);
+        emailLb.textContent = "";
+        setEmail("");
+      } else {
+        emailLb.classList.add("alert");
+        emailLb.textContent = data.message || "Subscription failed";
+        setTimeout(() => emailLb.classList.remove("alert"), 2000);
+      }
+    } catch (error) {
+      emailLb.classList.add("alert");
+      emailLb.textContent = "Network error";
+      setTimeout(() => emailLb.classList.remove("alert"), 2000);
+    } finally {
+      setLoading(false); // ✅ stop loading after response
+    }
+  };
 
   return (
     <footer className="footer ">
       <div className="subscribe container_flex_between">
         <h2>Stay in Touch</h2>
-        <form onSubmit={onSubmit} action="">
+        <form onSubmit={onSubmit}>
           <input
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              console.log(email)
-            }}
+            onChange={(e) => setEmail(e.target.value)}
             type="text"
             name="email"
             placeholder="Enter Your Email"
           />
-          <label id="emailLb" htmlFor="">
-          </label>
-          <button className="btn" type="submit">
-            <p>Free Update</p>
+          <label id="emailLb" htmlFor=""></label>
+
+          <button className="btn" type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <span className="spinner"></span> Loading...
+              </>
+            ) : (
+              <p>Free Update</p>
+            )}
           </button>
         </form>
+
         <div className="updateReciever">
-         <span>Welcome aboard! You're now subscribed to our newsletter. Stay tuned for updates and inspiration.</span>
-         <div onClick={()=>{document.querySelector(".updateReciever").classList.remove("active")}} className="btn"><p>Thank You</p></div>
+          <span>
+            Welcome aboard! You're now subscribed to our newsletter. Stay tuned
+            for updates and inspiration.
+          </span>
+          <div
+            onClick={() =>
+              document.querySelector(".updateReciever").classList.remove("active")
+            }
+            className="btn"
+          >
+            <p>Thank You</p>
+          </div>
         </div>
         <div className="footer_socials">
           <a target="_blank" href="https://www.facebook.com/RCCGNewSprings">

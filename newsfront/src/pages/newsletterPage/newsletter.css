@@ -1,0 +1,129 @@
+/* === Newsletter Container === */
+.newsletter-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 25px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  color: var(--black);
+  transition: all 0.3s ease-in-out;
+}
+
+.newsletter-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--darkbrown);
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* === Form Styling === */
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.newsletter-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--black);
+  font-size: 0.95rem;
+}
+
+.newsletter-form input[type="text"],
+.newsletter-form textarea,
+.newsletter-form input[type="file"] {
+  padding: 12px;
+  border: 1px solid var(--gray);
+  border-radius: 8px;
+  font-size: 15px;
+  background: var(--blurwhite);
+  color: var(--black);
+}
+
+.newsletter-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* === File Preview === */
+.file-preview {
+  background: var(--fadedWhite);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--gray);
+}
+
+.file-preview ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.file-preview li {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--black);
+}
+
+/* === Button === */
+.newsletter-form button {
+  padding: 14px;
+  background: var(--brown);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: var(--box-shadow);
+}
+
+.newsletter-form button:hover {
+  background: var(--darkbrown);
+  transform: translateY(-2px);
+}
+
+.newsletter-form button:disabled {
+  background: var(--lightBlack);
+  cursor: not-allowed;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .newsletter-container {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .newsletter-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .newsletter-form button {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-container {
+    padding: 15px;
+  }
+
+  .newsletter-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .newsletter-form input,
+  .newsletter-form textarea {
+    font-size: 14px;
+  }
+
+  .newsletter-form button {
+    padding: 12px;
+    font-size: 14px;
+  }
+}

@@ -22,6 +22,7 @@ import Test2 from "./Test2";
 import { getSection } from "../src/dependencies/homecontentSection";
 import LoginForm from "./pages/login/LoginForm";
 import Loading from "./components/loading/Loading";
+import NewsletterPage from "./pages/newsletterPage/NewsletterPage";
 
 const App = () => {
   const [active, setActive] = useState("");
@@ -144,6 +145,10 @@ const App = () => {
         <Route
           path="/login"
           element={<LoginForm />}
+        />
+        <Route
+          path="/newsletteronlyforadminnotforeveryone"
+          element={<NewsletterPage />}
         />
         <Route path="/worshipnight" element={<WorshipNight />} />
         <Route path="/biblestudy" element={<BibleStudy />} />
