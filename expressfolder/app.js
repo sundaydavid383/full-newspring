@@ -76,7 +76,6 @@ const OTP_RESEND_WINDOW_MINUTES = Number(process.env.OTP_RESEND_WINDOW_MINUTES) 
 const OTP_RESEND_COOLDOWN_MS = Number(process.env.OTP_RESEND_COOLDOWN_MS) || 60 * 1000
 
 
-//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
 
 
 function getBase64Image(imagePath){
