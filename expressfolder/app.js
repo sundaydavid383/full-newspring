@@ -76,6 +76,8 @@ const OTP_RESEND_WINDOW_MINUTES = Number(process.env.OTP_RESEND_WINDOW_MINUTES) 
 const OTP_RESEND_COOLDOWN_MS = Number(process.env.OTP_RESEND_COOLDOWN_MS) || 60 * 1000
 
 
+//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
+
 
 function getBase64Image(imagePath){
   try {
@@ -89,23 +91,45 @@ function getBase64Image(imagePath){
 
 app.get("/api/home-content", (req, res) => {
   try {
-    const rawData = fs.readFileSync(contentFilePath, "utf8")
+    console.log("START: Reading content file");
+
+    const rawData = fs.readFileSync(contentFilePath, "utf8");
+    console.log("RAW DATA READ:", rawData.length, "characters");
+
     const data = JSON.parse(rawData);
+    console.log("PARSED DATA:", JSON.stringify(data, null, 2));
 
-    //dynamically insert base64 image sources
-    const imagedir = path.join(__dirname, "assets")
+    const imagedir = path.join(__dirname, "assets");
+    console.log("IMAGE DIR:", imagedir);
 
-    if(data.journeyData?.length){
-      data.journeyData[0].images[0].src = getBase64Image(path.join(imagedir, "rccg5.jpg"));
-      data.journeyData[0].images[1].src = getBase64Image(path.join(imagedir, "rccg2.jpg"));
+    if (data.journeyData?.length) {
+      console.log("JOURNEY DATA LENGTH:", data.journeyData.length);
+
+      const img1Path = path.join(imagedir, "rccg5.jpg");
+      const img2Path = path.join(imagedir, "rccg2.jpg");
+      console.log("IMAGE PATHS:", img1Path, img2Path);
+
+      const img1Base64 = getBase64Image(img1Path);
+      console.log("IMG1 BASE64 LENGTH:", img1Base64.length);
+
+      const img2Base64 = getBase64Image(img2Path);
+      console.log("IMG2 BASE64 LENGTH:", img2Base64.length);
+
+      data.journeyData[0].images[0].src = img1Base64;
+      console.log("IMG1 INSERTED");
+
+      data.journeyData[0].images[1].src = img2Base64;
+      console.log("IMG2 INSERTED");
+    } else {
+      console.log("NO JOURNEY DATA FOUND");
     }
+
     res.json(data);
-    console.log(data);
+    console.log("RESPONSE SENT:", JSON.stringify(data, null, 2));
   } catch (error) {
-    console.error("Failed to read or parse homeContent file", error);
+    console.error("ERROR OCCURRED:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
- // Send homeContent data as response
 });
 
 
