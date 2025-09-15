@@ -6,7 +6,7 @@ import ServiceTalk from '../../components/serviceTalk/ServiceTalk'
 
 const Service = ({setActive}) => {
   useEffect(() => {
-    setActive("service")
+    setActive("services")
   }, [])
   
  

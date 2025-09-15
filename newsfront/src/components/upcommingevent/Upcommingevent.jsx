@@ -1,34 +1,80 @@
-import { useRef, useEffect, useState } from "react";
+// Upcommingevent.jsx
+import React, { useEffect, useRef, useState } from "react";
 import "./upcommingevent.css";
-// If you're using react-router-dom (most apps do), import Link from here:
 import { Link } from "react-router-dom";
 import image1 from "../../assets/rccg2.jpg";
 import image2 from "../../assets/rccg3.jpg";
 
+// fallback image if event.image is missing or invalid
+import defaultImage from "../../assets/rccg2.jpg";
+
 const ZERO_TIME = { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
+/* ---------------------- Helper date functions ---------------------- */
+
+function isValidDate(d) {
+  return d instanceof Date && !isNaN(d.getTime());
+}
+
+function parseDate(value) {
+  if (!value) return null;
+  if (value instanceof Date) return isValidDate(value) ? value : null;
+  const parsed = new Date(value);
+  return isValidDate(parsed) ? parsed : null;
+}
+
+// returns the last Sunday (Date object) for a given 0-based month & year
 function getLastSundayOfMonth(year, month) {
-  const lastDay = new Date(year, month + 1, 0);
+  // month may overflow (we'll use Date's auto-correction)
+  const lastDay = new Date(year, month + 1, 0); // last day of target month
   const date = new Date(lastDay);
-  while (date.getDay() !== 0) {
+  while (date.gerefurbishedDay() !== 0) {
     date.setDate(date.getDate() - 1);
   }
-  // normalize time
   date.setHours(0, 0, 0, 0);
   return date;
 }
 
-function getFirstSundayOfMonth(year, month) {
-  const date = new Date(year, month, 1);
-  while (date.getDay() !== 0) {
-    date.setDate(date.getDate() + 1);
+// returns the next upcoming Sunday from 'now' (serviceHour in 0-23)
+function getNextSundayFrom(now = new Date(), serviceHour = 8) {
+  const date = new Date(now);
+  // days until next Sunday (0 => Sunday). If today is Sunday, daysUntil = 0.
+  const daysUntilSunday = (7 - date.getDay()) % 7;
+  const candidate = new Date(date);
+  candidate.setDate(date.getDate() + daysUntilSunday);
+  candidate.setHours(serviceHour, 0, 0, 0);
+
+  // If candidate time has already passed, jump to next week's Sunday
+  if (candidate.getTime() <= now.getTime()) {
+    candidate.setDate(candidate.getDate() + 7);
   }
-  // normalize time
-  date.setHours(0, 0, 0, 0);
-  return date;
+  return candidate;
 }
 
-function formatDateTimeForDisplay(date) {
+// returns the next upcoming last-Sunday (either this month's last Sunday if in future, otherwise next month's)
+function getNextLastSundayFrom(now = new Date(), serviceHour = 8) {
+  let year = now.getFullYear();
+  let month = now.getMonth();
+
+  const lastThisMonth = getLastSundayOfMonth(year, month);
+  lastThisMonth.setHours(serviceHour, 0, 0, 0);
+
+  if (lastThisMonth.getTime() > now.getTime()) {
+    return lastThisMonth;
+  }
+
+  // move to next month
+  month += 1;
+  if (month > 11) {
+    month = 0;
+    year += 1;
+  }
+  const lastNextMonth = getLastSundayOfMonth(year, month);
+  lastNextMonth.setHours(serviceHour, 0, 0, 0);
+  return lastNextMonth;
+}
+
+function formatDateTime(date) {
   if (!date) return "";
   return new Date(date).toLocaleString(undefined, {
     weekday: "long",
@@ -40,138 +86,23 @@ function formatDateTimeForDisplay(date) {
   });
 }
 
-const Upcommingevent = ({ eventData }) => {
-  const observer = useRef(null);
-  const containerRef = useRef(null);
+/* ---------------------- Countdown hook ---------------------- */
+
+function useCountdown(targetDate) {
   const [time, setTime] = useState(ZERO_TIME);
 
   useEffect(() => {
-    observer.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-            observer.current.unobserve(entry.target);
-          } else {
-            entry.target.classList.remove("active");
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    const el = containerRef.current;
-    if (el && observer.current) observer.current.observe(el);
-
-    return () => {
-      try {
-        if (observer.current && el) observer.current.unobserve(el);
-      } catch (err) {
-        /* ignore if already unobserved */
-      }
-    };
-  }, []);
-
-  const computeDisplayEvent = (backendEvent) => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth(); // 0-based
-
-    // Find first Sunday of THIS month (used to decide anchor month)
-    const firstSundayThisMonth = getFirstSundayOfMonth(year, month);
-    const firstSundayThisMonthAt10 = new Date(firstSundayThisMonth);
-    firstSundayThisMonthAt10.setHours(10, 0, 0, 0);
-
-    // Decide anchor month: if now is BEFORE firstSundayThisMonth @10:00
-    // then the anchor for "last Sunday" is the previous month (we're still counting down
-    // from previous month's lastSunday -> firstSunday of this month).
-    let anchorMonth = month;
-    let anchorYear = year;
-    if (now <= firstSundayThisMonthAt10) {
-      anchorMonth = month - 1;
-      if (anchorMonth < 0) {
-        anchorMonth = 11;
-        anchorYear = year - 1;
-      }
-    }
-
-    const lastSunday = getLastSundayOfMonth(anchorYear, anchorMonth);
-    const firstSundayNextMonth = getFirstSundayOfMonth(anchorYear, anchorMonth + 1);
-
-    // Sunday Unusual window: start = lastSunday - 10 days (00:00), end = lastSunday @ 10:00 AM
-    const unusualStart = new Date(lastSunday);
-    unusualStart.setDate(unusualStart.getDate() - 10);
-    unusualStart.setHours(0, 0, 0, 0);
-
-    const unusualEnd = new Date(lastSunday);
-    unusualEnd.setHours(10, 0, 0, 0);
-
-    // Thanksgiving window: after unusualEnd up to firstSundayNextMonth @ 10:00 AM
-    const thanksgivingEnd = new Date(firstSundayNextMonth);
-    thanksgivingEnd.setHours(10, 0, 0, 0);
-
-    const sundayUnusual = {
-      title: "Sunday Unusual Service",
-      description:
-        "A special season of deep worship, prophetic encouragement and testimonies. Come expecting God to move.",
-      image: image1,
-      dateTime: formatDateTimeForDisplay(unusualEnd),
-      location: "RCCG Newspring, Idiroko Bus Stop",
-      datelogic: unusualEnd.toISOString(),
-    };
-
-    const thanksgivingSunday = {
-      title: "Thanksgiving Sunday",
-      description:
-        "Our monthly thanksgiving celebration — praise, testimonies and corporate gratitude to God.",
-      image: image2,
-      dateTime: formatDateTimeForDisplay(thanksgivingEnd),
-      location: "RCCG Newspring, Idiroko Bus Stop",
-      datelogic: thanksgivingEnd.toISOString(),
-    };
-
-    // Decision (inclusive of unusualEnd at 10:00)
-    if (now >= unusualStart && now <= unusualEnd) {
-      return sundayUnusual;
-    } else if (now > unusualEnd && now <= thanksgivingEnd) {
-      return thanksgivingSunday;
-    } else {
-      return (
-        backendEvent || {
-          title: "No Upcoming Event",
-          description: "No event data available.",
-          image: "/images/default-event.jpg",
-          dateTime: "",
-          location: "",
-          datelogic: null,
-        }
-      );
-    }
-  };
-
-  // compute every render (we re-render every second because of the countdown state)
-  const displayEvent = computeDisplayEvent(eventData);
-
-  // Countdown effect with safe cleanup
-  useEffect(() => {
-    if (!displayEvent || !displayEvent.datelogic) {
+    if (!targetDate || !isValidDate(targetDate)) {
       setTime(ZERO_TIME);
       return;
     }
 
-    const targetDate = new Date(displayEvent.datelogic);
-    let interval = null;
-
     const tick = () => {
       const now = new Date();
-      const diff = targetDate - now;
+      const diff = targetDate.getTime() - now.getTime();
 
       if (diff <= 0) {
         setTime(ZERO_TIME);
-        if (interval) {
-          clearInterval(interval);
-          interval = null;
-        }
         return;
       }
 
@@ -183,57 +114,154 @@ const Upcommingevent = ({ eventData }) => {
       setTime({ days, hours, minutes, seconds });
     };
 
-    // run immediately then every second
     tick();
-    interval = setInterval(tick, 1000);
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [targetDate]);
 
+  return time;
+}
+
+/* ---------------------- EventCard component ---------------------- */
+
+function EventCard({ event }) {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // safe targetDate (Date object) for hook
+  const targetDate = isValidDate(event.targetDate) ? event.targetDate : parseDate(event.targetDate);
+
+  const time = useCountdown(targetDate);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            setIsVisible(true);
+            // once visible we can unobserve for smoother effect
+            try { obs.unobserve(entry.target); } catch (e) {}
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (ref.current) obs.observe(ref.current);
     return () => {
-      if (interval) clearInterval(interval);
+      try {
+        if (ref.current) obs.unobserve(ref.current);
+      } catch (e) {}
     };
-  }, [displayEvent && displayEvent.datelogic]);
+  }, []);
+
+  // choose image src (support data URLs from backend)
+  const imgSrc = event.image || defaultImage;
+
+  return (
+    <div ref={ref} className="upcommingevent_container">
+      <div className="upcomming_image">
+        <img src={imgSrc} alt={event.title || "event"} onError={(e) => (e.target.src = defaultImage)} />
+      </div>
+
+      <div className="upcomming_details">
+        <h3>{event.title}</h3>
+
+        <p><i className="fa-solid fa-calendar-days"></i> {event.dateTime || formatDateTime(event.targetDate)}</p>
+        <p><i className="fa-solid fa-location-dot"></i> {event.location}</p>
+
+        {event.description && <p className="event-desc">{event.description}</p>}
+
+        <div className="countdown">
+          <div className="div">
+            <p>Days</p>
+            <span>{String(time.days).padStart(2, "0")}</span>
+          </div>
+          <div className="div">
+            <p>Hours</p>
+            <span>{String(time.hours).padStart(2, "0")}</span>
+          </div>
+          <div className="div">
+            <p>Minutes</p>
+            <span>{String(time.minutes).padStart(2, "0")}</span>
+          </div>
+          <div className="div">
+            <p>Seconds</p>
+            <span>{String(time.seconds).padStart(2, "0")}</span>
+          </div>
+        </div>
+
+        <Link to="/contact" className="btn">
+          <p>Contact Us</p>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------- Main component ---------------------- */
+
+const Upcommingevent = ({ eventData = [] }) => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const now = new Date();
+
+    const processed = (eventData || []).map((ev) => {
+      // normalize lower data
+      const datelogic = (ev.datelogic || "").toString().toLowerCase();
+      const titleLower = (ev.title || "").toString().toLowerCase();
+
+      // dynamic: last-sunday-of-month
+      if (datelogic.includes("last") || titleLower.includes("unusual") || datelogic.includes("last sunday")) {
+        const target = getNextLastSundayFrom(now, 8); // service hour 8:00
+        return {
+          ...ev,
+          targetDate: target,
+          dateTime: formatDateTime(target),
+        };
+      }
+
+      // dynamic: weekly / next / every sunday
+      if (
+        datelogic.includes("weekly") ||
+        datelogic.includes("next") ||
+        titleLower.includes("weekly") ||
+        datelogic.includes("every sunday") ||
+        titleLower.includes("sunday service")
+      ) {
+        const target = getNextSundayFrom(now, 8);
+        return {
+          ...ev,
+          targetDate: target,
+          dateTime: formatDateTime(target),
+        };
+      }
+
+      // else: treat as static — parse provided targetDate (if present)
+      const parsed = parseDate(ev.targetDate || ev.datelogic || ev.datelogic);
+      return {
+        ...ev,
+        targetDate: parsed, // may be null (handled in EventCard)
+        dateTime: ev.dateTime || (isValidDate(parsed) ? formatDateTime(parsed) : ev.dateTime),
+      };
+    });
+
+    setEvents(processed);
+  }, [eventData]);
 
   return (
     <div className="upcommingevent">
       <h2 className="title">Our Upcoming Events</h2>
-      <p className="title_small">{displayEvent.description}</p>
+      <p className="title_small">Don’t miss what God is doing among us!</p>
 
-      <div className="upcommingevent_container" ref={containerRef}>
-        <div className="upcomming_image">
-          <img src={displayEvent.image} alt={displayEvent.title || "event"} />
-        </div>
-
-        <div className="upcomming_details">
-          <h3>{displayEvent.title}</h3>
-          <p>
-            <i className="fa-solid fa-calendar-days"></i> {displayEvent.dateTime}
-          </p>
-          <p>
-            <i className="fa-solid fa-location-dot"></i> {displayEvent.location}
-          </p>
-
-          <div className="countdown">
-            <div className="div">
-              <p>Day</p>
-              <span>{String(time.days).padStart(2, "0")}</span>
-            </div>
-            <div className="div">
-              <p>Hours</p>
-              <span>{String(time.hours).padStart(2, "0")}</span>
-            </div>
-            <div className="div">
-              <p>Minutes</p>
-              <span>{String(time.minutes).padStart(2, "0")}</span>
-            </div>
-            <div className="div">
-              <p>Seconds</p>
-              <span>{String(time.seconds).padStart(2, "0")}</span>
-            </div>
-          </div>
-
-          <Link to="/contact" className="btn">
-            <p>Contact Us</p>
-          </Link>
-        </div>
+      <div className="upcommingevent_list">
+        {events.length ? (
+          events.map((ev, idx) => <EventCard key={ev.id ?? ev.title ?? idx} event={ev} />)
+        ) : (
+          <p>No events available.</p>
+        )}
       </div>
     </div>
   );

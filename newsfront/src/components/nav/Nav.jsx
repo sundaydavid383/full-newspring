@@ -54,19 +54,28 @@ const Nav = ({ active }) => {
 
       {/* Nav Links */}
       <ul className={`${seeNav ? "active" : ""}`}>
-        {["home", "about", "service", "blog", "contact"].map((item) => (
-          <li key={item}>
-            <Link
-              onClick={() => setSeeNav(false)}
-              className={active === item ? "active" : ""}
-              to={item === "home" ? "/" : `/${item}`}
-            >
-              {item.charAt(0).toUpperCase() + item.slice(1)}
-              <span></span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+  {[
+    { name: "home", path: "/" },
+    { name: "about", path: "/about" },
+    { name: "services", path: "/services" },
+    { name: "blog", path: "/bloggrid/0" }, // default category index 0
+    // { name: "worship night", path: "/worshipnight" },
+    // { name: "bible study", path: "/biblestudy" },
+    // { name: "retreat", path: "/retreat" },
+    { name: "contact", path: "/contact" }
+  ].map((item) => (
+    <li key={item.name}>
+      <Link
+        onClick={() => setSeeNav(false)}
+        className={active === item.name ? "active" : ""}
+        to={item.path}
+      >
+        {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+        <span></span>
+      </Link>
+    </li>
+  ))}
+</ul>
 
       {/* User / Contact logic */}
       {user ? (

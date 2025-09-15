@@ -122,6 +122,7 @@
 .dropdown li {
   padding: 0.75rem 1rem;
   cursor: pointer;
+  color: var(--black);
   transition: background-color 0.2s ease;
 }
 

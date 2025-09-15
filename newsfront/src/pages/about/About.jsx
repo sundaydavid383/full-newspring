@@ -232,7 +232,7 @@ const aboutBreakData = [
         <Minareas ministryAreas={ministryAreas} title={title}/>
         <Journey journeyData={ministerTeaching}/>
         <Articles articles={articles}/>
-        <Gallery galleryItems={galleryItems}/>
+        {/* <Gallery galleryItems={galleryItems}/> */}
      
     </>
      

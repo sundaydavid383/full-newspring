@@ -136,7 +136,7 @@ const App = () => {
           }
         />
         <Route path="/about" element={<About  setActive={setActive} ministryAreas={ministryAreas}/>} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/contact" element={<Contact setActive={setActive}/>} />
         <Route path="/services" element={<Service setActive={setActive} />} />
         <Route
           path="/register"

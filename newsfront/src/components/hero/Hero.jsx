@@ -37,7 +37,7 @@ const Hero = ({
         const safePrev = (typeof prev === "number" ? prev : 0) % sections.length;
         return (safePrev + 1) % sections.length;
       });
-    }, 86000); // 86 seconds
+    }, 15000); // 86 seconds
   };
 
   // start autoplay whenever the sections array changes

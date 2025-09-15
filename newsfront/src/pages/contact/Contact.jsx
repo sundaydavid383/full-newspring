@@ -6,9 +6,10 @@ import ContactForm from '../../components/contactForm/ContactForm';
 import img1 from "../../assets/rccg66.jpg";
 
 
-const Contact = () => {
+const Contact = ({setActive}) => {
       useEffect(() => {
         window.scrollTo({top:0})
+        setActive("contact")
       
         return () => {
           window.scrollTo({top:0})
