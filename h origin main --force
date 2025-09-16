@@ -1,0 +1,74 @@
+[33mcommit 32835cab141202dd99be14b64b62b2a7a3a1fdd6[m
+Author: Fyung <fyung36@gmail.com>
+Date:   Mon Sep 15 22:13:42 2025 +0100
+
+    new commit
+
+[1mdiff --git a/expressfolder/app.js b/expressfolder/app.js[m
+[1mindex d641eca..47aaf22 100644[m
+[1m--- a/expressfolder/app.js[m
+[1m+++ b/expressfolder/app.js[m
+[36m@@ -76,6 +76,8 @@[m [mconst OTP_RESEND_WINDOW_MINUTES = Number(process.env.OTP_RESEND_WINDOW_MINUTES)[m
+ const OTP_RESEND_COOLDOWN_MS = Number(process.env.OTP_RESEND_COOLDOWN_MS) || 60 * 1000[m
+ [m
+ [m
+[32m+[m[32m//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[m
+[32m+[m
+ [m
+ function getBase64Image(imagePath){[m
+   try {[m
+[36m@@ -89,23 +91,45 @@[m [mfunction getBase64Image(imagePath){[m
+ [m
+ app.get("/api/home-content", (req, res) => {[m
+   try {[m
+[31m-    const rawData = fs.readFileSync(contentFilePath, "utf8")[m
+[32m+[m[32m    console.log("START: Reading content file");[m
+[32m+[m
+[32m+[m[32m    const rawData = fs.readFileSync(contentFilePath, "utf8");[m
+[32m+[m[32m    console.log("RAW DATA READ:", rawData.length, "characters");[m
+[32m+[m
+     const data = JSON.parse(rawData);[m
+[32m+[m[32m    console.log("PARSED DATA:", JSON.stringify(data, null, 2));[m
+[32m+[m
+[32m+[m[32m    const imagedir = path.join(__dirname, "assets");[m
+[32m+[m[32m    console.log("IMAGE DIR:", imagedir);[m
+[32m+[m
+[32m+[m[32m    if (data.journeyData?.length) {[m
+[32m+[m[32m      console.log("JOURNEY DATA LENGTH:", data.journeyData.length);[m
+ [m
+[31m-    //dynamically insert base64 image sources[m
+[31m-    const imagedir = path.join(__dirname, "assets")[m
+[32m+[m[32m      const img1Path = path.join(imagedir, "rccg5.jpg");[m
+[32m+[m[32m      const img2Path = path.join(imagedir, "rccg2.jpg");[m
+[32m+[m[32m      console.log("IMAGE PATHS:", img1Path, img2Path);[m
+ [m
+[31m-    if(data.journeyData?.length){[m
+[31m-      data.journeyData[0].images[0].src = getBase64Image(path.join(imagedir, "rccg5.jpg"));[m
+[31m-      data.journeyData[0].images[1].src = getBase64Image(path.join(imagedir, "rccg2.jpg"));[m
+[32m+[m[32m      const img1Base64 = getBase64Image(img1Path);[m
+[32m+[m[32m      console.log("IMG1 BASE64 LENGTH:", img1Base64.length);[m
+[32m+[m
+[32m+[m[32m      const img2Base64 = getBase64Image(img2Path);[m
+[32m+[m[32m      console.log("IMG2 BASE64 LENGTH:", img2Base64.length);[m
+[32m+[m
+[32m+[m[32m      data.journeyData[0].images[0].src = img1Base64;[m
+[32m+[m[32m      console.log("IMG1 INSERTED");[m
+[32m+[m
+[32m+[m[32m      data.journeyData[0].images[1].src = img2Base64;[m
+[32m+[m[32m      console.log("IMG2 INSERTED");[m
+[32m+[m[32m    } else {[m
+[32m+[m[32m      console.log("NO JOURNEY DATA FOUND");[m
+     }[m
+[32m+[m
+     res.json(data);[m
+[31m-    console.log(data);[m
+[32m+[m[32m    console.log("RESPONSE SENT:", JSON.stringify(data, null, 2));[m
+   } catch (error) {[m
+[31m-    console.error("Failed to read or parse homeContent file", error);[m
+[32m+[m[32m    console.error("ERROR OCCURRED:", error);[m
+     res.status(500).json({ error: "Internal Server Error" });[m
+   }[m
+[31m- // Send homeContent data as response[m
+ });[m
+ [m
+ [m

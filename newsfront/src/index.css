@@ -45,6 +45,18 @@ body {
   font-family: "Poppins", serif;
   background-color: var(--white);
 }
+.title {
+  text-align: center !important;   /* centers text horizontally */
+  margin: 0 auto !important;       /* centers block if it has a width */
+  display: block !important;       /* reset from flex */
+  color: var(--black) !important;
+  border-bottom: 2px solid var(--brown) !important;
+}
+
+.title_small {
+  text-align: center !important;   /* centers the <p> text too */
+  margin-top: 8px !important;
+}
 .iconinactive,
 .iconactive{
   position: absolute;

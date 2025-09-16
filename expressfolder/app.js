@@ -124,7 +124,7 @@ app.get("/api/home-content", (req, res) => {
     }
 
     res.json(data);
-    console.log("RESPONSE SENT:", JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data, null, 2), ":RESPONSE SENT");
   } catch (error) {
     console.error("ERROR OCCURRED:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -662,7 +662,7 @@ app.post("/api/ministry-register", async (req, res) => {
 
     console.log("🔍 User lookup result: FOUND");
 
-    // ✅ Make sure ministries array exists
+    // ✅ Make sure ministries  exists
     user.ministries = user.ministries || [];
 
     console.log("📂 Current ministries before update:", user.ministries);

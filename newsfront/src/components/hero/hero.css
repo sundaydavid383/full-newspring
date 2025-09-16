@@ -86,14 +86,14 @@
 
 .hero .para {
   opacity: 0;
-  animation: leftfadeIn 2s forwards 2s;
+  animation: leftfadeIn 2s forwards 1s;
 }
 
 .hero h1 {
   font-size: 4rem;
   line-height: 3.7rem;
   color: var(--white);
-  margin-bottom: 1rem;
+  margin-bottom: .3rem;
   position: relative;
   overflow: hidden;
   transform-origin: bottom;

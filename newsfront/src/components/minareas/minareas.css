@@ -6,19 +6,7 @@
   font-family: "Inter", sans-serif;
   color: var(--black);
 }
-.title {
-  text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-  color: var(--brown);
-}
-.title_small {
-  text-align: center;
-  font-size: 1rem;
-  color: var(--lightBlack);
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
-}
+
 
 /* Flex Container */
 .minareas_container {
@@ -222,6 +210,10 @@
   .detail_description {
     flex: 1 1 100%;
     text-align: center;
+  }
+
+  .minareas_card{
+    width: 90%;
   }
 }
 

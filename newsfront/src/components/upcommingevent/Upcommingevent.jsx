@@ -28,7 +28,7 @@ function getLastSundayOfMonth(year, month) {
   // month may overflow (we'll use Date's auto-correction)
   const lastDay = new Date(year, month + 1, 0); // last day of target month
   const date = new Date(lastDay);
-  while (date.gerefurbishedDay() !== 0) {
+  while (date.getDay() !== 0) {
     date.setDate(date.getDate() - 1);
   }
   date.setHours(0, 0, 0, 0);
