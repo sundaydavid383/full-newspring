@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import backgroundImage from "../../assets/hero.jpg";
 import "./signup.css";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import FormMessage from "../../components/FormMessage/FormMessage";
 import Loading from "../../components/loading/Loading";
 
@@ -306,6 +306,9 @@ const handleVerifyOtp = async () => {
           {step < 3 && <button type="button" onClick={nextStep}>Next</button>}
           {step === 3 && <button type="button" onClick={handleSubmit}>Submit</button>}
         </div>
+
+        <Link to="/login"
+         className="login-link">Already registered? Log in</Link>
       </form>
     </div>
   );

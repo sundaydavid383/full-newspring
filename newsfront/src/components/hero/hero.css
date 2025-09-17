@@ -12,7 +12,7 @@
   width: 100%;
   padding: 5rem 3rem 5rem;   /* bottom padding keeps button above bar */
   min-height: 100vh;
-  background-color: rgba(29, 29, 29, 0.8);
+  background-color: rgba(29, 29, 29, 0.6);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -119,6 +119,7 @@
 .hero_button .btn {
   width: 12rem;
   margin: auto;
+  margin-top: .6rem;
 }
 
 .hero_button .btn:hover::after {
@@ -189,6 +190,7 @@
   .hero h1 {
     font-size: 2.5rem;        /* scale down slightly for tablets */
     line-height: 3rem;
+    min-height: 2rem;
   }
 
   .hero p {
@@ -218,6 +220,7 @@
   .hero h1 {
     font-size: 2rem;
     line-height: 2.4rem;
+    min-height: 1.4rem;
   }
 
   .hero p {

@@ -37,7 +37,9 @@ const Nav = ({ active }) => {
   const handleLogout = () => {
     localStorage.removeItem("TIM412user");
     setUser(null);
-    navigate("/"); // redirect to homepage
+    window.location.href = "/"; // using href to force reload
+    window.location.reload();
+    // navigate("/"); // redirect to homepage
   };
 
   return (

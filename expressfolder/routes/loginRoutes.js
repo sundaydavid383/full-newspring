@@ -49,14 +49,13 @@ router.post("/login", async (req, res) => {
 
     console.log("✅ User logged in:", user.email);
 
+    const sentUser = { ...user.toObject(), password: undefined, __v: undefined };
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
       data: {
-        id: user._id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
+        ...sentUser,
         token,
       },
     });
