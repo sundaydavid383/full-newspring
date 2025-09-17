@@ -1,6 +1,6 @@
 import axios from "axios";
-const base_Url = 'http://localhost:5001/'
-//'https://full-newspring.onrender.com/'
+const base_Url = 'https://full-newspring.onrender.com/'
+//''
 const API_URL = `${base_Url}api/home-content`;
 
 export const getSection = async () => {
