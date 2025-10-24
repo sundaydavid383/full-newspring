@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./contactForm.css";
 import FormMessage from "../FormMessage/FormMessage";
 
@@ -49,34 +49,8 @@ const ContactForm = ({ contactFormData, formType }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
 
-    setLoading(true);
-
-    const payload = { ...formData, formType };
-
-    try {
-      const response = await fetch(`${baseUrl}sendmessage/oncontact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    address: "",
-    age: "",
-    phone: "",
-    email: "",
-    message: "",
-  });
-
-  // ✅ Load user data from localStorage when component mounts
+  // ✅ This stays — but move it here, at the top level
   useEffect(() => {
     const storedUser = localStorage.getItem("TIM412user");
     if (storedUser) {
@@ -88,35 +62,50 @@ const ContactForm = ({ contactFormData, formType }) => {
         age: user.age || "",
         phone: user.phone || "",
         email: user.email || "",
-        message: "", // keep message empty so user can type a fresh one
+        message: "", // start fresh
       });
     }
   }, []);
 
-      setEmailStatus(data.message || "Message sent successfully!");
-      console.log(data)
+  // 🔽 onSubmit only handles the submission
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
 
-      if(data.code === "EMAIL_NAME_MISMATCH") {
-        setStatusType("error"); 
+    setLoading(true);
+    const payload = { ...formData, formType };
+
+    try {
+      const response = await fetch(`${baseUrl}sendmessage/oncontact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      console.log("Server response:", data);
+
+      if (data.code === "EMAIL_NAME_MISMATCH") {
+        setStatusType("error");
         setEmailStatus("❌ Please make sure the name matches the one linked to this email.");
       } else if (data.success) {
-       setStatusType("success");
-      setSeeEmailStatus(true);
+        setStatusType("success");
+        setEmailStatus(data.message || "Message sent successfully!");
       } else {
         setStatusType("error");
-      setSeeEmailStatus(true);
-      setEmailStatus(data.message || "Something went wrong.");
+        setEmailStatus(data.message || "Something went wrong.");
       }
-      
+
+      setSeeEmailStatus(true);
     } catch (error) {
       setEmailStatus(error.message || "Something went wrong.");
       setStatusType("error");
       setSeeEmailStatus(true);
-      console.log(error)
+      console.log("Error:", error);
     } finally {
       setLoading(false);
       setTimeout(() => setSeeEmailStatus(false), 15000);
-      console.log('i actually ran maybe something is wrong with your backend')
+      console.log("I actually ran; maybe something is wrong with your backend");
     }
   };
 
