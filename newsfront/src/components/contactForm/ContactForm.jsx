@@ -8,7 +8,8 @@ const ContactForm = ({ contactFormData, formType }) => {
   const [loading, setLoading] = useState(false);
   const [seeEmailStatus, setSeeEmailStatus] = useState(false);
 
-  const baseUrl = "https://full-newspring.onrender.com/";
+  const baseUrl = "http://localhost:5001/"
+  // "https://full-newspring.onrender.com/";
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -89,6 +90,15 @@ const ContactForm = ({ contactFormData, formType }) => {
         setStatusType("error");
         setEmailStatus("❌ Please make sure the name matches the one linked to this email.");
       } else if (data.success) {
+        setFormData({
+        firstname: "",
+        lastname: "",
+        address: "",
+        age: "",
+        phone: "",
+        email: "",
+        message: "",
+      });
         setStatusType("success");
         setEmailStatus(data.message || "Message sent successfully!");
       } else {
@@ -104,7 +114,7 @@ const ContactForm = ({ contactFormData, formType }) => {
       console.log("Error:", error);
     } finally {
       setLoading(false);
-      setTimeout(() => setSeeEmailStatus(false), 15000);
+      setTimeout(() => setSeeEmailStatus(false),45000);
       console.log("I actually ran; maybe something is wrong with your backend");
     }
   };
