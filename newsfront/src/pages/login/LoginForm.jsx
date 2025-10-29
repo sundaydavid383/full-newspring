@@ -63,7 +63,7 @@ const LoginForm = ({ onSuccess }) => {
       setTimeout(() => {
         onSuccess?.();
         window.location.href = "/"; // using href to force reload
-        window.location.reload();
+        //window.location.reload();
       }, 2000);
     } catch (err) {
       console.error("💥 Login error:", err.message);
