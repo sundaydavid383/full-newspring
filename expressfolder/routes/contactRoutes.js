@@ -14,6 +14,44 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
+// 🧹 DELETE all retreat registrations
+router.delete("/delete-all-retreats", async (req, res) => {
+  console.log("\n[START] DELETE /delete-all-retreats at", new Date().toLocaleString());
+
+  try {
+    console.log("[CHECK] Verifying RetreatContact model is loaded...");
+    if (!RetreatContact) {
+      console.error("[ERROR] RetreatContact model not found!");
+      return res.status(500).json({ success: false, message: "Retreat model missing." });
+    }
+
+    console.log("[DELETE] Fetching all retreat records before deletion...");
+    const allRetreats = await RetreatContact.find({});
+    console.log(`[INFO] Found ${allRetreats.length} retreat registrations.`);
+
+    if (allRetreats.length === 0) {
+      console.warn("[WARN] No retreat records found to delete.");
+      return res.status(200).json({ success: false, message: "No retreat registrations found." });
+    }
+
+    console.log("[ACTION] Deleting all retreat registrations...");
+    const deleteResult = await RetreatContact.deleteMany({});
+    console.log("[SUCCESS] Deleted all retreat records. Mongo result:", deleteResult);
+
+    return res.status(200).json({
+      success: true,
+      message: `${deleteResult.deletedCount} retreat registrations deleted successfully.`,
+    });
+  } catch (error) {
+    console.error("[ERROR] Exception in /delete-all-retreats:", error.stack || error.message || error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during retreat deletion.",
+    });
+  }
+});
+
 router.post("/oncontact", async (req, res) => {
   const { firstname, lastname, email, message, age, address, phone, formType } = req.body;
   console.log("\n[START] /oncontact", new Date().toLocaleString());
@@ -34,6 +72,62 @@ router.post("/oncontact", async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid form type" });
     }
 
+
+     const sundayOrWeekday = () => {
+      const now = new Date();
+
+      const day = now.getDay()
+      const hours = now.getHours()
+      const minutes = now.getMinutes()
+
+      const sundayStart = { day:0, hour:8, minute:0}
+      const sundayEnd = { day:0, hour:12, minute:0}
+      const tuesdayStart = { day: 2, hour: 18, minute: 0 };
+      const tuesdayEnd = { day: 2, hour: 19, minute: 0 };
+
+      function isAfter(time){
+        if(day > time.day) return true
+        if (day < time.day) return false;
+        if (hours > time.hour) return true;
+        if (hours < time.hour) return false;
+        return minutes >= time.minute;
+      }
+
+      function isBefore(time) {
+    if (day < time.day) return true;
+    if (day > time.day) return false;
+    if (hours < time.hour) return true;
+    if (hours > time.hour) return false;
+    return minutes < time.minute;
+  }
+
+  // 1️⃣ Before Sunday 8 AM
+  if (day === 6 || (day === 0 && isBefore(sundayStart))) {
+    return "Next service is on Sunday at 8:00 AM.";
+  }
+
+  // 2️⃣ During Sunday service
+  if (day === 0 && !isBefore(sundayStart) && isBefore(sundayEnd)) {
+    return "Sunday service is currently ongoing — ends by 12:00 PM.";
+  }
+
+  // 3️⃣ After Sunday 12 PM but before Tuesday 6 PM
+  if ((day === 0 && isAfter(sundayEnd)) || day === 1 || (day === 2 && isBefore(tuesdayStart))) {
+    return "Next service is on Tuesday at 6:00 PM.";
+  }
+
+  // 4️⃣ During Tuesday service
+  if (day === 2 && !isBefore(tuesdayStart) && isBefore(tuesdayEnd)) {
+    return "Tuesday service is currently ongoing — ends by 7:00 PM.";
+  }
+
+  // 5️⃣ After Tuesday 7 PM → Next Sunday
+  if ((day === 2 && isAfter(tuesdayEnd)) || day > 2) {
+    return "Next service is on Sunday at 8:00 AM.";
+  }
+
+  return "Unable to determine the next service time.";
+     }
     // 1) Check for exact duplicate (firstname + lastname + email)
     console.log("[DUP CHECK] Searching for existing record with same firstname+lastname+email...");
     const duplicate = await Model.findOne({
@@ -179,7 +273,7 @@ router.post("/oncontact", async (req, res) => {
             <li>🤝 Genuine connections and fun group sessions</li>
             <li>🙏 Quiet moments to hear God personally</li>
           </ul>
-          <p>We look forward to seeing you ${sundayOrWeekday}! Come expectant — God is ready to do great things in you.</p>
+          <p>We look forward to seeing you ${sundayOrWeekday()}! Come expectant — God is ready to do great things in you.</p>
           `
           : `
           <p>Thank you for reaching out to <strong>NewSprings</strong>!</p>

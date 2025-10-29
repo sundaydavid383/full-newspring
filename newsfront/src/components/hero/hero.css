@@ -3,6 +3,17 @@
   position: relative;
   margin-top: 4.37rem;
   min-height: auto;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* ✅ ADD THIS LINE */
+  overflow-x: auto;
+}
+
+.hero::-webkit-scrollbar {
+  display: none;
 }
 
 /* ========== HERO BASE ========== */
@@ -10,8 +21,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 5rem 3rem 5rem;   /* bottom padding keeps button above bar */
-  min-height: 100vh;
+  padding: 4rem 3rem 4rem; /* reduced padding for balance */
+  min-height: 75vh; /* ✅ reduced height to 75% of the viewport */
   background-color: rgba(29, 29, 29, 0.6);
   background-repeat: no-repeat;
   background-size: cover;
@@ -19,7 +30,11 @@
   background-blend-mode: multiply;
   background-attachment: fixed;
   z-index: 1;
+  flex: 0 0 100%; /* each slide takes full width */
+  scroll-snap-align: start;
+  transition: transform 0.6s ease-in-out;
 }
+
 
 /* Bar stays consistent */
 .bar_active {
@@ -147,7 +162,7 @@
   text-align: center;
   font-size: 1rem;
   line-height: 2rem;
-  z-index: 13;
+  z-index: 3;
 }
 
 .fa-arrow-left { left: 0rem; }
@@ -207,6 +222,14 @@
   .hero_button {
     display: flex;
     justify-content: center;  /* centers the button horizontally */
+  }
+}
+
+@media (max-width: 768px) {
+  .hero_text_content {
+    background-attachment: scroll;
+    min-height: 80vh; /* a bit taller on mobile for better fit */
+    padding: 3rem 1.5rem 4rem;
   }
 }
 /* ========== PHONES ========== */

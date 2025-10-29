@@ -125,49 +125,213 @@
 
  .menu-icon { display: none; }
 
- .user-icon {
+.user-icon {
   position: relative;
-  display: inline-block;
-  cursor: pointer;
-  color: var(--brown);
-  font-size: 1.8rem;
-}
-
-.user-icon:hover {
-  color: var(--gold);
-  transition: color 0.3s ease-in-out;
-}
-
-.user-details-dropdown {
-  position: absolute;
-  right: 0;
-  top: 120%;
   display: flex;
-  flex-direction: column;
-  background: var(--blurwhite);
-  box-shadow: var(--box-shadow);
-  border-radius: 0.5rem;
-  list-style: none;
-  padding: 1rem;
-  margin: 0;
-  min-width: 220px;
-  z-index: 1000;
-  backdrop-filter: blur(6px);
+  align-items: center;
 }
 
-.user-details-dropdown li {
-  padding: 0.4rem 0;
-  font-size: 0.95rem;
-  color: var(--black);
-  border-bottom: 1px solid var(--fadedWhite);
+.user-icon-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
 }
 
-.user-details-dropdown li:last-child {
-  border-bottom: none;
+.user-avatar,
+.avatar-initials {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--brown);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
-.user-details-dropdown strong {
+.user-avatar:hover,
+.avatar-initials:hover {
+  transform: scale(1.05);
+}
+
+.close-icon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--brown);
+  border-radius: 50%;
+  padding: 0.3rem;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.close-icon:hover {
+  background: var(--white);
   color: var(--brown);
+}
+
+/* Avatar inside panel */
+.avatar-circle {
+  width: 60px;
+  height: 60px;
+  background: var(--brown);
+  border-radius: 50%;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.verify-warning {
+  background: rgba(255, 235, 59, 0.15);
+  border: 1px solid rgba(255, 193, 7, 0.5);
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--black);
+  animation: fadeIn 0.3s ease forwards;
+}
+.user-panel {
+  position: fixed;
+  top: 0.5rem;
+  right: 1rem;
+  width: 360px;
+  max-height: 75vh; /* Limit panel height to 75% of viewport */
+  background: var(--blurwhite);
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  backdrop-filter: blur(15px) saturate(160%);
+  display: none;
+  flex-direction: column;
+  z-index: 1111000;
+  color: var(--black);
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: all 0.35s ease;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--lightbrown) transparent;
+}
+
+/* ✅ Show animation */
+.user-panel.show {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ✅ Smooth modern scrollbar (Chrome, Edge) */
+.user-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.user-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.user-panel::-webkit-scrollbar-thumb {
+  background: var(--lightbrown);
+  border-radius: 10px;
+}
+.user-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--brown);
+}
+
+/* Header Section */
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--gray);
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.user-header .avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 8px rgba(105, 107, 240, 0.2);
+}
+
+.user-header .user-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--black);
+}
+
+.user-header .user-info p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  color: var(--lightBlack);
+}
+
+/* Status */
+.status span.verified {
+  color: var(--brown);
+  font-weight: 600;
+}
+
+.status span.not-verified {
+  color: red;
+  font-weight: 600;
+}
+
+/* Details Section */
+.user-details {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.user-details strong {
+  color: var(--black);
+  font-weight: 600;
+}
+
+/* Actions */
+.user-actions {
+  margin-top: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.user-actions button {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--gold);
+  color: var(--white);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.user-actions button:hover {
+  background: var(--sharpgold);
+  transform: translateY(-1px);
+}
+
+.logout-btn {
+  background: crimson !important;
+  color: white !important;
 }
 
 .profile-image {
@@ -178,6 +342,12 @@
   box-shadow: var(--box-shadow);
   border: 2px solid var(--lightbrown);
 }
+
+
+
+
+
+
 /* === Progressive breakpoints - make everything scale down smoothly === */
 
 /* large desktop -> reduce gap slightly */
@@ -217,6 +387,21 @@
 
 /* last step before mobile collapse */
 @media (max-width: 780px) {
+    .user-panel {
+    width: 90vw;
+    right: 3%;
+    top: 1rem;
+    transform: translateX(50%) translateY(0);
+    max-height: 85vh;
+    padding: 1rem 0.8rem;
+    border-radius: 0.8rem;
+  }
+
+  .user-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
   .nav ul { gap: 0.7rem; }
   .nav ul a { font-size: 0.84rem; font-weight: 350; padding: 0.3rem 0.6rem; }
   .nav .btn { padding: 0.28rem 0.6rem; }
@@ -278,4 +463,37 @@
 
   /* if logo is big, give it space */
   .nav .logo { margin-right: 0.5rem; }
+}
+
+@media (max-width: 480px) {
+  .user-panel {
+    width: 95vw;
+    right: 2%;
+    top: 0.5rem;
+    transform: translateX(50%) translateY(0);
+    border-radius: 0.6rem;
+    padding: 0.8rem;
+  }
+
+  .user-header .avatar {
+    width: 52px;
+    height: 52px;
+  }
+
+  .user-header .user-info h3 {
+    font-size: 0.95rem;
+  }
+
+  .user-header .user-info p {
+    font-size: 0.85rem;
+  }
+
+  .user-details {
+    font-size: 0.85rem;
+  }
+
+  .user-actions button {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
 }

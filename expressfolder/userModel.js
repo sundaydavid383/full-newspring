@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const MinistryResponseSchema = new mongoose.Schema({
   question: { type: String, required: true },
-  answer: { type: mongoose.Schema.Types.Mixed } // text, array, object etc.
+  answer: { type: mongoose.Schema.Types.Mixed }
 }, { _id: false });
 
 const MinistryEntrySchema = new mongoose.Schema({
@@ -12,9 +12,9 @@ const MinistryEntrySchema = new mongoose.Schema({
 }, { _id: false });
 
 const UserSchema = new mongoose.Schema({
-  firstname: { type: String, trim: true },
-  lastname: { type: String, trim: true },
-  email: { type: String, trim: true, lowercase: true, index: true },
+  firstname: { type: String, trim: true, required: true },
+  lastname: { type: String, trim: true, required: true },
+  email: { type: String, trim: true, lowercase: true, unique: true, required: true, index: true },
   password: { type: String },
   phone: { type: String },
   age: { type: Number },
@@ -35,12 +35,28 @@ const UserSchema = new mongoose.Schema({
   otpExpiry: { type: Date, default: null },
   otpResendCount: { type: Number, default: 0 },
   otpLastSentAt: { type: Date, default: null }
+
 }, {
-  timestamps: true
+  timestamps: true,
+  versionKey: false
 });
 
-// add index on embedded ministry name for faster lookup
+// 🔍 Index on embedded field
 UserSchema.index({ 'ministries.name': 1 });
+
+// 🧩 Method: hide sensitive fields
+UserSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  delete obj.otpHash;
+  delete obj.otpExpiry;
+  return obj;
+};
+
+// 🧠 Optional OTP validation helper
+UserSchema.methods.isOtpValid = function (otpHash, now = new Date()) {
+  return this.otpHash === otpHash && this.otpExpiry && now < this.otpExpiry;
+};
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

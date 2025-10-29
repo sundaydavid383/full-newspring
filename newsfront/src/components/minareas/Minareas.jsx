@@ -27,8 +27,8 @@ const Minareas = ({ ministryAreas, title }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState(""); 
-  const base_Url = "https://full-newspring.onrender.com/";
-
+  const base_Url = "http://localhost:5001/";
+   //https://full-newspring.onrender.com/
   const handleCardClick = (index) => {
     setSelectedIndex(selectedIndex === index ? null : index);
     setMessage("");
@@ -77,12 +77,24 @@ const Minareas = ({ ministryAreas, title }) => {
 
     if (data.code === "USER_NOT_FOUND") {
       setType("error");
+
+      let countdownValue = 5;
       setMessage(
         `❌ We could not find any account with the email: ${formData.email}.
-        👉 If this is your first time, please create an account first.
-        You’ll be redirected shortly...`
+        👉 Please create an account first. Redirecting in ${countdownValue} seconds...`
       );
-      setTimeout(() => (window.location.href = "/register"), 5000);
+      const countdownInterval = setInterval(() => {
+        countdownValue -= 1;
+        setMessage(
+        `❌ We could not find any account with the email: ${formData.email}.
+        👉 Please create an account first. Redirecting in ${countdownValue} seconds...`
+      );
+       if (countdownValue <= 0){
+        clearInterval(countdownInterval);
+        window.location.href = "/register"
+       }
+
+      },1000)
 
     } else if (data.code === "EMAIL_NAME_MISMATCH") {
       setType("error");
@@ -106,11 +118,11 @@ const Minareas = ({ ministryAreas, title }) => {
       );
 
     } else if (data.code === "ALREADY_REGISTERED") {
-      setType("info");
-      setMessage(
-        `ℹ️ You are already registered in ${ministry.title}.
-        👉 If you think this is a mistake, please reach out to support.`
-      );
+  setType("info");
+  setMessage(
+    `ℹ️ You are already registered in ${ministry.title}.<br>
+    👉 If you think this is a mistake, please <a href="tel:+2349032197266" style="color:#1a73e8; text-decoration:underline;">call support</a>.`
+  );
 
     } else {
       setType("error");
@@ -213,7 +225,7 @@ const Minareas = ({ ministryAreas, title }) => {
                           required
                         >
                           <option value="">
-                           Please select your {q.question.toLowerCase()} --
+                           
                           </option>
                           {q.options.map((opt, i) => (
                             <option key={i} value={opt}>

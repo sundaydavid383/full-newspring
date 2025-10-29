@@ -45,6 +45,10 @@ body {
   font-family: "Poppins", serif;
   background-color: var(--white);
 }
+textarea{
+    font-family: "Poppins", serif;
+
+}
 .title {
   text-align: center !important;   /* centers text horizontally */
   margin: 0 auto !important;       /* centers block if it has a width */

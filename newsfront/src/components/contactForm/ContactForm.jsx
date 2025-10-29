@@ -27,7 +27,8 @@ const ContactForm = ({ contactFormData, formType }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
+   const phoneClean = formData.phone.replace(/\s|-/g, "").trim();
+let phoneFormatted = phoneClean;
   // Validation
   const validate = () => {
     const newErrors = {};
@@ -43,8 +44,12 @@ const ContactForm = ({ contactFormData, formType }) => {
     else if (ageNum < 16 || ageNum > 24)
       newErrors.age = "Sorry, this program is only for youth between 16–24 years";
 
-    if (!/^[0-9]{10,15}$/.test(formData.phone))
-      newErrors.phone = "Enter a valid phone number (10–15 digits)";
+if (!phoneClean.startsWith("+")) {
+  phoneFormatted = "+234" + phoneClean.replace(/^0/, ""); // remove leading 0 if present
+}
+
+if (!/^\+\d{10,15}$/.test(phoneFormatted))
+  newErrors.phone = "Enter a valid international phone number, e.g. +2349012345678";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -72,9 +77,23 @@ const ContactForm = ({ contactFormData, formType }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-
     setLoading(true);
-    const payload = { ...formData, formType };
+
+  const capitalize = (str) =>
+    str
+      .trim()
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
+const payload = {
+  ...formData,
+  firstname: capitalize(formData.firstname),
+  lastname: capitalize(formData.lastname),
+  phone: phoneFormatted,
+  formType,
+};
+
+
 
     try {
       const response = await fetch(`${baseUrl}sendmessage/oncontact`, {

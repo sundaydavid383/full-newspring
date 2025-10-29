@@ -149,16 +149,7 @@
 .ministry_form input,
 .ministry_form select,
 .ministry_form textarea {
-  flex: 0 0 48%; /* fixed ~half width for neat left/right alignment */
-  max-width: 48%;
-  padding: 0.55rem 0.75rem; /* smaller padding */
-  border-bottom: 1px solid var(--brown);
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color: var(--black);
-  background: var(--white);
-  box-sizing: border-box;
+
 }
 .ministry_form .btn{
   width: 100%;
@@ -183,10 +174,16 @@
 .ministry_form input,
 .ministry_form select,
 .ministry_form textarea {
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--black);
+  background: var(--white);
+  box-sizing: border-box;
   flex: 1 1 calc(50% - 1rem);
   min-width: 220px;
   padding: 0.5rem 0.6rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   border-bottom: 2px solid var(--brown);
   background: var(--blurwhite);
   color: var(--black);

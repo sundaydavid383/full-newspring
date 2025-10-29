@@ -214,9 +214,8 @@ app.get("/api/people", async (req, res) => {
 });
 
 // ================== ADD A NEW PERSON (REGISTER) ==================
-app.post("/api/people", async (req, res) => {
-  const OTP_EXPIRY_MINUTES = Number(process.env.OTP_EXPIRY_MINUTES) || 10;
-  console.log("➡️ [START] Received request at /api/people");
+app.post('/api/people', async (req, res) => {
+  console.log("➡️ [START] /api/people registration request");
 
   try {
     const {
@@ -233,89 +232,152 @@ app.post("/api/people", async (req, res) => {
       password,
     } = req.body || {};
 
-    console.log("🔎 Step 1: Validating required fields...");
-    if (!firstname || !lastname || !email || !phone || !password) {
-      console.warn("⚠️ Validation failed: Missing required fields");
+    if (!firstname || !lastname || !email || !phone || !password){
       return res.status(400).json({
-        success: false,
-        message:
-          "Please fill in your first name, last name, email, phone number, and password. These are required to continue.",
+        success:false,
+        code: "MISSING_FIELDS",
+        message: "Please fill in firstname, lastname, email, phone, and password.",
       });
     }
 
-    console.log("✉️ Step 2: Normalizing email...");
     const normalizedEmail = String(email).trim().toLowerCase();
 
-    console.log("🔎 Step 3: Checking for existing user...");
-    const existing = await User.findOne({ email: normalizedEmail });
-    if (existing) {
-      console.warn("⚠️ User already exists:", normalizedEmail);
-      return res.status(409).json({
+    const existing = await User.findOne({ email: normalizedEmail});
+
+    if(existing){
+     console.log("🔎 Found existing user:", normalizedEmail);
+
+     if(existing.isVerified){
+       return res.status(409).json({
         success: false,
+        code: "ALREADY_REGISTERED",
+        isVerified: true,
         message:
-          "This email is already registered. If it belongs to you, try logging in instead of signing up again.",
-      });
+            "This email is already registered and verified. Please log in.",
+       });
+     }
+
+     const now =  new Date();
+     const windowStart = new Date(now.getTime() - OTP_RESEND_WINDOW_MINUTES * 60 * 1000);
+
+     let resendCount = existing.otpResendCount || 0;
+     const lastSentAt = existing.otpLastSentAt || null;
+
+     if (!lastSentAt || new Date(lastSentAt) < windowStart) {
+      resendCount = 0;
+     }
+
+     if(resendCount >= OTP_RESEND_LIMIT){
+      return res.status(429).json({
+        success: false,
+        code: "OTP_RESEND_LIMIT",
+        isVerified: false,
+        message: `You have exceeded the maximum OTP resend attempts. Please try again later.`,
+      })
+     }
+
+
+     const otp = generateOtp();
+     const otpHash = hashOtp(otp);
+     const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000)
+
+     existing.otpHash = otpHash
+     existing.otpExpiry = otpExpiry;
+     existing.otpResendCount = resendCount + 1;
+     existing.otpLastSentAt = now;
+    
+     await existing.save()
+
+     let mailSent = false;
+     try {
+      mailSent = await sendOtpEmail(normalizedEmail, otp);
+     } catch (error) {
+      console.error('❌ sendOtpEmail() failed for existing-unverified user:", err')
+      mailSent = false;
+    }
+   
+     
+    return res.status(200).json({
+      success: false,
+      code: 'ALREADY_REGISTERED',
+      isVerified: false,
+      mailSent,
+      message: mailSent
+      ? "This email is already registered but not verified. A new OTP has been sent to your email."
+      : "This email is already registered but not verified. We could not send OTP by email; please try resending later.",
+    })
     }
 
-    console.log("🔐 Step 4: Hashing password...");
+    
+    // New user: create unverified user with OTP
     const hashedPassword = await bcrypt.hash(String(password), 12);
 
-    console.log("🔑 Step 5: Generating OTP...");
-    const otp = generateOtp(); // you already have this
-    const otpHash = hashOtp(otp); // you already have this
+    const otp = generateOtp();
+    const otpHash = hashOtp(otp);
     const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
+    const now = new Date();
 
-    console.log("📝 Step 6: Creating user (unverified)...");
-    await User.create({
-      firstname: String(firstname).trim(),
-      lastname: String(lastname).trim(),
-      email: normalizedEmail,
-      phone: String(phone).trim(),
-      age: age ? Number(age) : undefined,
-      school: school ? String(school).trim() : "",
-      occupation: occupation ? String(occupation).trim() : "",
-      hobbies: hobbies ? String(hobbies).trim() : "",
-      heardAboutUs: heardAboutUs ? String(heardAboutUs).trim() : "",
-      interest: interest ? String(interest).trim() : "",
-      password: hashedPassword,
-      otpHash,
-      otpExpiry,
-      otpResendCount: 0,
-      otpLastSentAt: new Date(),
-      isVerified: false,
-    });
+    const newUser = new User({
+     firstname: String(firstname).trim(),
+     lastname: String(lastname).trim(),
+     email: normalizedEmail,
+     phone: String(phone).trim(),
+     age: age ? Number(age) : undefined,
+     school: school ? String(school).trim() : "",
+     occupation: occupation ? String(occupation).trim() : "",
+     hobbies: hobbies ? String(hobbies).trim() : "",
+     heardAboutUs: heardAboutUs ? String(heardAboutUs).trim() : "",
+     interest: interest ? String(interest).trim() : "",
+     password: hashedPassword,
+     otpHash,
+     otpExpiry,
+     otpResendCount: 1,
+     otpLastSentAt: now,
+     isVerified: false,
+    })
 
-    console.log("📧 Step 7: Sending OTP email...");
-    const mailSent = await sendOtpEmail(normalizedEmail, otp);
+    await newUser.save();
 
-    // IMPORTANT: do NOT return user data here (intentional)
-    console.log("🎉 Step 8: Registration completed for", normalizedEmail, "mailSent:", !!mailSent);
-    return res.status(201).json({
+    let mailSent = false;
+
+    try {
+      mailSent = await sendOtpEmail(normalizedEmail, otp)
+    } catch (error) {
+      console.error("❌ sendOtpEmail() failed for new user:", err);
+      mailSent = false
+    }
+     return res.status(201).json({
       success: true,
+      code: "USER_CREATED",
+      isVerified: false,
+      mailSent,
       message: mailSent
-        ? "✅ Account created. Please check your email for the OTP."
-        : "⚠️ Account created, but OTP email could not be sent. Try resending later.",
+        ? "Account created. Please check your email for the OTP."
+        : "Account created, but OTP email could not be sent. Please try resending the OTP.",
     });
   } catch (err) {
-    console.error("❌ [ERROR] in /api/people:", err);
+        console.error("💥 [ERROR] in /api/people:", err);
 
+    // duplicate key (race condition) - handle gracefully
     if (err.code === 11000) {
-      console.warn("⚠️ Duplicate email error triggered");
       return res.status(409).json({
         success: false,
+        code: "ALREADY_REGISTERED",
+        isVerified: false, // ambiguous, frontend should request login/verify flow
         message:
-          "This email is already linked to an account. Please use a different one or log in if it’s yours.",
+          "This email is already linked to an account. Please use a different email or log in if it’s yours.",
       });
     }
 
-    console.error("💥 Unexpected server error occurred");
     return res.status(500).json({
       success: false,
+      code: "SERVER_ERROR",
       message:
         "Something went wrong on our side. Please try again later. If it continues, contact support.",
     });
+
   }
-});
+})
 
 //=================== VERIFY OTP ========================
 app.post("/api/auth/verify-otp", async (req, res) => {
@@ -394,63 +456,112 @@ app.post("/api/auth/verify-otp", async (req, res) => {
 
 //=================== RESEND OTP ====================
 app.post("/api/auth/resend-otp", async (req, res) => {
+  console.log("📩 [Resend OTP] Request received at /api/auth/resend-otp");
+
   try {
     const { email } = req.body || {};
-    if (!email) return res.status(400).json({ success: false, message: "Email required." });
+    console.log("➡️ Request body:", req.body);
+
+    if (!email) {
+      console.warn("⚠️ Missing email in request body");
+      return res.status(400).json({ success: false, message: "Email required." });
+    }
 
     const normalizedEmail = String(email).trim().toLowerCase();
+    console.log("📧 Normalized Email:", normalizedEmail);
+
     const user = await User.findOne({ email: normalizedEmail });
-    if (!user) return res.status(404).json({ success: false, message: "User not found." });
+    console.log("👤 User found:", !!user, user ? user.email : "N/A");
 
-    if (user.isVerified) return res.status(400).json({ success: false, message: "User already verified." });
+    if (!user) {
+      console.warn("❌ User not found for email:", normalizedEmail);
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
 
-    // Cooldown: prevent too-frequent presses (e.g. spam clicks)
+    if (user.isVerified) {
+      console.log("✅ User already verified:", user.email);
+      return res.status(400).json({ success: false, message: "User already verified." });
+    }
+
+    // --- Cooldown Check ---
     const now = Date.now();
+    console.log("🕒 Current timestamp:", now);
+
     if (user.otpLastSentAt) {
-      const msSinceLast = now - new Date(user.otpLastSentAt).getTime();
+      const lastSent = new Date(user.otpLastSentAt).getTime();
+      const msSinceLast = now - lastSent;
+      console.log("⌛ msSinceLast:", msSinceLast);
+
       if (msSinceLast < OTP_RESEND_COOLDOWN_MS) {
-        return res.status(429).json({ success: false, message: `Please wait ${Math.ceil((OTP_RESEND_COOLDOWN_MS - msSinceLast)/1000)}s before requesting again.` });
+        console.warn("⏳ Cooldown active. Wait before resending OTP.");
+        return res.status(429).json({
+          success: false,
+          message: `Please wait ${Math.ceil(
+            (OTP_RESEND_COOLDOWN_MS - msSinceLast) / 1000
+          )}s before requesting again.`,
+        });
       }
     }
 
-    // Windowed limit (e.g. max N resends per window)
+    // --- Windowed Limit ---
     const windowMs = OTP_RESEND_WINDOW_MINUTES * 60 * 1000;
-    if (user.otpLastSentAt && (now - new Date(user.otpLastSentAt).getTime()) <= windowMs) {
-      // still inside window
-      user.otpResendCount = (user.otpResendCount || 0);
+    console.log("🪟 Resend window (ms):", windowMs);
+
+    if (user.otpLastSentAt && now - new Date(user.otpLastSentAt).getTime() <= windowMs) {
+      user.otpResendCount = user.otpResendCount || 0;
+      console.log("🔢 Current resend count:", user.otpResendCount);
+
       if (user.otpResendCount >= OTP_RESEND_LIMIT) {
-        return res.status(429).json({ success: false, message: "Resend limit reached. Please try again later." });
+        console.warn("🚫 Resend limit reached for:", user.email);
+        return res.status(429).json({
+          success: false,
+          message: "Resend limit reached. Please try again later.",
+        });
       }
     } else {
-      // window expired -> reset counter
+      console.log("♻️ Resend window expired. Resetting counter...");
       user.otpResendCount = 0;
     }
 
-    // Generate new OTP, hash & save
+    // --- OTP Generation ---
+    console.log("⚙️ Generating new OTP...");
     const otp = generateOtp();
     user.otpHash = hashOtp(otp);
     user.otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
     user.otpResendCount = (user.otpResendCount || 0) + 1;
     user.otpLastSentAt = new Date();
+    console.log("🔐 New OTP generated:", otp);
+    console.log("📆 Expires at:", user.otpExpiry);
 
     await user.save();
+    console.log("💾 User saved successfully with new OTP info.");
 
+    // --- Email Sending ---
+    console.log("📨 Sending OTP email to:", user.email);
     const mailSent = await sendOtpEmail(user.email, otp);
+    console.log("📤 Mail send status:", mailSent);
+
     if (!mailSent) {
-      console.warn("Resend OTP email failed for:", user.email);
-      return res.status(200).json({ success: true, message: "OTP regenerated but sending failed (check server logs)." });
+      console.warn("⚠️ OTP email sending failed for:", user.email);
+      return res.status(200).json({
+        success: true,
+        message: "OTP regenerated but sending failed (check server logs).",
+      });
     }
 
     if (process.env.NODE_ENV !== "production") {
-      console.log("DEBUG Resent OTP for", user.email, ":", otp);
+      console.log("🧠 DEBUG: Resent OTP for", user.email, ":", otp);
     }
 
+    console.log("✅ OTP resent successfully to:", user.email);
     return res.json({ success: true, message: "OTP resent successfully." });
+
   } catch (err) {
-    console.error("Error in /api/auth/resend-otp:", err);
+    console.error("💥 Error in /api/auth/resend-otp:", err);
     return res.status(500).json({ success: false, message: "Internal server error." });
   }
 });
+
 
 
 // ================== UPDATE A PERSON ==================
@@ -635,10 +746,16 @@ app.post("/sendmessage/oncreated", async (req, res) => {
 
 app.post("/api/ministry-register", async (req, res) => {
   const { firstname, lastname, email, ministry, answers } = req.body;
-  console.log("📥 Incoming registration request:", { firstname, lastname, email, ministry, answers });
+  console.log("📥 Incoming registration request:", {
+    firstname,
+    lastname,
+    email,
+    ministry,
+    answers,
+  });
 
   try {
-    // ✅ Check if user exists
+    // ✅ 1. Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       console.log("❌ No user found with that email.");
@@ -648,10 +765,9 @@ app.post("/api/ministry-register", async (req, res) => {
       });
     }
 
-    // Debug log
     console.log("👤 Full user object from DB:", user.toObject ? user.toObject() : user);
 
-    // ✅ Check name mismatch (either first OR last name must match)
+    // ✅ 2. Validate name (either firstname OR lastname must match)
     if (user.firstname !== firstname && user.lastname !== lastname) {
       console.log("❌ Name mismatch for the provided email.");
       return res.status(200).json({
@@ -662,16 +778,13 @@ app.post("/api/ministry-register", async (req, res) => {
 
     console.log("🔍 User lookup result: FOUND");
 
-    // ✅ Make sure ministries  exists
+    // ✅ 3. Ensure ministries array exists
     user.ministries = user.ministries || [];
 
     console.log("📂 Current ministries before update:", user.ministries);
 
-    // ✅ Register user for ministry with answers
-    const existingMinistry = user.ministries.find(
-      (m) => m.name === ministry
-    );
-
+    // ✅ 4. Prevent duplicate ministry registration
+    const existingMinistry = user.ministries.find((m) => m.name === ministry);
     if (existingMinistry) {
       console.log(`⚠️ User already registered in "${ministry}"`);
       return res.status(200).json({
@@ -680,16 +793,25 @@ app.post("/api/ministry-register", async (req, res) => {
       });
     }
 
-    // Push new ministry object with answers
+    // ✅ 5. Convert `answers` object to array of { question, answer }
+    const formattedResponses = Object.entries(answers || {}).map(
+      ([question, answer]) => ({ question, answer })
+    );
+
+    console.log("🧾 Formatted responses:", formattedResponses);
+
+    // ✅ 6. Push new ministry record
     user.ministries.push({
       name: ministry,
       joinedAt: new Date(),
-      responses: answers || [],
+      responses: formattedResponses,
     });
 
+    // ✅ 7. Save user document
     await user.save();
     console.log(`✅ Added ministry "${ministry}" to user:`, user._id);
 
+    // ✅ 8. Success response
     return res.status(200).json({
       code: "REGISTERED",
       message: `User registered to ministry: ${ministry}`,
@@ -703,6 +825,7 @@ app.post("/api/ministry-register", async (req, res) => {
     });
   }
 });
+
 
 
 

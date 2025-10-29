@@ -16,7 +16,7 @@
   font-size: 0.9rem;
   color:var(--brown) !important;
   font-weight: 500;
-  width: 15rem;
+  min-width: 19rem;
   box-shadow: var(--box-shadow);
    z-index: 1112; 
   animation: fadeIn 0.3s ease-in;
@@ -38,6 +38,10 @@
 
 /* Button inside the message */
 .form-message .btn {
+  margin: auto;
+  margin-top: 2rem;
+  width: 4rem;
+  height: 2rem;
   padding: 0.4rem 0.8rem;
   border-radius: 0.4rem;
   background: var(--brown);
